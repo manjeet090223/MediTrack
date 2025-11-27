@@ -1,0 +1,82 @@
+/* Home Card */
+.home-card {
+  width: 450px;
+  padding: 3rem;
+  border-radius: 25px;
+  text-align: center;
+  background: linear-gradient(135deg, #ffffffcc, #f7f7f7cc);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+/* Role Card Info */
+.role-card {
+  background: #e0ffe0;
+  color: #145214;
+  padding: 15px 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+.role-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Logout Button */
+.logout-btn {
+  width: 60%;
+  padding: 14px;
+  background: #28a745;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.logout-btn:hover {
+  background: #1e7e34;
+  transform: scale(1.05);
+}
+
+/* Floating animation for card */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Fade-in animations */
+.animate-fade {
+  animation: fadeIn 1.2s ease forwards;
+  opacity: 0;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Confetti effect (CSS only) */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.confetti-container::before {
+  content: "🎉";
+  position: absolute;
+  font-size: 2rem;
+  animation: confettiFall 3s linear infinite;
+  top: -50px;
+  left: 50%;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity:1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+}
