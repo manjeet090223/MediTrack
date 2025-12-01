@@ -1,82 +1,164 @@
-/* Home Card */
-.home-card {
-  width: 450px;
-  padding: 3rem;
-  border-radius: 25px;
+/* Dashboard Layout */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #e9f9ef;
+
+}
+
+/* Sidebar White + Green Theme */
+.sidebar {
+  width: 260px;
+  background: #ffffff; /* White sidebar */
+  color: #0a8a42; /* Green Text */
+  display: flex;
+  flex-direction: column;
+  padding: 25px 10px;
+  position: fixed;
+  min-height: 100vh;
+  border-right: 2px solid #d8eedd; /* soft border */
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  font-size: 22px;
+  font-weight: 700;
   text-align: center;
-  background: linear-gradient(135deg, #ffffffcc, #f7f7f7cc);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-  position: relative;
-  overflow: hidden;
-  animation: floatCard 6s ease-in-out infinite;
+  margin-bottom: 35px;
+  color: #066a33;
 }
 
-/* Role Card Info */
-.role-card {
-  background: #e0ffe0;
-  color: #145214;
-  padding: 15px 20px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  font-size: 0.95rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-}
-.role-card:hover {
-  transform: translateY(-5px);
+.sidebar ul {
+  list-style: none;
+  padding: 0;
 }
 
-/* Logout Button */
-.logout-btn {
-  width: 60%;
-  padding: 14px;
-  background: #28a745;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+/* Sidebar Links */
+.sidebar ul li a {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #0a8a42;
+  font-weight: 500;
   transition: 0.3s ease;
 }
-.logout-btn:hover {
-  background: #1e7e34;
-  transform: scale(1.05);
+
+/* Hover + Active */
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: #e5f7ea;
+  color: #055d2b;
+  transform: translateX(6px);
+  font-weight: 600;
 }
 
-/* Floating animation for card */
-@keyframes floatCard {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+/* Main Section */
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 35px;
+  animation: fadeSlide 0.8s ease-out;
 }
 
-/* Fade-in animations */
-.animate-fade {
-  animation: fadeIn 1.2s ease forwards;
-  opacity: 0;
-}
-@keyframes fadeIn {
-  to { opacity: 1; }
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0b6a3a;
+  margin-bottom: 14px;
 }
 
-/* Confetti effect (CSS only) */
-.confetti-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
+/* Role Badge */
+.role-badge {
+  background: #0a8a42;
+  color: #fff;
+  padding: 8px 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 25px;
 }
-.confetti-container::before {
-  content: "🎉";
-  position: absolute;
-  font-size: 2rem;
-  animation: confettiFall 3s linear infinite;
-  top: -50px;
-  left: 50%;
+
+.role-badge .role-icon {
+  margin-right: 8px;
 }
-@keyframes confettiFall {
-  0% { transform: translateY(0) rotate(0deg); opacity:1; }
-  100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+
+/* Welcome Info Card */
+.info-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(30, 120, 70, 0.15);
+  margin-bottom: 35px;
+  animation: fadeUp 0.9s ease;
+}
+
+.info-title {
+  font-size: 21px;
+  font-weight: 600;
+  color: #0b6a3a;
+}
+
+.info-text {
+  color: #333;
+  font-size: 15px;
+}
+
+/* Doctor/Patient Highlight Cards */
+.hospital-stats {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 210px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.3s;
+  box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  border-color: #0a8a42;
+}
+
+.stat-icon {
+  font-size: 36px;
+  color: #0a8a42;
+  margin-bottom: 10px;
+}
+
+/* Animations */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

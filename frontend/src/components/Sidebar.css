@@ -1,0 +1,90 @@
+/* Sidebar Layout */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  height: 100vh;
+  color: #1e7e34;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #d9e6dd;
+}
+
+/* Avatar + Name Section */
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.avatar {
+  font-size: 60px;
+  color: #1e7e34;
+  margin-bottom: 8px;
+}
+
+.sidebar-brand {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.user-role {
+  font-size: 14px;
+  color: #0f4b22;
+  background: #e6f4ea;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+/* Center menu */
+.menu {
+  list-style: none;
+  padding: 0;
+  flex: 1; /* Takes full center space */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.menu-item {
+  font-size: 16px;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Hover + Active */
+.menu-item:hover,
+.menu-item.active {
+  background: #e6f4ea;
+  color: #0f4b22;
+  transform: translateX(6px);
+}
+
+/* Icons color */
+.icon {
+  font-size: 18px;
+}
+
+/* Logout Always Bottom */
+.logout-section {
+  margin-top: auto;
+  margin-bottom: 2rem;
+}
+
+.logout-btn {
+  background: #c91e1e !important;
+  color: #ffffff !important;
+}
+
+.logout-btn:hover {
+  background: #a01515 !important;
+  transform: scale(1.05);
+}

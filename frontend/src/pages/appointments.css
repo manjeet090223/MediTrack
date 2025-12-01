@@ -1,0 +1,175 @@
+/* Wrapper for dashboard layout */
+.appointments-page {
+  display: flex;
+  min-height: 100vh;
+  background: #e9f9ef; /* similar to home.css */
+}
+
+/* Page title */
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0b6a3a;
+  margin-bottom: 20px;
+  text-align: center;
+}
+/* Appointment Table */
+.appointment-table {
+  width: 100%;
+  margin-top: 25px;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(30, 120, 70, 0.1);
+}
+
+.appointment-table th,
+.appointment-table td {
+  border: 1px solid #e6e6e6;
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.appointment-table th {
+  background: #e5f7ea;
+  color: #055d2b;
+  font-weight: 600;
+}
+
+/* Cancel Button */
+.btn-cancel {
+  background: #c91e1e;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-cancel:hover {
+  background: #a01515;
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Main content next to sidebar */
+.appointment-container {
+  flex: 1;
+  margin-left: 260px; /* match sidebar width */
+  padding: 35px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  align-items: center; /* vertical centering */
+  animation: fadeSlide 0.8s ease-out;
+  flex-direction: column; /* so form stays vertical */
+}
+.appointment-container {
+  overflow-y: auto;
+}
+
+.appointment-form {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  padding: 30px 35px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Form Title */
+.appointment-form h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0b6a3a;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Labels */
+.appointment-form label {
+  font-weight: 600;
+  color: #0f4b22;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* Inputs, textarea, select */
+.appointment-form input,
+.appointment-form textarea,
+.appointment-form select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #cce6d6;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.appointment-form input:focus,
+.appointment-form textarea:focus,
+.appointment-form select:focus {
+  outline: none;
+  border-color: #0a8a42;
+  box-shadow: 0 0 8px rgba(10, 138, 66, 0.2);
+}
+
+/* Textarea */
+.appointment-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Disabled select */
+.appointment-form select:disabled {
+  background: #f0f0f0;
+  color: #555;
+  cursor: not-allowed;
+}
+
+/* Submit Button */
+.btn-primary {
+  background: #0a8a42;
+  color: #fff;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #066a33;
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(10, 138, 66, 0.25);
+}
+

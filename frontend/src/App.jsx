@@ -2,23 +2,32 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
-import ProtectedRoute from "./components/ProtectedRoute";
 import Signup from "./pages/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// Pages
 import Home from "./pages/Home";
+import Appointments from "./pages/Appointments";
+import BookAppointment from "./pages/BookAppointment";
+
+// Toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
     <Router>
-      <Routes>
+      <ToastContainer position="top-right" autoClose={2000} />
 
-        {/* Default Route */}
+      <Routes>
+        {/* Default Redirect */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Public Routes */}
+        {/* Public */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Protected Route */}
+        {/* Protected */}
         <Route
           path="/home"
           element={
@@ -28,6 +37,23 @@ export default function App() {
           }
         />
 
+        <Route
+          path="/appointments"
+          element={
+            <ProtectedRoute>
+              <Appointments />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/book-appointment"
+          element={
+            <ProtectedRoute>
+              <BookAppointment />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

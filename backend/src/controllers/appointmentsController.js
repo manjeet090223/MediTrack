@@ -1,0 +1,100 @@
+const Appointment = require('../models/Appointment');
+
+// Create appointment (Patient creates)
+exports.createAppointment = async (req, res) => {
+  try {
+    console.log("Create Appointment - req.user:", req.user);
+    console.log("Create Appointment - req.body:", req.body);
+
+    const { doctorId, datetime, reason } = req.body;
+    if (!doctorId || !datetime)
+      return res.status(400).json({ message: 'doctorId and datetime required' });
+
+    const appt = new Appointment({
+      patient: req.user.id,
+      doctor: doctorId,
+      datetime,
+      reason,
+    });
+
+    await appt.save();
+    console.log("Appointment created:", appt);
+
+    return res.status(201).json(appt);
+  } catch (err) {
+    console.error("Error in createAppointment:", err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Get appointments depending on role
+exports.getAppointments = async (req, res) => {
+  try {
+    console.log("Get Appointments - req.user:", req.user);
+
+    let filter = {};
+    if (req.user.role === 'Patient') filter.patient = req.user.id;
+    else if (req.user.role === 'Doctor') filter.doctor = req.user.id;
+    // Admin -> all
+
+    const appts = await Appointment.find(filter)
+      .sort({ datetime: 1 })
+      .populate('patient', 'name email profile')
+      .populate('doctor', 'name email profile');
+
+    console.log("Appointments fetched:", appts);
+    return res.json(appts);
+  } catch (err) {
+    console.error("Error in getAppointments:", err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Cancel appointment (Patient/Doctor/Admin)
+exports.cancelAppointment = async (req, res) => {
+  try {
+    console.log("Cancel Appointment - id:", req.params.id, "User:", req.user);
+    const appt = await Appointment.findById(req.params.id);
+    if (!appt) return res.status(404).json({ message: 'Appointment not found' });
+
+    if (req.user.role === 'Patient' && appt.patient.toString() !== req.user.id)
+      return res.status(403).json({ message: 'Forbidden' });
+    if (req.user.role === 'Doctor' && appt.doctor.toString() !== req.user.id)
+      return res.status(403).json({ message: 'Forbidden' });
+
+    appt.status = 'Cancelled';
+    await appt.save();
+    console.log("Appointment cancelled:", appt);
+    return res.json(appt);
+  } catch (err) {
+    console.error("Error in cancelAppointment:", err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Update appointment (Patient/Doctor/Admin)
+exports.updateAppointment = async (req, res) => {
+  try {
+    console.log("Update Appointment - id:", req.params.id, "User:", req.user, "Body:", req.body);
+    const appt = await Appointment.findById(req.params.id);
+    if (!appt) return res.status(404).json({ message: 'Appointment not found' });
+
+    if (req.user.role === 'Patient' && appt.patient.toString() !== req.user.id)
+      return res.status(403).json({ message: 'Forbidden' });
+    if (req.user.role === 'Doctor' && appt.doctor.toString() !== req.user.id)
+      return res.status(403).json({ message: 'Forbidden' });
+
+    const { datetime, reason, notes, status } = req.body;
+    if (datetime) appt.datetime = datetime;
+    if (reason) appt.reason = reason;
+    if (typeof notes !== 'undefined') appt.notes = notes;
+    if (status && ['Booked','Cancelled','Completed'].includes(status)) appt.status = status;
+
+    await appt.save();
+    console.log("Appointment updated:", appt);
+    return res.json(appt);
+  } catch (err) {
+    console.error("Error in updateAppointment:", err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
