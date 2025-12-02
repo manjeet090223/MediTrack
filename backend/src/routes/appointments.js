@@ -12,7 +12,7 @@ router.post(
   controller.createAppointment
 );
 
-
+// Get all appointments (Patient sees only their own, Doctor/Admin sees all)
 router.get(
   "/",
   requireAuth,
@@ -28,16 +28,15 @@ router.put(
   controller.cancelAppointment
 );
 
-// Get appointments by Patient ID (Doctor + Admin allowed)
+// Get appointments by Patient ID
 router.get(
   "/patient/:id",
   requireAuth,
-  requireRole("Doctor", "Admin"),
+  requireRole("Patient", "Doctor", "Admin"), // Patient bhi allowed
   controller.getPatientAppointments
 );
 
-
-// Doctor + Admin allowed, Patient not allowed to edit doctor's notes or status
+// Update appointment (Doctor + Admin)
 router.put(
   "/:id",
   requireAuth,

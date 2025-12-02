@@ -1,0 +1,11 @@
+.progress-card {
+  width: 150px;
+  text-align: center;
+  margin: 15px;
+}
+
+.progress-label {
+  margin-top: 10px;
+  color: #0b6a3a;
+  font-weight: 600;
+}

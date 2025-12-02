@@ -208,3 +208,21 @@ h2 {
   box-shadow: 0 4px 10px rgba(10, 138, 66, 0.25);
 }
 
+/* Cancelled appointment label for doctor Quick Actions */
+.cancelled-label {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff; /* white text */
+  background: #c91e1e; /* same red as .btn-cancel */
+  text-align: center;
+  box-shadow: 0 5px 12px rgba(201, 30, 30, 0.35); /* subtle shadow like btn-update */
+  transition: 0.3s;
+}
+
+.cancelled-label:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 18px rgba(201, 30, 30, 0.45);
+}

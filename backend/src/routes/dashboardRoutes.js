@@ -1,18 +1,18 @@
-// routes/dashboardRoutes.js
 const express = require("express");
 const router = express.Router();
 const Appointment = require("../models/Appointment");
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
+const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 
-// 1️⃣ Summary endpoint
+// 1️⃣ Summary (Admin Dashboard)
 router.get("/summary", async (req, res) => {
   try {
     const totalPatients = await User.countDocuments({ role: "Patient" });
 
-    // Today's date range
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
+
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
@@ -20,23 +20,24 @@ router.get("/summary", async (req, res) => {
       datetime: { $gte: startOfDay, $lte: endOfDay },
     });
 
-    const pendingRequests = await Appointment.countDocuments({ status: "Booked" });
+    const pendingRequests = await Appointment.countDocuments({
+      status: "Booked",
+    });
 
     res.json({ totalPatients, appointmentsToday, pendingRequests });
   } catch (error) {
-    console.error(error);
+    console.error("Admin Summary Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// 2️⃣ Appointments Trend endpoint (last 7 days)
+// 2️⃣ Appointments Trend (Last 7 Days for Admin)
 router.get("/appointments-trend", async (req, res) => {
   try {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
     sevenDaysAgo.setHours(0, 0, 0, 0);
 
-    // Aggregate by date string YYYY-MM-DD
     const trend = await Appointment.aggregate([
       { $match: { datetime: { $gte: sevenDaysAgo } } },
       {
@@ -48,13 +49,13 @@ router.get("/appointments-trend", async (req, res) => {
       { $sort: { _id: 1 } },
     ]);
 
-    // Fill last 7 days and map to day names
     const result = [];
     for (let i = 0; i < 7; i++) {
       const date = new Date();
       date.setDate(date.getDate() - (6 - i));
-      const dateStr = date.toISOString().split("T")[0]; // YYYY-MM-DD
+      const dateStr = date.toISOString().split("T")[0];
       const found = trend.find((t) => t._id === dateStr);
+
       result.push({
         day: date.toLocaleString("default", { weekday: "short" }),
         appointments: found ? found.appointments : 0,
@@ -63,12 +64,12 @@ router.get("/appointments-trend", async (req, res) => {
 
     res.json(result);
   } catch (error) {
-    console.error(error);
+    console.error("Appointments Trend Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// 3️⃣ New Patients endpoint (last 6 months)
+// 3️⃣ New Patient Growth (Last 6 Months for Admin)
 router.get("/new-patients", async (req, res) => {
   try {
     const sixMonthsAgo = new Date();
@@ -76,7 +77,6 @@ router.get("/new-patients", async (req, res) => {
     sixMonthsAgo.setDate(1);
     sixMonthsAgo.setHours(0, 0, 0, 0);
 
-    // Aggregate by month number (1-12)
     const patients = await User.aggregate([
       { $match: { role: "Patient", createdAt: { $gte: sixMonthsAgo } } },
       {
@@ -85,25 +85,71 @@ router.get("/new-patients", async (req, res) => {
           patients: { $sum: 1 },
         },
       },
-      { $sort: { "_id": 1 } },
+      { $sort: { _id: 1 } },
     ]);
 
-    // Fill last 6 months
     const result = [];
     for (let i = 0; i < 6; i++) {
       const date = new Date();
       date.setMonth(date.getMonth() - (5 - i));
-      const monthNum = date.getMonth() + 1; // 1-12
+      const monthNum = date.getMonth() + 1;
       const monthName = date.toLocaleString("default", { month: "short" });
       const found = patients.find((p) => p._id === monthNum);
-      result.push({ month: monthName, patients: found ? found.patients : 0 });
+
+      result.push({
+        month: monthName,
+        patients: found ? found.patients : 0,
+      });
     }
 
     res.json(result);
   } catch (error) {
-    console.error(error);
+    console.error("New Patients Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// 4️⃣ Patient Dashboard Summary (Patient App)
+router.get(
+  "/patient-summary/:userId",
+  requireAuth,
+  requireRole("Patient", "Doctor", "Admin"), // Patient ko allow karo
+  async (req, res) => {
+    const { userId } = req.params;
+
+    // Patient can only access their own summary
+    if (req.user.role === "Patient" && req.user.id !== userId) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    try {
+      const objectId = new mongoose.Types.ObjectId(userId);
+      const now = new Date();
+
+      const totalAppointments = await Appointment.countDocuments({
+        patient: objectId,
+        status: { $in: ["Booked", "Completed"] },
+      });
+
+      const upcomingAppointments = await Appointment.countDocuments({
+        patient: objectId,
+        status: "Booked",
+        datetime: { $gte: now },
+      });
+
+      const completedAppointments = await Appointment.countDocuments({
+        patient: objectId,
+        $or: [
+          { status: "Completed" },
+          { status: "Booked", datetime: { $lt: now } },
+        ],
+      });
+
+      res.json({ totalAppointments, upcomingAppointments, completedAppointments });
+    } catch (error) {
+      console.error("Patient Summary Error:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 module.exports = router;

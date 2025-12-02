@@ -1,0 +1,17 @@
+.health-tips-banner {
+  background: linear-gradient(135deg, #dff5e1, #a5d6a7);
+  padding: 15px 25px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: 600;
+  color: #0a8a42;
+  margin: 20px 0;
+  font-size: 16px;
+  box-shadow: 0 8px 20px rgba(10,138,66,0.2);
+  transition: 0.3s;
+}
+
+.health-tips-banner:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 28px rgba(10,138,66,0.3);
+}

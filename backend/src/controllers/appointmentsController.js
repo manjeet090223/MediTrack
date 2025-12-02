@@ -3,9 +3,6 @@ const Appointment = require('../models/Appointment');
 // Create appointment (Patient creates)
 exports.createAppointment = async (req, res) => {
   try {
-    console.log("Create Appointment - req.user:", req.user);
-    console.log("Create Appointment - req.body:", req.body);
-
     const { doctorId, datetime, reason } = req.body;
     if (!doctorId || !datetime)
       return res.status(400).json({ message: 'doctorId and datetime required' });
@@ -18,8 +15,6 @@ exports.createAppointment = async (req, res) => {
     });
 
     await appt.save();
-    console.log("Appointment created:", appt);
-
     return res.status(201).json(appt);
   } catch (err) {
     console.error("Error in createAppointment:", err);
@@ -30,19 +25,15 @@ exports.createAppointment = async (req, res) => {
 // Get appointments depending on role
 exports.getAppointments = async (req, res) => {
   try {
-    console.log("Get Appointments - req.user:", req.user);
-
     let filter = {};
     if (req.user.role === 'Patient') filter.patient = req.user.id;
     else if (req.user.role === 'Doctor') filter.doctor = req.user.id;
-    // Admin -> all
 
     const appts = await Appointment.find(filter)
       .sort({ datetime: 1 })
       .populate('patient', 'name email profile')
       .populate('doctor', 'name email profile');
 
-    console.log("Appointments fetched:", appts);
     return res.json(appts);
   } catch (err) {
     console.error("Error in getAppointments:", err);
@@ -50,15 +41,20 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
-// Get appointments for a specific patient (Admin + Doctor allowed)
+// Get appointments for a specific patient (Patient can get own, Doctor/Admin can get any)
 exports.getPatientAppointments = async (req, res) => {
   try {
     const patientId = req.params.id;
 
+    // Patient can only fetch their own appointments
+    if (req.user.role === 'Patient' && req.user.id !== patientId) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
     const appts = await Appointment.find({ patient: patientId })
       .sort({ datetime: -1 })
-      .populate("doctor", "name email")
-      .populate("patient", "name email");
+      .populate('doctor', 'name email profile')
+      .populate('patient', 'name email profile');
 
     return res.json(appts);
   } catch (err) {
@@ -67,11 +63,9 @@ exports.getPatientAppointments = async (req, res) => {
   }
 };
 
-
 // Cancel appointment (Patient/Doctor/Admin)
 exports.cancelAppointment = async (req, res) => {
   try {
-    console.log("Cancel Appointment - id:", req.params.id, "User:", req.user);
     const appt = await Appointment.findById(req.params.id);
     if (!appt) return res.status(404).json({ message: 'Appointment not found' });
 
@@ -82,7 +76,6 @@ exports.cancelAppointment = async (req, res) => {
 
     appt.status = 'Cancelled';
     await appt.save();
-    console.log("Appointment cancelled:", appt);
     return res.json(appt);
   } catch (err) {
     console.error("Error in cancelAppointment:", err);
@@ -90,15 +83,12 @@ exports.cancelAppointment = async (req, res) => {
   }
 };
 
-// Update appointment (Patient/Doctor/Admin)
+// Update appointment (Doctor/Admin)
 exports.updateAppointment = async (req, res) => {
   try {
-    console.log("Update Appointment - id:", req.params.id, "User:", req.user, "Body:", req.body);
     const appt = await Appointment.findById(req.params.id);
     if (!appt) return res.status(404).json({ message: 'Appointment not found' });
 
-    if (req.user.role === 'Patient' && appt.patient.toString() !== req.user.id)
-      return res.status(403).json({ message: 'Forbidden' });
     if (req.user.role === 'Doctor' && appt.doctor.toString() !== req.user.id)
       return res.status(403).json({ message: 'Forbidden' });
 
@@ -109,7 +99,6 @@ exports.updateAppointment = async (req, res) => {
     if (status && ['Booked','Cancelled','Completed'].includes(status)) appt.status = status;
 
     await appt.save();
-    console.log("Appointment updated:", appt);
     return res.json(appt);
   } catch (err) {
     console.error("Error in updateAppointment:", err);

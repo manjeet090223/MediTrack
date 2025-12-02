@@ -162,3 +162,17 @@
     transform: translateY(0);
   }
 }
+.loading-text {
+  text-align: center;
+  font-size: 18px;
+  margin: 10px 0;
+  color: #777;
+}
+
+.progress-section,
+.hover-card-section {
+  display: flex;
+  gap: 22px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}

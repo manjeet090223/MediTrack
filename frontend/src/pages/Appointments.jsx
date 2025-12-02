@@ -90,16 +90,20 @@ export default function Appointments() {
                     <>
                       {appt.status === "Completed" ? (
                         <span className="completed-label">Completed</span>
-                      ) : (
+                      ) : appt.status === "Booked" ? (
                         <button
                           className="btn-update"
                           onClick={() => handleUpdate(appt._id, { status: "Completed" })}
                         >
                           Mark Completed
                         </button>
+                      ) : (
+                        <span className="cancelled-label">Cancelled</span>
                       )}
                     </>
                   )}
+
+
                 </td>
               </tr>
             ))}
