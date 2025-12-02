@@ -13,7 +13,7 @@ export default function BookAppointment() {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const res = await api.get("/users?role=Doctor");
+        const res = await api.get("/api/users?role=Doctor");
         console.log("Doctors fetched:", res.data);
         setDoctors(res.data);
         if (res.data.length > 0) setSelectedDoctor(res.data[0]._id);

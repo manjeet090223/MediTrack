@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API = import.meta.env.VITE_BACKEND_URL; // https://meditrack-iyrc.onrender.com
+const API = import.meta.env.VITE_BACKEND_URL; // e.g., https://meditrack-iyrc.onrender.com
 
 const api = axios.create({
   baseURL: API,
@@ -35,8 +35,6 @@ api.interceptors.response.use(
 );
 
 /* -------------------- Appointment APIs -------------------- */
-
-// Notice the /api prefix added to all routes
 export const createAppointment = (appointmentData) =>
   api.post("/api/appointments", appointmentData);
 
@@ -47,5 +45,8 @@ export const cancelAppointment = (id) =>
 
 export const updateAppointment = (id, updateData) =>
   api.put(`/api/appointments/${id}`, updateData);
+
+/* -------------------- Patient APIs (Doctor-only) -------------------- */
+export const getAllPatients = () => api.get("/api/patients");
 
 export default api;

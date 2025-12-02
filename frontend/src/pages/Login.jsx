@@ -1,6 +1,6 @@
 // Login.jsx
 import React, { useState } from "react";
-import api from "../api/axios"; // <-- axios ki jagah custom API instance
+import api from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./loginSignup.css";
 
@@ -19,16 +19,22 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await api.post("/api/auth/login", form); // API auto baseURL + token
+      const res = await api.post("/api/auth/login", form);
       const { token, user } = res.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/home");
+      // Role-based navigation
+      if (user.role === "Doctor") {
+        navigate("/doctor-dashboard");
+      } else {
+        navigate("/home");
+      }
     } catch (err) {
       setError(err?.response?.data?.message || "Login failed");
     }
+
     setLoading(false);
   };
 

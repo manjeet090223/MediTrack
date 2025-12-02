@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaHome, FaCalendarAlt, FaPlus, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import { FaHome, FaCalendarAlt, FaPlus, FaSignOutAlt, FaUserCircle, FaUsers } from "react-icons/fa";
 import "./Sidebar.css";
 
 export default function Sidebar() {
@@ -13,18 +13,21 @@ export default function Sidebar() {
     navigate("/login");
   };
 
+  const goHome = () => {
+    if (user?.role === "Doctor") navigate("/doctor-dashboard");
+    else navigate("/home");
+  };
+
   return (
     <div className="sidebar">
-      {/* Brand */}
       <div className="sidebar-header">
         <FaUserCircle className="avatar" />
         <h2 className="sidebar-brand">{user?.name || "User"}</h2>
         <span className="user-role">{user?.role}</span>
       </div>
 
-      {/* Menu Links */}
       <ul className="menu">
-        <li className="menu-item" onClick={() => navigate("/home")}>
+        <li className="menu-item" onClick={goHome}>
           <FaHome className="icon" /> Home
         </li>
 
@@ -37,9 +40,14 @@ export default function Sidebar() {
             <FaPlus className="icon" /> Book Appointment
           </li>
         )}
+
+        {user?.role === "Doctor" && (
+          <li className="menu-item" onClick={() => navigate("/patients")}>
+            <FaUsers className="icon" /> View Patients
+          </li>
+        )}
       </ul>
 
-      {/* Logout bottom fixed */}
       <div className="logout-section">
         <li className="menu-item logout-btn" onClick={logout}>
           <FaSignOutAlt className="icon" /> Logout

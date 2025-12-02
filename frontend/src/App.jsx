@@ -6,9 +6,11 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
-import Home from "./pages/Home";
+import Home from "./pages/Home"; // Patient Dashboard
+import DoctorDashboard from "./pages/DoctorDashboard"; // Doctor Dashboard
 import Appointments from "./pages/Appointments";
 import BookAppointment from "./pages/BookAppointment";
+import Patients from "./pages/Patients";
 
 // Toastify
 import { ToastContainer } from "react-toastify";
@@ -27,30 +29,52 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Protected */}
+        {/* Patient Dashboard */}
         <Route
           path="/home"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["Patient"]}>
               <Home />
             </ProtectedRoute>
           }
         />
 
+        {/* Doctor Dashboard */}
+        <Route
+          path="/doctor-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Doctor"]}>
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Both Roles */}
         <Route
           path="/appointments"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["Patient", "Doctor"]}>
               <Appointments />
             </ProtectedRoute>
           }
         />
 
+        {/* Patient-only */}
         <Route
           path="/book-appointment"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["Patient"]}>
               <BookAppointment />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Doctor-only */}
+        <Route
+          path="/patients"
+          element={
+            <ProtectedRoute allowedRoles={["Doctor"]}>
+              <Patients />
             </ProtectedRoute>
           }
         />

@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const appointmentsRouter = require("./routes/appointments");
 const userRoutes = require("./routes/userRoutes");
+const patientRoutes = require("./routes/patientRoutes");
 
 dotenv.config();
 const app = express();
@@ -21,7 +22,7 @@ connectDB();
 app.use("/api/appointments", appointmentsRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/patients", patientRoutes);
 
 app.get("/", (req, res) => {
   res.send("Pathrise backend is running 🚀");

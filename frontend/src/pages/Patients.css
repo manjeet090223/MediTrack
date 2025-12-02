@@ -1,0 +1,21 @@
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.patients-table th,
+.patients-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.patients-table th {
+  background-color: #f0f0f0;
+}
+
+.loading {
+  padding: 20px;
+  font-size: 18px;
+}
