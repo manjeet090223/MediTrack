@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const reportSchema = new mongoose.Schema({
+const Report = new mongoose.Schema({
   patient: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   filename: { type: String, required: true },
   originalName: { type: String },
@@ -8,4 +8,4 @@ const reportSchema = new mongoose.Schema({
   uploadedAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Report", reportSchema);
+module.exports = mongoose.model("Report", Report);

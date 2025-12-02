@@ -26,7 +26,7 @@ const fileFilter = (req, file, cb) => {
   else cb(new Error("Only PDF or Image files are allowed"));
 };
 
-const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB
+const upload = multer({ storage, fileFilter, limits: { fileSize: 10 * 1024 * 1024 } }); // 5MB
 
 // Upload report
 exports.uploadReport = async (req, res) => {

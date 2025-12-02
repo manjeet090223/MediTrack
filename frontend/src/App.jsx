@@ -14,6 +14,8 @@ import BookAppointment from "./pages/BookAppointment";
 import Patients from "./pages/Patients";
 import PatientDetails from "./pages/PatientDetails"; // view patient details only
 import UploadReport from "./pages/UploadReport"; // Patient report upload
+import PatientProfile from "./pages/PatientProfile";
+import DoctorProfile from "./pages/DoctorProfile"; // Doctor profile
 
 // Toastify
 import { ToastContainer } from "react-toastify";
@@ -89,6 +91,14 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute allowedRoles={["Patient"]}>
+              <PatientProfile />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Doctor-only routes */}
         <Route
@@ -104,6 +114,14 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={["Doctor", "Admin"]}>
               <PatientDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor-profile"
+          element={
+            <ProtectedRoute allowedRoles={["Doctor"]}>
+              <DoctorProfile />
             </ProtectedRoute>
           }
         />

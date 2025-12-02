@@ -1,6 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaHome, FaCalendarAlt, FaPlus, FaSignOutAlt, FaUserCircle, FaUsers, FaFileUpload } from "react-icons/fa";
+import {
+  FaHome,
+  FaCalendarAlt,
+  FaPlus,
+  FaSignOutAlt,
+  FaUserCircle,
+  FaUsers,
+  FaFileUpload,
+} from "react-icons/fa";
 import "./Sidebar.css";
 
 export default function Sidebar() {
@@ -47,6 +55,9 @@ export default function Sidebar() {
         {/* Patient-only links */}
         {user?.role === "Patient" && (
           <>
+            <li className="menu-item" onClick={() => navigate("/profile")}>
+              <FaUserCircle className="icon" /> My Profile
+            </li>
             <li className="menu-item" onClick={() => navigate("/book-appointment")}>
               <FaPlus className="icon" /> Book Appointment
             </li>
@@ -58,9 +69,14 @@ export default function Sidebar() {
 
         {/* Doctor-only links */}
         {user?.role === "Doctor" && (
-          <li className="menu-item" onClick={() => navigate("/patients")}>
-            <FaUsers className="icon" /> View Patients
-          </li>
+          <>
+            <li className="menu-item" onClick={() => navigate("/doctor-profile")}>
+              <FaUserCircle className="icon" /> My Profile
+            </li>
+            <li className="menu-item" onClick={() => navigate("/patients")}>
+              <FaUsers className="icon" /> View Patients
+            </li>
+          </>
         )}
       </ul>
 

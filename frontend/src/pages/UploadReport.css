@@ -129,3 +129,38 @@
     transform: translateY(0);
   }
 }
+.uploaded-reports {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px;
+  background: #f7fff7;
+  padding: 20px 25px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+}
+
+.uploaded-reports ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.uploaded-reports li.report-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #dceadf;
+}
+
+.uploaded-reports li.report-item:last-child {
+  border-bottom: none;
+}
+
+.uploaded-reports a {
+  text-decoration: none;
+  color: #0a8a42;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.uploaded-reports a:hover {
+  color: #34c759;
+}

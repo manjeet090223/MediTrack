@@ -55,21 +55,24 @@ h2 {
 }
 
 /* Cancel Button */
-.btn-cancel {
+/* Specific styling for buttons inside appointment table */
+.appointment-table .btn-cancel {
   background: #c91e1e;
   color: #fff;
   padding: 8px 14px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   margin-right: 8px;
+  font-weight: 600;
 }
 
-.btn-cancel:hover {
+.appointment-table .btn-cancel:hover {
   background: #a01515;
   transform: scale(1.05);
 }
+
 
 /* Update Button */
 .btn-update {

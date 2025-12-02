@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { uploadReport } from "../api/axios"; // API helper
+import React, { useState, useEffect } from "react";
+import { uploadReport } from "../api/axios"; // Only uploadReport is needed
+import api from "../api/axios"; // Default export for custom GET
 import Sidebar from "../components/Sidebar";
 import { toast } from "react-toastify";
 import "./UploadReport.css";
@@ -7,6 +8,22 @@ import "./UploadReport.css";
 export default function UploadReport() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [reports, setReports] = useState([]);
+
+  // Fetch reports of the logged-in user
+  const fetchReports = async () => {
+    try {
+      const res = await api.get("/api/reports/my-reports"); // new endpoint
+      setReports(res.data.reports || []);
+    } catch (err) {
+      console.error("Fetch Reports Error:", err);
+      toast.error("Failed to fetch reports");
+    }
+  };
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -23,12 +40,13 @@ export default function UploadReport() {
 
     try {
       setUploading(true);
-      const res = await uploadReport(formData); // Axios POST request
+      const res = await uploadReport(formData);
       toast.success("Report uploaded successfully");
-      setFile(null); // reset file input
+      setFile(null);
       console.log("Uploaded report:", res.data.report);
+      fetchReports(); // refresh list after upload
     } catch (err) {
-      console.error(err);
+      console.error("Upload Error:", err);
       toast.error(err.response?.data?.message || "Upload failed");
     } finally {
       setUploading(false);
@@ -56,6 +74,28 @@ export default function UploadReport() {
           >
             {uploading ? "Uploading..." : "Upload Report"}
           </button>
+        </div>
+
+        {/* Display uploaded reports */}
+        <div className="uploaded-reports">
+          <h3 style={{ marginTop: "40px", color: "#0b6a3a" }}>Your Reports</h3>
+          {reports.length === 0 && <p>No reports uploaded yet.</p>}
+          <ul>
+            {reports.map((r) => (
+              <li key={r._id} className="report-item">
+                <a
+                  href={`http://localhost:3000/${r.path.replace("\\", "/")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {r.originalName || r.filename}
+                </a>{" "}
+                <span style={{ fontSize: "12px", color: "#666" }}>
+                  ({new Date(r.uploadedAt).toLocaleDateString()})
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

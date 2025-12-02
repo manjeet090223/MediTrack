@@ -35,6 +35,8 @@ api.interceptors.response.use(
   }
 );
 
+
+
 /* -------------------------------- APIs -------------------------------- */
 
 // Appointments
@@ -66,6 +68,23 @@ export const uploadReport = (formData) =>
   api.post("/api/reports/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+
+export const getReports = () => api.get("/api/reports/my-reports");
+
+
+/* -------------------------------- Doctor APIs -------------------------------- */
+
+// Get all doctors (Admin/Patient)
+export const getAllDoctors = () => api.get("/api/doctors");
+
+// Get single doctor details (Doctor/Admin)
+export const getDoctorDetails = (id) => api.get(`/api/doctors/${id}`);
+
+// Update doctor details (Doctor/Admin)
+export const updateDoctor = (id, data) => api.put(`/api/doctors/${id}`, data);
+
+// Delete doctor (Admin only)
+export const deleteDoctor = (id) => api.delete(`/api/doctors/${id}`);
 
 
 export default api;

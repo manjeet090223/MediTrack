@@ -7,8 +7,9 @@ const authRoutes = require("./routes/authRoutes");
 const appointmentsRouter = require("./routes/appointments");
 const userRoutes = require("./routes/userRoutes");
 const patientRoutes = require("./routes/patientRoutes");
-const profileRoutes = require("./routes/profileRoutes")
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const reportsRoutes = require("./routes/reportsRoutes");
+const doctorRoutes = require("./routes/doctorRoutes");
 
 dotenv.config();
 const app = express();
@@ -20,13 +21,17 @@ app.use(cors());
 // DB Connection
 connectDB();
 
+const path = require("path");
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); 
+
 // Routes
 app.use("/api/appointments", appointmentsRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/patients", patientRoutes);
-app.use("/api/profile", require("./routes/profileRoutes"));
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/reports", reportsRoutes);
+app.use("/api/doctors", doctorRoutes); 
 
 
 app.get("/", (req, res) => {
