@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API = import.meta.env.VITE_BACKEND_URL; // e.g., https://meditrack-iyrc.onrender.com
+const API = import.meta.env.VITE_BACKEND_URL;
 
 const api = axios.create({
   baseURL: API,
@@ -17,36 +17,48 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor for toast messages
+// Response interceptor
 api.interceptors.response.use(
   (response) => {
-    if (response.config.method !== "get") {
-      toast.success(response.data.message || "Action successful!");
+    const method = response.config.method;
+    const path = response.config.url;
+
+    if (method !== "get" && !path.includes("login") && !path.includes("signup")) {
+      toast.success(response.data.message || "Success!");
     }
     return response;
   },
   (error) => {
-    const errMsg =
-      error.response?.data?.message ||
-      "Something went wrong! Please try again.";
+    const errMsg = error.response?.data?.message || "Something went wrong, please try again.";
     toast.error(errMsg);
     return Promise.reject(error);
   }
 );
 
-/* -------------------- Appointment APIs -------------------- */
-export const createAppointment = (appointmentData) =>
-  api.post("/api/appointments", appointmentData);
+/* -------------------------------- APIs -------------------------------- */
 
+// Appointments
+export const createAppointment = (data) => api.post("/api/appointments", data);
 export const getAppointments = () => api.get("/api/appointments");
+export const cancelAppointment = (id) => api.put(`/api/appointments/${id}/cancel`);
+export const updateAppointment = (id, data) => api.put(`/api/appointments/${id}`, data);
+export const getPatientAppointmentsById = (id) => api.get(`/api/appointments/patient/${id}`);
 
-export const cancelAppointment = (id) =>
-  api.put(`/api/appointments/${id}/cancel`);
 
-export const updateAppointment = (id, updateData) =>
-  api.put(`/api/appointments/${id}`, updateData);
-
-/* -------------------- Patient APIs (Doctor-only) -------------------- */
+// Patients
 export const getAllPatients = () => api.get("/api/patients");
+export const getPatientDetails = (id) => api.get(`/api/patients/${id}`);
+export const updatePatient = (id, data) => api.put(`/api/patients/${id}`, data);
+export const deletePatient = (id) => api.delete(`/api/patients/${id}`);
+
+// ---------------- Dashboard APIs ----------------
+// Summary counts: totalPatients, appointmentsToday, pendingRequests
+export const getDashboardSummary = () => api.get("/api/dashboard/summary");
+
+// Chart data: appointments trend (last 7 days)
+export const getAppointmentsTrend = () => api.get("/api/dashboard/appointments-trend");
+
+// Chart data: new patients per month
+export const getNewPatients = () => api.get("/api/dashboard/new-patients");
 
 export default api;

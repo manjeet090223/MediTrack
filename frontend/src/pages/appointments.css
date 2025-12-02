@@ -172,4 +172,39 @@ h2 {
   transform: scale(1.02);
   box-shadow: 0 6px 12px rgba(10, 138, 66, 0.25);
 }
+/* Mark Completed Button */
+.btn-update {
+  background: linear-gradient(135deg, #cfb718);
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: 0.3s;
+  box-shadow: 0 5px 12px rgba(10, 138, 66, 0.25);
+}
+
+.btn-update:hover {
+  background: rgb(229, 214, 99);
+  transform: scale(1.05);
+  box-shadow: 0 8px 18px rgba(10, 138, 66, 0.35);
+}
+/* Completed appointment label */
+.completed-label {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #0a8a42; /* dark green text */
+  background: #dff5e1; /* light green background */
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(10, 138, 66, 0.2); /* subtle shadow */
+}
+.completed-label:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(10, 138, 66, 0.25);
+}
 

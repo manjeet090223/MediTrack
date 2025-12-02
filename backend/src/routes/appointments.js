@@ -28,6 +28,15 @@ router.put(
   controller.cancelAppointment
 );
 
+// Get appointments by Patient ID (Doctor + Admin allowed)
+router.get(
+  "/patient/:id",
+  requireAuth,
+  requireRole("Doctor", "Admin"),
+  controller.getPatientAppointments
+);
+
+
 // Doctor + Admin allowed, Patient not allowed to edit doctor's notes or status
 router.put(
   "/:id",

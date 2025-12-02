@@ -11,6 +11,7 @@ import DoctorDashboard from "./pages/DoctorDashboard"; // Doctor Dashboard
 import Appointments from "./pages/Appointments";
 import BookAppointment from "./pages/BookAppointment";
 import Patients from "./pages/Patients";
+import PatientDetails from "./pages/PatientDetails"; // view patient details only
 
 // Toastify
 import { ToastContainer } from "react-toastify";
@@ -69,12 +70,22 @@ export default function App() {
           }
         />
 
-        {/* Doctor-only */}
+        {/* Doctor-only: List of patients */}
         <Route
           path="/patients"
           element={
             <ProtectedRoute allowedRoles={["Doctor"]}>
               <Patients />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Doctor & Admin: View Patient Details */}
+        <Route
+          path="/patients/:id"
+          element={
+            <ProtectedRoute allowedRoles={["Doctor", "Admin"]}>
+              <PatientDetails />
             </ProtectedRoute>
           }
         />

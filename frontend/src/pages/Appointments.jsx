@@ -64,6 +64,12 @@ export default function Appointments() {
             </tr>
           </thead>
           <tbody>
+            {appointments.length === 0 && (
+              <tr>
+                <td colSpan="6" style={{ textAlign: "center" }}>No appointments found</td>
+              </tr>
+            )}
+
             {appointments.map((appt) => (
               <tr key={appt._id}>
                 <td>{appt.doctor?.name || "-"}</td>
@@ -72,24 +78,31 @@ export default function Appointments() {
                 <td>{appt.status}</td>
                 <td>{appt.reason || "-"}</td>
                 <td>
+                  {/* Patient Cancel */}
                   {user.role === "Patient" && appt.status === "Booked" && (
                     <button className="btn-cancel" onClick={() => handleCancel(appt._id)}>
                       Cancel
                     </button>
                   )}
+
+                  {/* Doctor/Admin Update */}
                   {(user.role === "Doctor" || user.role === "Admin") && (
-                    <button className="btn-update" onClick={() => handleUpdate(appt._id, { status: "Completed" })}>
-                      Mark Completed
-                    </button>
+                    <>
+                      {appt.status === "Completed" ? (
+                        <span className="completed-label">Completed</span>
+                      ) : (
+                        <button
+                          className="btn-update"
+                          onClick={() => handleUpdate(appt._id, { status: "Completed" })}
+                        >
+                          Mark Completed
+                        </button>
+                      )}
+                    </>
                   )}
                 </td>
               </tr>
             ))}
-            {appointments.length === 0 && (
-              <tr>
-                <td colSpan="6" style={{ textAlign: "center" }}>No appointments found</td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>

@@ -50,6 +50,24 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
+// Get appointments for a specific patient (Admin + Doctor allowed)
+exports.getPatientAppointments = async (req, res) => {
+  try {
+    const patientId = req.params.id;
+
+    const appts = await Appointment.find({ patient: patientId })
+      .sort({ datetime: -1 })
+      .populate("doctor", "name email")
+      .populate("patient", "name email");
+
+    return res.json(appts);
+  } catch (err) {
+    console.error("Error in getPatientAppointments:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 // Cancel appointment (Patient/Doctor/Admin)
 exports.cancelAppointment = async (req, res) => {
   try {
