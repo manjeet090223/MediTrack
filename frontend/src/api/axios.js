@@ -61,4 +61,11 @@ export const getAppointmentsTrend = () => api.get("/api/dashboard/appointments-t
 // Chart data: new patients per month
 export const getNewPatients = () => api.get("/api/dashboard/new-patients");
 
+// Reports
+export const uploadReport = (formData) =>
+  api.post("/api/reports/upload", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+
 export default api;

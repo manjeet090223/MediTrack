@@ -1,0 +1,142 @@
+/* Wrapper for dashboard layout */
+.appointments-page {
+  display: flex;
+  min-height: 100vh;
+  background: #e9f9ef; /* pastel green */
+}
+
+/* Main content next to sidebar */
+.appointment-container {
+  flex: 1;
+  margin-left: 260px; /* match sidebar width */
+  padding: 35px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeSlide 0.8s ease-out;
+  overflow-y: auto;
+}
+
+/* Page title */
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0b6a3a;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Appointment Table */
+.appointment-table {
+  width: 100%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(30, 120, 70, 0.1);
+}
+
+.appointment-table th,
+.appointment-table td {
+  border: 1px solid #e6e6e6;
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.appointment-table th {
+  background: #e5f7ea;
+  color: #055d2b;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Cancel Button */
+.btn-cancel {
+  background: #c91e1e;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-right: 8px;
+}
+
+.btn-cancel:hover {
+  background: #a01515;
+  transform: scale(1.05);
+}
+
+/* Update Button */
+.btn-update {
+  background: linear-gradient(135deg, #cfb718, #f0d85c);
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-update:hover {
+  background: #f5e27c;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(10, 138, 66, 0.25);
+}
+
+/* Completed appointment label */
+.completed-label {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #0a8a42; /* dark green text */
+  background: #dff5e1; /* light green background */
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(10, 138, 66, 0.2); /* subtle shadow */
+}
+
+.completed-label:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(10, 138, 66, 0.25);
+}
+
+/* Animations */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Table row hover effect */
+.appointment-table tbody tr:hover {
+  background: #f0fff3;
+  transition: 0.3s;
+}
+
+/* Responsive: Small screens */
+@media screen and (max-width: 768px) {
+  .appointment-table,
+  .appointment-table th,
+  .appointment-table td {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .btn-cancel,
+  .btn-update {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}

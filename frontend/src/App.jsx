@@ -8,10 +8,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 // Pages
 import Home from "./pages/Home"; // Patient Dashboard
 import DoctorDashboard from "./pages/DoctorDashboard"; // Doctor Dashboard
-import Appointments from "./pages/Appointments";
+import Appointments from "./pages/Appointments"; // Doctor Appointments
+import PatientAppointments from "./pages/PatientAppointments"; // Patient Appointments
 import BookAppointment from "./pages/BookAppointment";
 import Patients from "./pages/Patients";
 import PatientDetails from "./pages/PatientDetails"; // view patient details only
+import UploadReport from "./pages/UploadReport"; // Patient report upload
 
 // Toastify
 import { ToastContainer } from "react-toastify";
@@ -26,7 +28,7 @@ export default function App() {
         {/* Default Redirect */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Public */}
+        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -50,17 +52,27 @@ export default function App() {
           }
         />
 
-        {/* Both Roles */}
+        {/* Doctor-specific Appointments */}
         <Route
           path="/appointments"
           element={
-            <ProtectedRoute allowedRoles={["Patient", "Doctor"]}>
+            <ProtectedRoute allowedRoles={["Doctor"]}>
               <Appointments />
             </ProtectedRoute>
           }
         />
 
-        {/* Patient-only */}
+        {/* Patient-specific Appointments */}
+        <Route
+          path="/my-appointments"
+          element={
+            <ProtectedRoute allowedRoles={["Patient"]}>
+              <PatientAppointments />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Patient-only routes */}
         <Route
           path="/book-appointment"
           element={
@@ -69,8 +81,16 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/upload-report"
+          element={
+            <ProtectedRoute allowedRoles={["Patient"]}>
+              <UploadReport />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Doctor-only: List of patients */}
+        {/* Doctor-only routes */}
         <Route
           path="/patients"
           element={
@@ -79,8 +99,6 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* Doctor & Admin: View Patient Details */}
         <Route
           path="/patients/:id"
           element={

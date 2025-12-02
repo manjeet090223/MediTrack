@@ -15,17 +15,7 @@ export default function Home() {
           Welcome, {user?.name || "User"} 
         </h1>
 
-        <div className="role-badge">
-          {user?.role === "Doctor" ? (
-            <>
-              <FaUserMd className="role-icon" /> Doctor
-            </>
-          ) : (
-            <>
-              <FaUserInjured className="role-icon" /> Patient
-            </>
-          )}
-        </div>
+       
 
         <div className="info-card">
           <h3 className="info-title">
