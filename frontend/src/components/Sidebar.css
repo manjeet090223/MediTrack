@@ -88,3 +88,54 @@
   background: #a01515 !important;
   transform: scale(1.05);
 }
+/* Hamburger button */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 999;
+  font-size: 28px;
+  background: #0a8a42;
+  color: #fff;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Sidebar open/close animation */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: #ffffff;
+  color: #0a8a42;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  z-index: 998;
+}
+
+.sidebar.closed {
+  transform: translateX(-100%);
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hamburger-btn {
+    display: block;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+}

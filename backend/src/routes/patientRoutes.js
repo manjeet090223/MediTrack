@@ -1,3 +1,4 @@
+// routes/patientRoutes.js
 const express = require("express");
 const router = express.Router();
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
@@ -6,37 +7,22 @@ const {
   getPatientById,
   updatePatient,
   deletePatient,
+  getMyPatients,
 } = require("../controllers/patientController");
 
-// Doctor Only
-router.get("/", requireAuth, requireRole("Doctor"), getAllPatients);
+// Doctor: Only MY patients
+router.get("/my-patients", requireAuth, requireRole("Doctor"), getMyPatients);
 
-// Patient, Doctor, Admin can get patient by ID
-router.get("/:id", requireAuth, async (req, res) => {
-  const user = req.user; // logged-in user
-  const { id } = req.params;
+// Admin: All patients
+router.get("/", requireAuth, requireRole("Admin"), getAllPatients);
 
-  if (user.role === "Patient" && user.id !== id) {
-    return res.status(403).json({ message: "Access denied" });
-  }
+// ID wise detail (allowed: Doctor/Admin/Own profile)
+router.get("/:id", requireAuth, getPatientById);
 
-  // Patient can see own profile, Doctor/Admin can see any
-  await getPatientById(req, res);
-});
+// Update patient profile
+router.put("/:id", requireAuth, updatePatient);
 
-// Patient can update their own profile, Doctor/Admin can update any
-router.put("/:id", requireAuth, async (req, res) => {
-  const user = req.user;
-  const { id } = req.params;
-
-  if (user.role === "Patient" && user.id !== id) {
-    return res.status(403).json({ message: "Access denied" });
-  }
-
-  await updatePatient(req, res);
-});
-
-// Admin Only
+// Delete Patient (Admin)
 router.delete("/:id", requireAuth, requireRole("Admin"), deletePatient);
 
 module.exports = router;

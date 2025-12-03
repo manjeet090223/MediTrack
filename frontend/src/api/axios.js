@@ -86,5 +86,7 @@ export const updateDoctor = (id, data) => api.put(`/api/doctors/${id}`, data);
 // Delete doctor (Admin only)
 export const deleteDoctor = (id) => api.delete(`/api/doctors/${id}`);
 
+// Doctor → get only their own patients
+export const getDoctorPatients = () => api.get("/api/patients/my-patients");
 
 export default api;

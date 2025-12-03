@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaHome,
@@ -8,12 +8,27 @@ import {
   FaUserCircle,
   FaUsers,
   FaFileUpload,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import "./Sidebar.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+
+  // Mobile detection: hide sidebar by default if screen < 900px
+  const [isOpen, setIsOpen] = useState(window.innerWidth >= 900);
+
+  // Update sidebar if window is resized
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 900) setIsOpen(true);
+      else setIsOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -27,64 +42,67 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <FaUserCircle className="avatar" />
-        <h2 className="sidebar-brand">{user?.name || "User"}</h2>
-        <span className="user-role">{user?.role}</span>
+    <>
+      {/* Hamburger Button */}
+      <button className="hamburger-btn" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? <FaTimes /> : <FaBars />}
+      </button>
+
+      <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
+        <div className="sidebar-header">
+          <FaUserCircle className="avatar" />
+          <h2 className="sidebar-brand">{user?.name || "User"}</h2>
+          <span className="user-role">{user?.role}</span>
+        </div>
+
+        <ul className="menu">
+          <li className="menu-item" onClick={goHome}>
+            <FaHome className="icon" /> Home
+          </li>
+
+          <li
+            className="menu-item"
+            onClick={() =>
+              user?.role === "Patient"
+                ? navigate("/my-appointments")
+                : navigate("/appointments")
+            }
+          >
+            <FaCalendarAlt className="icon" /> Appointments
+          </li>
+
+          {user?.role === "Patient" && (
+            <>
+              <li className="menu-item" onClick={() => navigate("/profile")}>
+                <FaUserCircle className="icon" /> My Profile
+              </li>
+              <li className="menu-item" onClick={() => navigate("/book-appointment")}>
+                <FaPlus className="icon" /> Book Appointment
+              </li>
+              <li className="menu-item" onClick={() => navigate("/upload-report")}>
+                <FaFileUpload className="icon" /> Upload Report
+              </li>
+            </>
+          )}
+
+          {user?.role === "Doctor" && (
+            <>
+              <li className="menu-item" onClick={() => navigate("/doctor-profile")}>
+                <FaUserCircle className="icon" /> My Profile
+              </li>
+              <li className="menu-item" onClick={() => navigate("/patients")}>
+                <FaUsers className="icon" /> View Patients
+              </li>
+            </>
+          )}
+        </ul>
+
+        <div className="logout-section">
+          <li className="menu-item logout-btn" onClick={logout}>
+            <FaSignOutAlt className="icon" /> Logout
+          </li>
+        </div>
       </div>
-
-      <ul className="menu">
-        {/* Home */}
-        <li className="menu-item" onClick={goHome}>
-          <FaHome className="icon" /> Home
-        </li>
-
-        {/* Appointments */}
-        <li
-          className="menu-item"
-          onClick={() =>
-            user?.role === "Patient"
-              ? navigate("/my-appointments")
-              : navigate("/appointments")
-          }
-        >
-          <FaCalendarAlt className="icon" /> Appointments
-        </li>
-
-        {/* Patient-only links */}
-        {user?.role === "Patient" && (
-          <>
-            <li className="menu-item" onClick={() => navigate("/profile")}>
-              <FaUserCircle className="icon" /> My Profile
-            </li>
-            <li className="menu-item" onClick={() => navigate("/book-appointment")}>
-              <FaPlus className="icon" /> Book Appointment
-            </li>
-            <li className="menu-item" onClick={() => navigate("/upload-report")}>
-              <FaFileUpload className="icon" /> Upload Report
-            </li>
-          </>
-        )}
-
-        {/* Doctor-only links */}
-        {user?.role === "Doctor" && (
-          <>
-            <li className="menu-item" onClick={() => navigate("/doctor-profile")}>
-              <FaUserCircle className="icon" /> My Profile
-            </li>
-            <li className="menu-item" onClick={() => navigate("/patients")}>
-              <FaUsers className="icon" /> View Patients
-            </li>
-          </>
-        )}
-      </ul>
-
-      <div className="logout-section">
-        <li className="menu-item logout-btn" onClick={logout}>
-          <FaSignOutAlt className="icon" /> Logout
-        </li>
-      </div>
-    </div>
+    </>
   );
 }

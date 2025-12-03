@@ -1,14 +1,13 @@
 // controllers/patientController.js
 const User = require("../models/userModel");
+const Appointment = require("../models/Appointment");
 
-// Get all patients (Doctor only)
-// Get all patients (Doctor only)
+// Get ALL Patients (Admin Only)
 exports.getAllPatients = async (req, res) => {
   try {
     const patients = await User.find({ role: "Patient" }).select(
-      "_id name email age gender phone createdAt updatedAt"
-    ); // <-- added age, gender, phone
-
+      "_id name email age gender phone"
+    ); 
     res.json(patients);
   } catch (err) {
     console.error("Error fetching patients:", err);
@@ -16,14 +15,35 @@ exports.getAllPatients = async (req, res) => {
   }
 };
 
+// Doctor-specific patients
+exports.getMyPatients = async (req, res) => {
+  try {
+    const doctorId = req.user.id;
 
-// Get single patient details (Doctor/Admin)
+    const appointments = await Appointment.find({ doctor: doctorId })
+      .populate("patient", "_id name email age gender phone");
+
+    const uniquePatients = [
+      ...new Map(
+        appointments
+          .filter(a => a.patient)
+          .map(a => [a.patient._id.toString(), a.patient])
+      ).values()
+    ];
+
+    res.json(uniquePatients);
+  } catch (err) {
+    console.error("Error fetching my patients:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Single patient
 exports.getPatientById = async (req, res) => {
   try {
     const patient = await User.findById(req.params.id).select(
-      "_id name email age gender phone createdAt updatedAt"
+      "_id name email age gender phone"
     );
-
     if (!patient)
       return res.status(404).json({ message: "Patient not found" });
 
@@ -34,17 +54,13 @@ exports.getPatientById = async (req, res) => {
   }
 };
 
-// Update patient details (Doctor/Admin)
+// Update patient
 exports.updatePatient = async (req, res) => {
   try {
     const updated = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      select: "_id name email age gender phone updatedAt",
+      select: "_id name email age gender phone",
     });
-
-    if (!updated)
-      return res.status(404).json({ message: "Patient not found" });
-
     res.json({ message: "Patient updated successfully", data: updated });
   } catch (err) {
     console.error("Update Error:", err);
@@ -52,20 +68,13 @@ exports.updatePatient = async (req, res) => {
   }
 };
 
-// Delete Patient (Admin Only)
+// Delete patient (Admin)
 exports.deletePatient = async (req, res) => {
   try {
-    const patient = await User.findById(req.params.id);
-
-    if (!patient)
-      return res.status(404).json({ message: "Patient not found" });
-
-    await patient.deleteOne();
-
+    await User.findByIdAndDelete(req.params.id);
     res.json({ message: "Patient deleted successfully" });
   } catch (err) {
     console.error("Delete Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };
-
