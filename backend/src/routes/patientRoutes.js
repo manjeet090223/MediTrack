@@ -13,10 +13,9 @@ const {
 // Doctor: Only MY patients
 router.get("/my-patients", requireAuth, requireRole("Doctor"), getMyPatients);
 
-// Admin: All patients
 router.get("/", requireAuth, requireRole("Admin"), getAllPatients);
 
-// ID wise detail (allowed: Doctor/Admin/Own profile)
+// ID wise detail 
 router.get("/:id", requireAuth, getPatientById);
 
 // Update patient profile

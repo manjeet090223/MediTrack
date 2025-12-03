@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import QuickStats from "../components/dashboard/QuickStats";
@@ -7,7 +6,7 @@ import AppointmentsCarousel from "../components/dashboard/AppointmentsCarousel";
 import HealthTips from "../components/dashboard/HealthTips";
 import { FaHospitalUser, FaUserMd, FaUserInjured } from "react-icons/fa";
 
-import api from "../api/axios"; // Axios instance with token
+import api from "../api/axios"; 
 import "./Home.css";
 
 export default function Home() {
@@ -19,7 +18,7 @@ export default function Home() {
   });
   const [appointments, setAppointments] = useState([]);
 
-  // ⚡ Fetch patient dashboard summary & upcoming appointments
+
   useEffect(() => {
     if (!user?.id) return;
 
@@ -27,14 +26,12 @@ export default function Home() {
 
     const fetchData = async () => {
       try {
-        // Patient Dashboard Summary
+      
         const summaryRes = await api.get(
           `/api/dashboard/patient-summary/${user.id}`
         );
         console.log("Patient summary data:", summaryRes.data);
         setStats(summaryRes.data);
-
-        // Upcoming Appointments
         const appointmentsRes = await api.get(
           `/api/appointments/patient/${user.id}`
         );
@@ -49,7 +46,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, []); // <- empty array ensures it runs only once
+  }, []); 
 
   return (
     <div className="dashboard">
@@ -70,7 +67,6 @@ export default function Home() {
           <HealthProgress progress={50} label="Medicine Adherence" />
         </div>
 
-        {/* 🚀 Hospital Stat Cards replacing HoverCards */}
         <div className="hospital-stats" style={{ display: "flex", gap: "22px", marginTop: "25px", justifyContent:"center"}}>
           <div className="stat-card">
             <FaHospitalUser className="stat-icon" />

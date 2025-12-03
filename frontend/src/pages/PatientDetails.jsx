@@ -9,8 +9,6 @@ export default function PatientDetails() {
   const [patient, setPatient] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Search + Pagination + Filter
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +36,6 @@ export default function PatientDetails() {
   if (loading) return <div className="loading">Loading patient...</div>;
   if (!patient) return <div>Patient not found.</div>;
 
-  // Filter + Search Logic
   const filteredAppts = appointments.filter((appt) => {
     const matchSearch =
       appt.reason?.toLowerCase().includes(search.toLowerCase()) ||
@@ -53,7 +50,7 @@ export default function PatientDetails() {
     return matchSearch && matchStatus;
   });
 
-  // Pagination Logic
+
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentAppts = filteredAppts.slice(indexOfFirst, indexOfLast);
@@ -66,7 +63,7 @@ export default function PatientDetails() {
       <div className="main-content fade-slide">
         <h1 className="page-title">{patient.name}</h1>
 
-        {/* Patient Info */}
+   
         <div className="patient-profile">
           <p><strong>Email:</strong> {patient.email}</p>
           <p><strong>Age:</strong> {patient.age || "-"}</p>
@@ -76,7 +73,7 @@ export default function PatientDetails() {
 
         <h2 className="sub-title">Appointment History</h2>
 
-        {/* Search + Filter Container */}
+      
         <div className="filter-wrapper">
           <input
             type="text"
@@ -89,7 +86,7 @@ export default function PatientDetails() {
             }}
           />
 
-          {/* Status Filter */}
+         
           <select
             className="filter-select"
             value={statusFilter}
@@ -105,7 +102,7 @@ export default function PatientDetails() {
           </select>
         </div>
 
-        {/* TABLE */}
+
         {currentAppts.length === 0 ? (
           <p className="no-data">No appointments found.</p>
         ) : (

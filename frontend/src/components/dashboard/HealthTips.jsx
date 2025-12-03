@@ -1,4 +1,4 @@
-// components/dashboard/HealthTips.jsx
+
 import React, { useEffect, useState } from "react";
 import "./HealthTips.css";
 

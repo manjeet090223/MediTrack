@@ -1,4 +1,4 @@
-/* Full Page Background */
+
 .auth-container {
   min-height: 100vh;
   width: 100%;
@@ -9,7 +9,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* Card */
+
 .card {
   background: #fff;
   width: 400px;
@@ -19,7 +19,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
-/* Branding */
+
 .brand-title {
   font-size: 2.4rem;
   font-weight: 700;
@@ -32,14 +32,14 @@
   margin-bottom: 1.2rem;
 }
 
-/* Form Title */
+
 .form-title {
   font-size: 1.6rem;
   color: #144814;
   margin-bottom: 0.8rem;
 }
 
-/* Inputs */
+
 .input {
   width: 100%;
   padding: 14px;
@@ -55,7 +55,7 @@
   border-color: #145214;
 }
 
-/* Button */
+
 .btn {
   width: 100%;
   margin-top: 18px;
@@ -73,7 +73,7 @@
   background: #0f400f;
 }
 
-/* Alerts */
+
 .alert {
   background: #ffe5e5;
   color: #b30000;
@@ -90,7 +90,7 @@
   margin-bottom: 10px;
 }
 
-/* Bottom Text */
+
 .link-row {
   margin-top: 14px;
   color: #222;

@@ -1,4 +1,4 @@
-// components/dashboard/AppointmentsCarousel.jsx
+
 import React from "react";
 import Slider from "react-slick";
 import "./AppointmentsCarousel.css";

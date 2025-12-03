@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api, { createAppointment } from "../api/axios";
 import { toast } from "react-toastify";
 import Sidebar from "../components/Sidebar";
-import "./appointments.css";
+import "./bookAppointment.css";
 
 export default function BookAppointment() {
   const [doctors, setDoctors] = useState([]);

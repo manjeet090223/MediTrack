@@ -17,10 +17,10 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // Mobile detection: hide sidebar by default if screen < 900px
+ 
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 900);
 
-  // Update sidebar if window is resized
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 900) setIsOpen(true);

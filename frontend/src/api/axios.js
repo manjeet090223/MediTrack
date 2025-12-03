@@ -10,14 +10,13 @@ const api = axios.create({
   },
 });
 
-// Attach token automatically
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// Response interceptor
+
 api.interceptors.response.use(
   (response) => {
     const method = response.config.method;
@@ -54,13 +53,8 @@ export const updatePatient = (id, data) => api.put(`/api/patients/${id}`, data);
 export const deletePatient = (id) => api.delete(`/api/patients/${id}`);
 
 // ---------------- Dashboard APIs ----------------
-// Summary counts: totalPatients, appointmentsToday, pendingRequests
 export const getDashboardSummary = () => api.get("/api/dashboard/summary");
-
-// Chart data: appointments trend (last 7 days)
 export const getAppointmentsTrend = () => api.get("/api/dashboard/appointments-trend");
-
-// Chart data: new patients per month
 export const getNewPatients = () => api.get("/api/dashboard/new-patients");
 
 // Reports
@@ -74,19 +68,11 @@ export const getReports = () => api.get("/api/reports/my-reports");
 
 /* -------------------------------- Doctor APIs -------------------------------- */
 
-// Get all doctors (Admin/Patient)
+
 export const getAllDoctors = () => api.get("/api/doctors");
-
-// Get single doctor details (Doctor/Admin)
 export const getDoctorDetails = (id) => api.get(`/api/doctors/${id}`);
-
-// Update doctor details (Doctor/Admin)
 export const updateDoctor = (id, data) => api.put(`/api/doctors/${id}`, data);
-
-// Delete doctor (Admin only)
 export const deleteDoctor = (id) => api.delete(`/api/doctors/${id}`);
-
-// Doctor → get only their own patients
 export const getDoctorPatients = () => api.get("/api/patients/my-patients");
 
 export default api;

@@ -1,8 +1,7 @@
-// controllers/patientController.js
 const User = require("../models/userModel");
 const Appointment = require("../models/Appointment");
 
-// Get ALL Patients (Admin Only)
+// Get ALL Patients 
 exports.getAllPatients = async (req, res) => {
   try {
     const patients = await User.find({ role: "Patient" }).select(
@@ -68,7 +67,7 @@ exports.updatePatient = async (req, res) => {
   }
 };
 
-// Delete patient (Admin)
+// Delete patient 
 exports.deletePatient = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);

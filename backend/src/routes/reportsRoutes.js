@@ -3,9 +3,9 @@ const router = express.Router();
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 const controller = require("../controllers/reportsController");
 const mongoose = require("mongoose");
-const Report = require("../models/Report"); // ✅ Import the Report model
+const Report = require("../models/Report"); 
 
-// Upload report (Patient only)
+// Upload report
 router.post(
   "/upload",
   requireAuth,
@@ -23,14 +23,14 @@ router.get("/patient/:id", async (req, res) => {
     }
 
     const reports = await Report.find({ patient: id });
-    res.json({ reports }); // ✅ wrap in object to match frontend expectation
+    res.json({ reports }); 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// Optional: GET reports for logged-in patient (no ID needed)
+
 router.get("/my-reports", requireAuth, async (req, res) => {
   try {
     const reports = await Report.find({ patient: req.user.id });

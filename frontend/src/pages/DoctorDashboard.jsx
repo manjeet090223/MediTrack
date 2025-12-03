@@ -15,14 +15,13 @@ import {
   Bar,
 } from "recharts";
 
-import api from "../api/axios"; // Import your axios instance
+import api from "../api/axios"; 
 import "./DoctorDashboard.css";
 
 export default function DoctorDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
-  // State for summary and chart data
   const [summary, setSummary] = useState({
     totalPatients: 0,
     appointmentsToday: 0,
@@ -32,7 +31,7 @@ export default function DoctorDashboard() {
   const [newPatients, setNewPatients] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch data from backend
+
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
@@ -63,8 +62,6 @@ export default function DoctorDashboard() {
 
       <div className="main-content fade-slide">
         <h1 className="page-title">Welcome {user?.name}</h1>
-
-        {/* MEDITREK Info Card */}
         <div className="info-card">
           <div className="info-icon">
             <FaHospitalAlt />

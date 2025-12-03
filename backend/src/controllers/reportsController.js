@@ -1,7 +1,7 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const Report = require("../models/Report"); // Create a Report model
+const Report = require("../models/Report"); 
 
 // Storage configuration
 const storage = multer.diskStorage({
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter (only PDFs, images)
+// File filter 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /pdf|jpg|jpeg|png/;
   const ext = path.extname(file.originalname).toLowerCase();
@@ -53,4 +53,4 @@ exports.uploadReport = async (req, res) => {
   }
 };
 
-exports.uploadMiddleware = upload.single("report"); // field name = report
+exports.uploadMiddleware = upload.single("report"); 

@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 const mongoose = require("mongoose");
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 
-// 1️⃣ Summary (Admin Dashboard)
+
 router.get("/summary", async (req, res) => {
   try {
     const totalPatients = await User.countDocuments({ role: "Patient" });
@@ -31,7 +31,7 @@ router.get("/summary", async (req, res) => {
   }
 });
 
-// 2️⃣ Appointments Trend (Last 7 Days for Admin)
+
 router.get("/appointments-trend", async (req, res) => {
   try {
     const sevenDaysAgo = new Date();
@@ -69,7 +69,7 @@ router.get("/appointments-trend", async (req, res) => {
   }
 });
 
-// 3️⃣ New Patient Growth (Last 6 Months for Admin)
+
 router.get("/new-patients", async (req, res) => {
   try {
     const sixMonthsAgo = new Date();
@@ -109,15 +109,15 @@ router.get("/new-patients", async (req, res) => {
   }
 });
 
-// 4️⃣ Patient Dashboard Summary (Patient App)
+
 router.get(
   "/patient-summary/:userId",
   requireAuth,
-  requireRole("Patient", "Doctor", "Admin"), // Patient ko allow karo
+  requireRole("Patient", "Doctor", "Admin"), 
   async (req, res) => {
     const { userId } = req.params;
 
-    // Patient can only access their own summary
+    
     if (req.user.role === "Patient" && req.user.id !== userId) {
       return res.status(403).json({ message: "Access denied" });
     }

@@ -1,24 +1,24 @@
-/* Dashboard Layout */
+
 .dashboard {
   display: flex;
   min-height: 100vh;
   background: #e9f9ef;
 }
 
-/* Sidebar White + Green Theme */
+
 .sidebar {
   width: 260px;
-  background: #ffffff; /* White sidebar */
-  color: #0a8a42; /* Green Text */
+  background: #ffffff; 
+  color: #0a8a42; 
   display: flex;
   flex-direction: column;
   padding: 25px 10px;
   position: fixed;
   min-height: 100vh;
-  border-right: 2px solid #d8eedd; /* soft border */
+  border-right: 2px solid #d8eedd; 
 }
 
-/* Sidebar Header */
+
 .sidebar-header {
   font-size: 22px;
   font-weight: 700;
@@ -36,7 +36,7 @@
   margin: 10px 0;
 }
 
-/* Sidebar Links */
+
 .sidebar ul li a {
   display: block;
   padding: 12px 14px;
@@ -47,7 +47,6 @@
   transition: 0.3s ease;
 }
 
-/* Hover + Active */
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
   background: #e5f7ea;
@@ -56,7 +55,7 @@
   font-weight: 600;
 }
 
-/* Main Section */
+
 .main-content {
   flex: 1;
   margin-left: 260px;
@@ -71,7 +70,7 @@
   margin-bottom: 14px;
 }
 
-/* Role Badge */
+
 .role-badge {
   background: #0a8a42;
   color: #fff;
@@ -87,7 +86,7 @@
   margin-right: 8px;
 }
 
-/* Welcome Info Card */
+
 .info-card {
   background: #ffffff;
   padding: 25px;
@@ -108,7 +107,7 @@
   font-size: 15px;
 }
 
-/* Hospital Stats / Hover Cards (Unified CSS) */
+
 .hospital-stats,
 .hover-card-section {
   display: flex;
@@ -120,6 +119,7 @@
 .stat-card,
 .hover-card {
   flex: 1;
+  flex-wrap: wrap;
   min-width: 150px;
   background: #ffffff;
   border-radius: 20px;
@@ -158,7 +158,7 @@
   color: #555;
 }
 
-/* Progress Section */
+
 .progress-section {
   display: flex;
   gap: 22px;
@@ -169,7 +169,7 @@
   width: 100%;
 }
 
-/* Animations */
+
 @keyframes fadeSlide {
   from {
     opacity: 0;

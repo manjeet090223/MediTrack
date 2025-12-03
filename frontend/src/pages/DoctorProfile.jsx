@@ -17,7 +17,7 @@ export default function DoctorProfile() {
       return;
     }
     try {
-      const res = await getDoctorDetails(user.id); // use user.id instead of _id
+      const res = await getDoctorDetails(user.id);   
       setDoctor(res.data);
       setFormData(res.data);
     } catch (error) {

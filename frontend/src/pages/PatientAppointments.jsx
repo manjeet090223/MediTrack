@@ -71,7 +71,7 @@ export default function PatientAppointments() {
       <div className="appointment-container">
         <h2>My Appointments</h2>
 
-        {/* 🔍 Search + Filter */}
+       
         <div className="filter-section">
           <input
             type="text"
@@ -93,6 +93,7 @@ export default function PatientAppointments() {
           </select>
         </div>
 
+        <div className="table-wrapper">
         <table className="appointment-table">
           <thead>
             <tr>
@@ -138,8 +139,9 @@ export default function PatientAppointments() {
             ))}
           </tbody>
         </table>
+        </div>
 
-        {/* 📌 Pagination */}
+        {/*Pagination */}
         {totalPages > 1 && (
           <div className="pagination">
             <button

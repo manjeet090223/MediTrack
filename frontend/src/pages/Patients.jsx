@@ -47,14 +47,14 @@ export default function Patients() {
     }
   };
 
-  // 🔍 Filtering logic
+
   const filteredPatients = patients.filter(
     (p) =>
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 📌 Pagination Logic
+
   const indexOfLast = currentPage * patientsPerPage;
   const indexOfFirst = indexOfLast - patientsPerPage;
   const currentPatients = filteredPatients.slice(indexOfFirst, indexOfLast);
@@ -70,7 +70,7 @@ export default function Patients() {
           {user?.role === "Doctor" ? "My Patients" : "All Patients"}
         </h1>
 
-        {/* 🔍 Search Box */}
+       
         <div className="search-filter-container">
           <input
             type="text"
@@ -131,7 +131,7 @@ export default function Patients() {
           </table>
         )}
 
-        {/* 📌 Pagination UI */}
+     
         {totalPages > 1 && (
           <div className="pagination-container">
             {[...Array(totalPages)].map((_, i) => (

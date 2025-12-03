@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { uploadReport } from "../api/axios"; // Only uploadReport is needed
-import api from "../api/axios"; // Default export for custom GET
+import { uploadReport } from "../api/axios"; 
+import api from "../api/axios"; 
 import Sidebar from "../components/Sidebar";
 import { toast } from "react-toastify";
 import "./UploadReport.css";
@@ -10,10 +10,10 @@ export default function UploadReport() {
   const [uploading, setUploading] = useState(false);
   const [reports, setReports] = useState([]);
 
-  // Fetch reports of the logged-in user
+
   const fetchReports = async () => {
     try {
-      const res = await api.get("/api/reports/my-reports"); // new endpoint
+      const res = await api.get("/api/reports/my-reports"); 
       setReports(res.data.reports || []);
     } catch (err) {
       console.error("Fetch Reports Error:", err);
@@ -44,7 +44,7 @@ export default function UploadReport() {
       toast.success("Report uploaded successfully");
       setFile(null);
       console.log("Uploaded report:", res.data.report);
-      fetchReports(); // refresh list after upload
+      fetchReports(); 
     } catch (err) {
       console.error("Upload Error:", err);
       toast.error(err.response?.data?.message || "Upload failed");
@@ -76,7 +76,7 @@ export default function UploadReport() {
           </button>
         </div>
 
-        {/* Display uploaded reports */}
+   
         <div className="uploaded-reports">
           <h3 style={{ marginTop: "40px", color: "#0b6a3a" }}>Your Reports</h3>
           {reports.length === 0 && <p>No reports uploaded yet.</p>}

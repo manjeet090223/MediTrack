@@ -1,21 +1,21 @@
-/* Doctor Dashboard Wrapper */
+
 .dashboard {
   display: flex;
   min-height: 100vh;
   background: #e9f9ef;
 }
 
-/* Main content next to sidebar */
+
 .main-content {
   flex: 1;
-  margin-left: 260px; /* sidebar width */
+  margin-left: 260px; 
   padding: 35px;
   background: #f8f9fa;
   min-height: 100vh;
   animation: fadeSlide 0.8s ease-out;
 }
 
-/* Page title */
+
 .page-title {
   font-size: 30px;
   font-weight: 700;
@@ -24,7 +24,7 @@
   text-align: center;
 }
 
-/* MEDITREK Info Card */
+
 .info-card {
   position: relative;
   background: linear-gradient(135deg, #188648, #81d1a3);
@@ -64,7 +64,7 @@
   color: #e6f7e7;
 }
 
-/* Summary cards container */
+
 .summary-cards {
   display: flex;
   flex-wrap: wrap;
@@ -73,7 +73,7 @@
   margin-bottom: 35px;
 }
 
-/* Individual summary card */
+
 .summary-card {
   background: #ffffff;
   padding: 25px 30px;
@@ -102,7 +102,6 @@
   color: #0a8a42;
 }
 
-/* Dashboard charts section */
 .dashboard-charts {
   display: flex;
   flex-wrap: wrap;
@@ -123,7 +122,7 @@
   justify-content: center;
 }
 
-/* Quick action buttons */
+
 .dashboard-actions {
   display: flex;
   flex-wrap: wrap;
@@ -149,7 +148,6 @@
   box-shadow: 0 6px 12px rgba(10, 138, 66, 0.25);
 }
 
-/* Animations */
 @keyframes fadeSlide {
   from {
     opacity: 0;
@@ -161,7 +159,7 @@
   }
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .summary-cards,
   .dashboard-charts,

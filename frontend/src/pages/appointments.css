@@ -1,24 +1,20 @@
-/* Wrapper for appointments page */
 .appointments-page {
   display: flex;
-  min-height: 100vh;
   background: #e9f9ef;
 }
 
-/* Main content next to sidebar */
 .appointment-container {
   flex: 1;
-  margin-left: 260px; /* sidebar width */
+  margin-left: 260px; 
   padding: 35px;
   background: #f8f9fa;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   animation: fadeSlide 0.8s ease-out;
   overflow-y: auto;
+  justify-content: flex-start;
 }
 
-/* Page Title */
 h2 {
   font-size: 28px;
   font-weight: 700;
@@ -27,7 +23,6 @@ h2 {
   text-align: center;
 }
 
-/* Fade Animation */
 @keyframes fadeSlide {
   from {
     opacity: 0;
@@ -39,7 +34,7 @@ h2 {
   }
 }
 
-/* Search + Filter Bar */
+
 .filter-section {
   display: flex;
   gap: 12px;
@@ -73,19 +68,19 @@ h2 {
   background: #fff;
 }
 
-/* Table wrapper for horizontal scroll */
+
 .table-wrapper {
   width: 100%;
-  overflow-x: auto; /* horizontal scroll if table too wide */
-  padding-left: 1rem; /* left spacing */
-  padding-right: 1rem; /* right spacing */
+  overflow-x: auto; 
+  padding-left: 1rem; 
+  padding-right: 1rem; 
   display: flex;
-  justify-content: center; /* center table on desktop */
+  justify-content: center; 
 }
 
-/* Appointment Table */
+
 .appointment-table {
-  min-width: 600px; /* prevents shrinking */
+  min-width: 600px; 
   border-collapse: collapse;
   background: #fff;
   border-radius: 12px;
@@ -111,7 +106,7 @@ h2 {
   background: #fafafa;
 }
 
-/* Buttons */
+
 .btn-cancel,
 .btn-update {
   padding: 8px 14px;
@@ -144,7 +139,7 @@ h2 {
   box-shadow: 0 8px 18px rgba(10, 138, 66, 0.35);
 }
 
-/* Status Labels */
+
 .completed-label,
 .cancelled-label {
   display: inline-block;
@@ -167,7 +162,7 @@ h2 {
   box-shadow: 0 5px 12px rgba(201, 30, 30, 0.35);
 }
 
-/* Pagination */
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -196,7 +191,7 @@ h2 {
   color: #fff;
 }
 
-/* No Appointments Message */
+
 .no-appointments {
   text-align: center;
   font-size: 16px;
@@ -204,17 +199,17 @@ h2 {
   padding: 20px;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 930px) {
   .appointment-container {
     margin-left: 0 !important;
     width: 100%;
-    padding-left: 1rem; /* left spacing for small screens */
+    padding-left: 1rem; 
     padding-right: 1rem;
   }
 
   .table-wrapper {
-    justify-content: flex-start; /* left align table on small screens */
+    justify-content: flex-start; 
   }
 
   h2 {
@@ -245,7 +240,7 @@ h2 {
   }
 
   .appointment-table {
-    min-width: 500px; /* horizontal scroll appears */
+    min-width: 500px;
   }
 
   .btn-cancel,

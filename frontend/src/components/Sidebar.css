@@ -1,4 +1,4 @@
-/* Sidebar Layout */
+
 .sidebar {
   width: 240px;
   background: #ffffff;
@@ -10,7 +10,7 @@
   border-right: 2px solid #d9e6dd;
 }
 
-/* Avatar + Name Section */
+
 .sidebar-header {
   text-align: center;
   margin-bottom: 32px;
@@ -37,11 +37,11 @@
   margin-top: 6px;
 }
 
-/* Center menu */
+
 .menu {
   list-style: none;
   padding: 0;
-  flex: 1; /* Takes full center space */
+  flex: 1; 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -60,7 +60,7 @@
   gap: 12px;
 }
 
-/* Hover + Active */
+
 .menu-item:hover,
 .menu-item.active {
   background: #e6f4ea;
@@ -68,12 +68,12 @@
   transform: translateX(6px);
 }
 
-/* Icons color */
+
 .icon {
   font-size: 18px;
 }
 
-/* Logout Always Bottom */
+
 .logout-section {
   margin-top: auto;
   margin-bottom: 2rem;
@@ -88,7 +88,7 @@
   background: #a01515 !important;
   transform: scale(1.05);
 }
-/* Hamburger button */
+
 .hamburger-btn {
   display: none;
   position: fixed;
@@ -104,7 +104,7 @@
   cursor: pointer;
 }
 
-/* Sidebar open/close animation */
+
 .sidebar {
   width: 260px;
   height: 100vh;
@@ -123,7 +123,7 @@
   transform: translateX(0);
 }
 
-/* Responsive */
+
 @media (max-width: 900px) {
   .hamburger-btn {
     display: block;

@@ -27,14 +27,12 @@ export default function App() {
       <ToastContainer position="top-right" autoClose={2000} />
 
       <Routes>
-        {/* Default Redirect */}
+   
         <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Patient Dashboard */}
+      
         <Route
           path="/home"
           element={
@@ -44,7 +42,7 @@ export default function App() {
           }
         />
 
-        {/* Doctor Dashboard */}
+ 
         <Route
           path="/doctor-dashboard"
           element={
@@ -54,7 +52,6 @@ export default function App() {
           }
         />
 
-        {/* Doctor-specific Appointments */}
         <Route
           path="/appointments"
           element={
@@ -64,7 +61,7 @@ export default function App() {
           }
         />
 
-        {/* Patient-specific Appointments */}
+  
         <Route
           path="/my-appointments"
           element={
@@ -74,7 +71,7 @@ export default function App() {
           }
         />
 
-        {/* Patient-only routes */}
+        
         <Route
           path="/book-appointment"
           element={
@@ -100,7 +97,7 @@ export default function App() {
           }
         />
 
-        {/* Doctor-only routes */}
+       
         <Route
           path="/patients"
           element={

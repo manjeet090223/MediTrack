@@ -15,7 +15,6 @@
   box-shadow: 0 18px 45px rgba(30, 120, 70, 0.2), 0 6px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Card Header */
 .profile-card h2 {
   font-size: 26px;
   color: #0b6a3a;
@@ -25,7 +24,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Subtext / Description */
+
 .profile-card p {
   font-size: 16px;
   color: #444;
@@ -33,7 +32,7 @@
   line-height: 1.6;
 }
 
-/* Profile Form */
+
 .profile-form {
   display: flex;
   flex-direction: column;
@@ -48,7 +47,7 @@
   margin-bottom: 0.6rem;
 }
 
-/* Inputs, Selects, Textareas */
+
 .profile-form input,
 .profile-form select,
 .profile-form textarea {
@@ -69,13 +68,13 @@
   box-shadow: 0 0 8px rgba(10, 138, 66, 0.2);
 }
 
-/* Textarea specific */
+
 .profile-form textarea {
   resize: vertical;
   min-height: 80px;
 }
 
-/* Button section */
+
 .form-buttons {
   display: flex;
   gap: 18px;
@@ -84,7 +83,7 @@
   flex-wrap: wrap;
 }
 
-/* Buttons */
+
 .btn-edit,
 .btn-save,
 .btn-cancel {
@@ -117,7 +116,7 @@
   background: #bdbdbd;
 }
 
-/* Responsive tweaks */
+
 @media (max-width: 900px) {
   .profile-card {
     padding: 30px 25px;

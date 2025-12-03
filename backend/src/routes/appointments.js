@@ -4,7 +4,7 @@ const router = express.Router();
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 const controller = require("../controllers/appointmentsController");
 
-// Create appointment (Patient + Admin)
+// Create appointment 
 router.post(
   "/",
   requireAuth,
@@ -12,7 +12,7 @@ router.post(
   controller.createAppointment
 );
 
-// Get all appointments (Patient sees only their own, Doctor/Admin sees all)
+// Get all appointments 
 router.get(
   "/",
   requireAuth,
@@ -20,7 +20,7 @@ router.get(
   controller.getAppointments
 );
 
-// Cancel appointment (Owner + Admin)
+// Cancel appointment
 router.put(
   "/:id/cancel",
   requireAuth,
@@ -32,11 +32,11 @@ router.put(
 router.get(
   "/patient/:id",
   requireAuth,
-  requireRole("Patient", "Doctor", "Admin"), // Patient bhi allowed
+  requireRole("Patient", "Doctor", "Admin"), 
   controller.getPatientAppointments
 );
 
-// Update appointment (Doctor + Admin)
+// Update appointment 
 router.put(
   "/:id",
   requireAuth,

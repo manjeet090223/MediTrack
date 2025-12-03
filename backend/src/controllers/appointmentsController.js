@@ -1,6 +1,6 @@
 const Appointment = require('../models/Appointment');
 
-// Create appointment (Patient creates)
+// Create appointment 
 exports.createAppointment = async (req, res) => {
   try {
     const { doctorId, datetime, reason } = req.body;
@@ -41,12 +41,10 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
-// Get appointments for a specific patient (Patient can get own, Doctor/Admin can get any)
+// Get appointments for a specific patient 
 exports.getPatientAppointments = async (req, res) => {
   try {
     const patientId = req.params.id;
-
-    // Patient can only fetch their own appointments
     if (req.user.role === 'Patient' && req.user.id !== patientId) {
       return res.status(403).json({ message: 'Access denied' });
     }
@@ -63,7 +61,7 @@ exports.getPatientAppointments = async (req, res) => {
   }
 };
 
-// Cancel appointment (Patient/Doctor/Admin)
+// Cancel appointment 
 exports.cancelAppointment = async (req, res) => {
   try {
     const appt = await Appointment.findById(req.params.id);
@@ -83,7 +81,7 @@ exports.cancelAppointment = async (req, res) => {
   }
 };
 
-// Update appointment (Doctor/Admin)
+// Update appointment 
 exports.updateAppointment = async (req, res) => {
   try {
     const appt = await Appointment.findById(req.params.id);

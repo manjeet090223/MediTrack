@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../api/axios"; // <-- axios custom instance
+import api from "../api/axios"; 
 import { Link, useNavigate } from "react-router-dom";
 import "./loginSignup.css";
 
@@ -9,7 +9,7 @@ export default function Signup() {
     name: "",
     email: "",
     password: "",
-    role: "Patient", // default role changed
+    role: "Patient", 
   });
 
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,4 @@
-// components/dashboard/QuickStats.jsx
+
 import React from "react";
 import CountUp from "react-countup";
 import "./QuickStats.css";

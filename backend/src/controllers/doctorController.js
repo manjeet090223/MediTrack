@@ -1,16 +1,13 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
 
-// Get doctor profile (merge User + Doctor fields)
+// Get doctor profile 
 exports.getDoctorProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-
-    // Fetch basic info from User
     const user = await User.findById(userId).select("_id name email phone role");
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Fetch doctor-specific info from Doctor
     const doctor = await Doctor.findOne({ user: userId }).select(
       "specialization department experience gender profileComplete"
     );
@@ -25,13 +22,12 @@ exports.getDoctorProfile = async (req, res) => {
   }
 };
 
-// Update doctor profile (update both User + Doctor)
+// Update doctor profile 
 exports.updateDoctorProfile = async (req, res) => {
   try {
     const userId = req.params.id;
     const { name, email, phone, specialization, department, experience, gender } = req.body;
 
-    // Update User fields
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { name, email, phone },
@@ -39,7 +35,7 @@ exports.updateDoctorProfile = async (req, res) => {
     );
     if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
-    // Update Doctor fields (create if not exists)
+    
     let updatedDoctor = await Doctor.findOneAndUpdate(
       { user: userId },
       {

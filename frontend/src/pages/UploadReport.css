@@ -1,14 +1,13 @@
-/* Wrapper */
 .upload-page {
   display: flex;
   min-height: 100vh;
   background: linear-gradient(135deg, #e9f9ef 0%, #f0fcf3 100%);
 }
 
-/* Main container next to sidebar */
+
 .upload-container {
   flex: 1;
-  margin-left: 260px; /* match sidebar width */
+  margin-left: 260px;
   padding: 50px 40px;
   display: flex;
   flex-direction: column;
@@ -16,7 +15,7 @@
   animation: fadeSlide 0.8s ease-out;
 }
 
-/* Page title */
+
 .upload-container h2 {
   font-size: 30px;
   color: #0b6a3a;
@@ -26,7 +25,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Upload box */
+
 .upload-box {
   background: #ffffff;
   padding: 35px 40px;
@@ -46,7 +45,7 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
 }
 
-/* File input */
+
 .upload-box input[type="file"] {
   width: 100%;
   padding: 12px 15px;
@@ -64,7 +63,6 @@
   background: #f0fcf3;
 }
 
-/* Selected file name */
 .file-name {
   font-size: 14px;
   color: #0b6a3a;
@@ -73,7 +71,7 @@
   word-break: break-word;
 }
 
-/* Upload button */
+
 .btn-upload {
   background: linear-gradient(135deg, #0a8a42, #34c759);
   color: #fff;
@@ -101,7 +99,6 @@
   box-shadow: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .upload-container {
     margin-left: 0;
@@ -118,7 +115,7 @@
   }
 }
 
-/* Animations */
+
 @keyframes fadeSlide {
   from {
     opacity: 0;

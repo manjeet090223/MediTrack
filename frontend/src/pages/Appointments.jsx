@@ -34,7 +34,7 @@ export default function Appointments() {
     loadAppointments();
   }, []);
 
-  // Search + Filter Logic
+ 
   useEffect(() => {
     let updated = [...appointments];
 
@@ -74,7 +74,6 @@ export default function Appointments() {
     }
   };
 
-  // Pagination Logic
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirst, indexOfLast);
@@ -138,7 +137,7 @@ export default function Appointments() {
                 <td>{appt.reason || "-"}</td>
 
                 <td>
-                  {/* PATIENT CANCEL */}
+                  
                   {user.role === "Patient" && appt.status === "Booked" && (
                     <button
                       className="btn-cancel"
@@ -148,7 +147,7 @@ export default function Appointments() {
                     </button>
                   )}
 
-                  {/* DOCTOR/ADMIN MARK COMPLETED */}
+                
                   {(user.role === "Doctor" || user.role === "Admin") && (
                     <>
                       {appt.status === "Completed" ? (
