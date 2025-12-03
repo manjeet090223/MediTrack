@@ -70,7 +70,6 @@ export default function PatientProfile() {
               <p><strong>Phone:</strong> {patient.phone}</p>
               <p><strong>Age:</strong> {patient.age}</p>
               <p><strong>Gender:</strong> {patient.gender}</p>
-              <p><strong>Address:</strong> {patient.address}</p>
 
               <button className="btn-edit" onClick={() => setEditing(true)}>
                 Edit Profile
@@ -102,10 +101,6 @@ export default function PatientProfile() {
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
                 </select>
-              </label>
-              <label>
-                Address:
-                <textarea name="address" value={formData.address} onChange={handleChange} />
               </label>
 
               <div className="form-buttons">
