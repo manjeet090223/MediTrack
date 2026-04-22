@@ -125,7 +125,7 @@ export default function DoctorProfile() {
                 <div className="profile-avatar">
                   {doctor.name?.charAt(0)?.toUpperCase() || "D"}
                 </div>
-                <h2 className="profile-name">Dr. {doctor.name}</h2>
+                <h2 className="profile-name">{doctor.name}</h2>
                 <p className="profile-email">{doctor.email}</p>
                 <span className="profile-role-badge">
                   <FiShield size={12} />

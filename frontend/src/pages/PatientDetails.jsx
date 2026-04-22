@@ -249,7 +249,7 @@ export default function PatientDetails() {
                         <td>
                           <div className="doctor-cell">
                             <FiUser size={14} />
-                            <span>Dr. {appt.doctor?.name}</span>
+                            <span>{appt.doctor?.name}</span>
                           </div>
                         </td>
                         <td>

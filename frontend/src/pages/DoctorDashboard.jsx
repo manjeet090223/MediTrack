@@ -110,7 +110,7 @@ export default function DoctorDashboard() {
             transition={{ duration: 0.3 }}
           >
             <div>
-              <h1 className="page-title">Good morning, Dr. {user?.name?.split(" ")[0]}</h1>
+              <h1 className="page-title">Good morning, {user?.name}</h1>
               <p className="page-subtitle">Here's what's happening at your practice today.</p>
             </div>
             <div className="header-actions">
