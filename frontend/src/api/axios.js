@@ -40,9 +40,11 @@ api.interceptors.response.use(
 
 // Appointments
 export const createAppointment = (data) => api.post("/api/appointments", data);
+export const createDoctorAppointment = (data) => api.post("/api/appointments", data);
 export const getAppointments = () => api.get("/api/appointments");
 export const cancelAppointment = (id) => api.put(`/api/appointments/${id}/cancel`);
 export const updateAppointment = (id, data) => api.put(`/api/appointments/${id}`, data);
+export const deleteAppointment = (id) => api.delete(`/api/appointments/${id}`);
 export const getPatientAppointmentsById = (id) => api.get(`/api/appointments/patient/${id}`);
 
 
@@ -74,5 +76,13 @@ export const getDoctorDetails = (id) => api.get(`/api/doctors/${id}`);
 export const updateDoctor = (id, data) => api.put(`/api/doctors/${id}`, data);
 export const deleteDoctor = (id) => api.delete(`/api/doctors/${id}`);
 export const getDoctorPatients = () => api.get("/api/patients/my-patients");
+
+/* -------------------------------- Prescription APIs -------------------------------- */
+
+export const createPrescription = (data) => api.post("/api/prescriptions", data);
+export const getPatientPrescriptions = (patientId) => api.get(`/api/prescriptions/patient/${patientId}`);
+export const getMyPrescriptions = () => api.get("/api/prescriptions/me");
+export const updatePrescription = (id, data) => api.put(`/api/prescriptions/${id}`, data);
+export const updatePrescriptionStatus = (id, status) => api.patch(`/api/prescriptions/${id}/status`, { status });
 
 export default api;

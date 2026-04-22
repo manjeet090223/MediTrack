@@ -10,6 +10,7 @@ const patientRoutes = require("./routes/patientRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const reportsRoutes = require("./routes/reportsRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
+const prescriptionRoutes = require("./routes/prescriptionRoutes");
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ app.use("/api/patients", patientRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/doctors", doctorRoutes); 
+app.use("/api/prescriptions", prescriptionRoutes);
 
 
 app.get("/", (req, res) => {

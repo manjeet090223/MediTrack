@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getAppointments,
   cancelAppointment,
   updateAppointment,
+  deleteAppointment,
+  createDoctorAppointment,
+  getDoctorPatients,
 } from "../api/axios";
 import { toast } from "react-toastify";
 import Sidebar from "../components/Sidebar";
@@ -17,7 +21,12 @@ import {
   FiXCircle, 
   FiEye, 
   FiCalendar,
-  FiChevronRight
+  FiChevronRight,
+  FiX,
+  FiFileText,
+  FiAlertCircle,
+  FiEdit,
+  FiTrash2
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import "./appointments.css";
@@ -34,6 +43,30 @@ export default function Appointments() {
   const itemsPerPage = 8;
 
   const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+
+  // --- Add Appointment Modal State ---
+  const [showModal, setShowModal] = useState(false);
+  const [patients, setPatients] = useState([]);
+  const [patientsLoading, setPatientsLoading] = useState(false);
+  const [patientSearch, setPatientSearch] = useState("");
+  const [showPatientDropdown, setShowPatientDropdown] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const dropdownRef = useRef(null);
+  const [formData, setFormData] = useState({
+    patientId: "",
+    patientName: "",
+    datetime: "",
+    reason: "",
+  });
+
+  // --- Three-dot dropdown & Edit modal state ---
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useRef(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editData, setEditData] = useState({ id: "", datetime: "", reason: "", status: "" });
+  const [editSubmitting, setEditSubmitting] = useState(false);
 
   const loadAppointments = async () => {
     try {
@@ -51,6 +84,47 @@ export default function Appointments() {
   useEffect(() => {
     loadAppointments();
   }, []);
+
+  // Fetch patients when modal opens
+  useEffect(() => {
+    if (showModal && patients.length === 0) {
+      const fetchPatients = async () => {
+        setPatientsLoading(true);
+        try {
+          const res = await getDoctorPatients();
+          setPatients(res.data);
+        } catch (err) {
+          console.error("Failed to fetch patients:", err);
+        } finally {
+          setPatientsLoading(false);
+        }
+      };
+      fetchPatients();
+    }
+  }, [showModal]);
+
+  // Close patient dropdown & three-dot menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowPatientDropdown(false);
+      }
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // ESC key to close modals
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") { setShowModal(false); setShowEditModal(false); setOpenMenuId(null); }
+    };
+    if (showModal || showEditModal) document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [showModal, showEditModal]);
 
   useEffect(() => {
     let updated = [...appointments];
@@ -107,6 +181,101 @@ export default function Appointments() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to permanently delete this appointment?")) return;
+    try {
+      await deleteAppointment(id);
+      toast.success("Appointment Deleted");
+      setOpenMenuId(null);
+      loadAppointments();
+    } catch (error) {
+      toast.error("Delete failed");
+    }
+  };
+
+  const openEditModal = (appt) => {
+    setEditData({
+      id: appt._id,
+      datetime: new Date(appt.datetime).toISOString().slice(0, 16),
+      reason: appt.reason || "",
+      status: appt.status,
+    });
+    setOpenMenuId(null);
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    setEditSubmitting(true);
+    try {
+      await updateAppointment(editData.id, {
+        datetime: editData.datetime,
+        reason: editData.reason,
+        status: editData.status,
+      });
+      toast.success("Appointment Updated");
+      setShowEditModal(false);
+      loadAppointments();
+    } catch (err) {
+      toast.error("Update failed");
+    } finally {
+      setEditSubmitting(false);
+    }
+  };
+
+  // --- Modal Handlers ---
+  const openModal = () => {
+    setShowModal(true);
+    setFormData({ patientId: "", patientName: "", datetime: "", reason: "" });
+    setFormErrors({});
+    setPatientSearch("");
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.patientId) errors.patient = "Please select a patient";
+    if (!formData.datetime) errors.datetime = "Date & time is required";
+    if (!formData.reason.trim()) errors.reason = "Reason is required";
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmitAppointment = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    try {
+      await createDoctorAppointment({
+        patientId: formData.patientId,
+        datetime: formData.datetime,
+        reason: formData.reason,
+      });
+      setShowModal(false);
+      loadAppointments();
+    } catch (err) {
+      console.error("Failed to create appointment:", err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const selectPatient = (patient) => {
+    setFormData((prev) => ({
+      ...prev,
+      patientId: patient._id,
+      patientName: patient.name,
+    }));
+    setPatientSearch(patient.name);
+    setShowPatientDropdown(false);
+    setFormErrors((prev) => ({ ...prev, patient: undefined }));
+  };
+
+  const filteredPatients = patients.filter((p) =>
+    p.name?.toLowerCase().includes(patientSearch.toLowerCase()) ||
+    p.email?.toLowerCase().includes(patientSearch.toLowerCase())
+  );
+
   // Pagination logic
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
@@ -145,7 +314,7 @@ export default function Appointments() {
               <h1 className="appt-title">Appointments</h1>
               <p className="appt-subtitle">Manage and track your patient schedule</p>
             </div>
-            <button className="appt-add-btn">
+            <button className="appt-add-btn" onClick={openModal}>
               <FiPlus />
               <span>Add Appointment</span>
             </button>
@@ -293,7 +462,11 @@ export default function Appointments() {
                         </td>
                         <td>
                           <div className="action-buttons">
-                            <button className="icon-btn btn-view" title="View Details">
+                            <button
+                              className="icon-btn btn-view"
+                              title="View Patient"
+                              onClick={() => navigate(`/patients/${appt.patient?._id}`)}
+                            >
                               <FiEye />
                             </button>
                             
@@ -317,9 +490,24 @@ export default function Appointments() {
                               </button>
                             )}
                             
-                            <button className="icon-btn btn-more">
-                              <FiMoreVertical />
-                            </button>
+                            <div className="appt-more-wrapper" ref={openMenuId === appt._id ? menuRef : null}>
+                              <button
+                                className="icon-btn btn-more"
+                                onClick={() => setOpenMenuId(openMenuId === appt._id ? null : appt._id)}
+                              >
+                                <FiMoreVertical />
+                              </button>
+                              {openMenuId === appt._id && (
+                                <div className="appt-action-menu">
+                                  <button className="appt-menu-item" onClick={() => openEditModal(appt)}>
+                                    <FiEdit size={14} /> Edit
+                                  </button>
+                                  <button className="appt-menu-item appt-menu-danger" onClick={() => handleDelete(appt._id)}>
+                                    <FiTrash2 size={14} /> Delete
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </td>
                       </motion.tr>
@@ -361,6 +549,276 @@ export default function Appointments() {
             </div>
           )}
         </div>
+
+        {/* ADD APPOINTMENT MODAL */}
+        <AnimatePresence>
+          {showModal && (
+            <motion.div
+              className="appt-modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowModal(false)}
+            >
+              <motion.div
+                className="appt-modal"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="appt-modal-header">
+                  <div className="appt-modal-title-group">
+                    <div className="appt-modal-icon">
+                      <FiCalendar size={20} />
+                    </div>
+                    <div>
+                      <h2>New Appointment</h2>
+                      <p>Schedule a consultation with your patient</p>
+                    </div>
+                  </div>
+                  <button className="appt-modal-close" onClick={() => setShowModal(false)}>
+                    <FiX size={20} />
+                  </button>
+                </div>
+
+                {/* Modal Form */}
+                <form className="appt-modal-form" onSubmit={handleSubmitAppointment}>
+                  
+                  {/* Patient Selection */}
+                  <div className="appt-form-group" ref={dropdownRef}>
+                    <label className="appt-form-label">
+                      <FiUser size={14} />
+                      Select Patient <span className="appt-required">*</span>
+                    </label>
+                    <div className="appt-patient-select">
+                      <input
+                        type="text"
+                        className={`appt-form-input ${formErrors.patient ? "appt-input-error" : ""}`}
+                        placeholder="Search patient by name or email..."
+                        value={patientSearch}
+                        onChange={(e) => {
+                          setPatientSearch(e.target.value);
+                          setShowPatientDropdown(true);
+                          if (formData.patientId && e.target.value !== formData.patientName) {
+                            setFormData((prev) => ({ ...prev, patientId: "", patientName: "" }));
+                          }
+                        }}
+                        onFocus={() => setShowPatientDropdown(true)}
+                      />
+                      {formData.patientId && (
+                        <span className="appt-selected-check"><FiCheckCircle size={16} /></span>
+                      )}
+                    </div>
+                    
+                    {/* Patient Dropdown */}
+                    {showPatientDropdown && (
+                      <div className="appt-patient-dropdown">
+                        {patientsLoading ? (
+                          <div className="appt-dropdown-loading">Loading patients...</div>
+                        ) : filteredPatients.length === 0 ? (
+                          <div className="appt-dropdown-empty">No patients found</div>
+                        ) : (
+                          filteredPatients.slice(0, 6).map((p) => (
+                            <button
+                              key={p._id}
+                              type="button"
+                              className={`appt-dropdown-item ${formData.patientId === p._id ? "appt-dropdown-selected" : ""}`}
+                              onClick={() => selectPatient(p)}
+                            >
+                              <div className="appt-dropdown-avatar">
+                                {getInitials(p.name)}
+                              </div>
+                              <div className="appt-dropdown-info">
+                                <span className="appt-dropdown-name">{p.name}</span>
+                                <span className="appt-dropdown-email">{p.email}</span>
+                              </div>
+                              {formData.patientId === p._id && (
+                                <FiCheckCircle className="appt-dropdown-check" />
+                              )}
+                            </button>
+                          ))
+                        )}
+                      </div>
+                    )}
+                    {formErrors.patient && (
+                      <span className="appt-error-msg"><FiAlertCircle size={12} /> {formErrors.patient}</span>
+                    )}
+                  </div>
+
+                  {/* Date & Time */}
+                  <div className="appt-form-group">
+                    <label className="appt-form-label">
+                      <FiClock size={14} />
+                      Date & Time <span className="appt-required">*</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      className={`appt-form-input ${formErrors.datetime ? "appt-input-error" : ""}`}
+                      value={formData.datetime}
+                      onChange={(e) => {
+                        setFormData((prev) => ({ ...prev, datetime: e.target.value }));
+                        setFormErrors((prev) => ({ ...prev, datetime: undefined }));
+                      }}
+                      min={new Date().toISOString().slice(0, 16)}
+                    />
+                    {formErrors.datetime && (
+                      <span className="appt-error-msg"><FiAlertCircle size={12} /> {formErrors.datetime}</span>
+                    )}
+                  </div>
+
+                  {/* Reason */}
+                  <div className="appt-form-group">
+                    <label className="appt-form-label">
+                      <FiFileText size={14} />
+                      Reason <span className="appt-required">*</span>
+                    </label>
+                    <textarea
+                      className={`appt-form-textarea ${formErrors.reason ? "appt-input-error" : ""}`}
+                      placeholder="e.g., Follow-up consultation, General checkup..."
+                      rows={3}
+                      value={formData.reason}
+                      onChange={(e) => {
+                        setFormData((prev) => ({ ...prev, reason: e.target.value }));
+                        setFormErrors((prev) => ({ ...prev, reason: undefined }));
+                      }}
+                    />
+                    {formErrors.reason && (
+                      <span className="appt-error-msg"><FiAlertCircle size={12} /> {formErrors.reason}</span>
+                    )}
+                  </div>
+
+                  {/* Status Info */}
+                  <div className="appt-form-status-info">
+                    <FiCheckCircle size={14} />
+                    <span>Status will be set to <strong>Booked</strong> by default</span>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="appt-modal-actions">
+                    <button
+                      type="button"
+                      className="appt-modal-cancel"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="appt-modal-submit"
+                      disabled={submitting}
+                    >
+                      {submitting ? (
+                        <>
+                          <span className="appt-btn-spinner"></span>
+                          Adding...
+                        </>
+                      ) : (
+                        <>
+                          <FiPlus size={16} />
+                          Add Appointment
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* EDIT APPOINTMENT MODAL */}
+        <AnimatePresence>
+          {showEditModal && (
+            <motion.div
+              className="appt-modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowEditModal(false)}
+            >
+              <motion.div
+                className="appt-modal"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="appt-modal-header">
+                  <div className="appt-modal-title-group">
+                    <div className="appt-modal-icon" style={{ background: "var(--info-50)", color: "var(--info-600)" }}>
+                      <FiEdit size={20} />
+                    </div>
+                    <div>
+                      <h2>Edit Appointment</h2>
+                      <p>Update appointment details</p>
+                    </div>
+                  </div>
+                  <button className="appt-modal-close" onClick={() => setShowEditModal(false)}>
+                    <FiX size={20} />
+                  </button>
+                </div>
+
+                <form className="appt-modal-form" onSubmit={handleEditSubmit}>
+                  <div className="appt-form-group">
+                    <label className="appt-form-label">
+                      <FiClock size={14} /> Date & Time
+                    </label>
+                    <input
+                      type="datetime-local"
+                      className="appt-form-input"
+                      value={editData.datetime}
+                      onChange={(e) => setEditData((p) => ({ ...p, datetime: e.target.value }))}
+                    />
+                  </div>
+
+                  <div className="appt-form-group">
+                    <label className="appt-form-label">
+                      <FiFileText size={14} /> Reason
+                    </label>
+                    <textarea
+                      className="appt-form-textarea"
+                      rows={3}
+                      value={editData.reason}
+                      onChange={(e) => setEditData((p) => ({ ...p, reason: e.target.value }))}
+                    />
+                  </div>
+
+                  <div className="appt-form-group">
+                    <label className="appt-form-label">
+                      <FiCheckCircle size={14} /> Status
+                    </label>
+                    <select
+                      className="appt-form-input"
+                      value={editData.status}
+                      onChange={(e) => setEditData((p) => ({ ...p, status: e.target.value }))}
+                    >
+                      <option value="Booked">Booked</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </div>
+
+                  <div className="appt-modal-actions">
+                    <button type="button" className="appt-modal-cancel" onClick={() => setShowEditModal(false)}>
+                      Cancel
+                    </button>
+                    <button type="submit" className="appt-modal-submit" disabled={editSubmitting}>
+                      {editSubmitting ? (
+                        <><span className="appt-btn-spinner"></span> Saving...</>
+                      ) : (
+                        <><FiCheckCircle size={16} /> Save Changes</>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );

@@ -3,19 +3,37 @@ const Appointment = require('../models/Appointment');
 // Create appointment 
 exports.createAppointment = async (req, res) => {
   try {
-    const { doctorId, datetime, reason } = req.body;
-    if (!doctorId || !datetime)
-      return res.status(400).json({ message: 'doctorId and datetime required' });
+    const { doctorId, patientId, datetime, reason } = req.body;
+
+    // Doctor creating appointment: patient comes from body, doctor is self
+    // Patient creating appointment: doctor comes from body, patient is self
+    let patient, doctor;
+    if (req.user.role === 'Doctor') {
+      if (!patientId) return res.status(400).json({ message: 'patientId is required' });
+      patient = patientId;
+      doctor = req.user.id;
+    } else {
+      if (!doctorId) return res.status(400).json({ message: 'doctorId is required' });
+      patient = req.user.id;
+      doctor = doctorId;
+    }
+
+    if (!datetime) return res.status(400).json({ message: 'datetime is required' });
 
     const appt = new Appointment({
-      patient: req.user.id,
-      doctor: doctorId,
+      patient,
+      doctor,
       datetime,
       reason,
     });
 
     await appt.save();
-    return res.status(201).json(appt);
+
+    const populated = await Appointment.findById(appt._id)
+      .populate('patient', 'name email')
+      .populate('doctor', 'name email');
+
+    return res.status(201).json(populated);
   } catch (err) {
     console.error("Error in createAppointment:", err);
     return res.status(500).json({ message: 'Server error' });
@@ -100,6 +118,24 @@ exports.updateAppointment = async (req, res) => {
     return res.json(appt);
   } catch (err) {
     console.error("Error in updateAppointment:", err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Delete appointment
+exports.deleteAppointment = async (req, res) => {
+  try {
+    const appt = await Appointment.findById(req.params.id);
+    if (!appt) return res.status(404).json({ message: 'Appointment not found' });
+
+    // Only the owning doctor or admin can delete
+    if (req.user.role === 'Doctor' && appt.doctor.toString() !== req.user.id)
+      return res.status(403).json({ message: 'Forbidden' });
+
+    await Appointment.findByIdAndDelete(req.params.id);
+    return res.json({ message: 'Appointment deleted successfully' });
+  } catch (err) {
+    console.error("Error in deleteAppointment:", err);
     return res.status(500).json({ message: 'Server error' });
   }
 };

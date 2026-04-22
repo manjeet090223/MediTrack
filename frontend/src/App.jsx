@@ -16,6 +16,7 @@ import PatientDetails from "./pages/PatientDetails"; // view patient details onl
 import UploadReport from "./pages/UploadReport"; // Patient report upload
 import PatientProfile from "./pages/PatientProfile";
 import DoctorProfile from "./pages/DoctorProfile"; // Doctor profile
+import MyPrescriptions from "./pages/MyPrescriptions"; // Patient prescriptions
 
 // Toastify
 import { ToastContainer } from "react-toastify";
@@ -93,6 +94,14 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={["Patient"]}>
               <PatientProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-prescriptions"
+          element={
+            <ProtectedRoute allowedRoles={["Patient"]}>
+              <MyPrescriptions />
             </ProtectedRoute>
           }
         />

@@ -69,10 +69,10 @@ export default function AppointmentsList({
         >
           <div className="appointment-date-box">
             <div className="appointment-day">
-              {new Date(apt.appointmentDate).getDate()}
+              {new Date(apt.datetime).getDate()}
             </div>
             <div className="appointment-month">
-              {new Date(apt.appointmentDate).toLocaleDateString("en-US", {
+              {new Date(apt.datetime).toLocaleDateString("en-US", {
                 month: "short"
               })}
             </div>
@@ -80,12 +80,12 @@ export default function AppointmentsList({
 
           <div className="appointment-details">
             <h4 className="appointment-doctor">
-              {apt.doctorName || "Dr. " + (apt.doctorId || "TBA")}
+              {apt.doctor?.name ? `Dr. ${apt.doctor.name}` : "Dr. TBA"}
             </h4>
             <div className="appointment-info">
               <span className="info-item">
                 <FiClock size={14} />
-                {formatTime(apt.appointmentDate)}
+                {formatTime(apt.datetime)}
               </span>
               {apt.specialization && (
                 <span className="info-item">

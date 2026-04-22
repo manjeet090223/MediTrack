@@ -217,7 +217,8 @@
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-light);
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
 }
 
 .appt-modern-table {
@@ -525,5 +526,429 @@
   .action-buttons {
     margin-top: var(--space-4);
     justify-content: flex-end;
+  }
+}
+
+/* ===== ADD APPOINTMENT MODAL ===== */
+
+.appt-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.appt-modal {
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Modal Header --- */
+.appt-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-6) var(--space-8);
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  border-radius: 16px 16px 0 0;
+  z-index: 1;
+}
+
+.appt-modal-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.appt-modal-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--primary-50);
+  color: var(--green-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.appt-modal-header h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.appt-modal-header p {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin: 4px 0 0;
+}
+
+.appt-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  background: transparent;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.appt-modal-close:hover {
+  background-color: var(--danger-50);
+  border-color: var(--danger-100);
+  color: var(--danger-500);
+}
+
+/* --- Modal Form --- */
+.appt-modal-form {
+  padding: var(--space-6) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.appt-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  position: relative;
+}
+
+.appt-form-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.appt-required {
+  color: var(--danger-500);
+}
+
+.appt-form-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: all var(--transition-base);
+  font-family: var(--font-family-sans);
+}
+
+.appt-form-input:focus {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(92, 107, 69, 0.1);
+  outline: none;
+}
+
+.appt-input-error {
+  border-color: var(--danger-500) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08) !important;
+}
+
+.appt-error-msg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--danger-500);
+  font-weight: var(--font-medium);
+}
+
+.appt-form-textarea {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  font-family: var(--font-family-sans);
+  resize: vertical;
+  transition: all var(--transition-base);
+}
+
+.appt-form-textarea:focus {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(92, 107, 69, 0.1);
+  outline: none;
+}
+
+/* --- Patient Selection --- */
+.appt-patient-select {
+  position: relative;
+}
+
+.appt-selected-check {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--success-500);
+}
+
+.appt-patient-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: var(--space-2);
+}
+
+.appt-dropdown-loading,
+.appt-dropdown-empty {
+  padding: var(--space-6);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.appt-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.appt-dropdown-item:hover {
+  background-color: var(--primary-50);
+}
+
+.appt-dropdown-selected {
+  background-color: var(--primary-50) !important;
+  border: 1px solid var(--primary-200);
+}
+
+.appt-dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-accent);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-bold);
+  font-size: var(--text-xs);
+  flex-shrink: 0;
+}
+
+.appt-dropdown-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.appt-dropdown-name {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.appt-dropdown-email {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appt-dropdown-check {
+  color: var(--success-500);
+  flex-shrink: 0;
+}
+
+/* --- Status Info Bar --- */
+.appt-form-status-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--success-50);
+  border: 1px solid var(--success-100);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-xs);
+  color: var(--success-700);
+  font-weight: var(--font-medium);
+}
+
+/* --- Modal Actions --- */
+.appt-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-light);
+  margin-top: var(--space-2);
+}
+
+.appt-modal-cancel {
+  padding: var(--space-3) var(--space-6);
+  background-color: white;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.appt-modal-cancel:hover {
+  background-color: var(--neutral-50);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.appt-modal-submit {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-8);
+  background-color: var(--green-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.appt-modal-submit:hover:not(:disabled) {
+  background-color: var(--green-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.appt-modal-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.appt-btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: rotate 0.8s linear infinite;
+}
+
+/* --- Three-dot Dropdown Menu --- */
+.appt-more-wrapper {
+  position: relative;
+}
+
+.appt-action-menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 50;
+  min-width: 150px;
+  padding: var(--space-2);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.appt-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.appt-menu-item:hover {
+  background-color: var(--neutral-50);
+  color: var(--text-primary);
+}
+
+.appt-menu-danger {
+  color: var(--danger-500);
+}
+
+.appt-menu-danger:hover {
+  background-color: var(--danger-50);
+  color: var(--danger-600);
+}
+
+/* --- Modal Responsive --- */
+@media (max-width: 640px) {
+  .appt-modal {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+
+  .appt-modal-header,
+  .appt-modal-form {
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .appt-modal-title-group {
+    gap: var(--space-3);
+  }
+
+  .appt-modal-icon {
+    width: 36px;
+    height: 36px;
   }
 }

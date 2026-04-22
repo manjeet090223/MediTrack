@@ -8,7 +8,7 @@ const controller = require("../controllers/appointmentsController");
 router.post(
   "/",
   requireAuth,
-  requireRole("Patient", "Admin"),
+  requireRole("Patient", "Doctor", "Admin"),
   controller.createAppointment
 );
 
@@ -24,7 +24,7 @@ router.get(
 router.put(
   "/:id/cancel",
   requireAuth,
-  requireRole("Patient", "Admin"),
+  requireRole("Patient", "Doctor", "Admin"),
   controller.cancelAppointment
 );
 
@@ -42,6 +42,14 @@ router.put(
   requireAuth,
   requireRole("Doctor", "Admin"),
   controller.updateAppointment
+);
+
+// Delete appointment
+router.delete(
+  "/:id",
+  requireAuth,
+  requireRole("Doctor", "Admin"),
+  controller.deleteAppointment
 );
 
 module.exports = router;

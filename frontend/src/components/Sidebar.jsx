@@ -13,6 +13,7 @@ import {
   FiX,
   FiMoon,
   FiSun,
+  FiFileText,
 } from "react-icons/fi";
 import "./Sidebar.css";
 
@@ -159,6 +160,15 @@ export default function Sidebar() {
                   >
                     <FiUploadCloud className="icon" />
                     <span>Upload Report</span>
+                  </button>
+                </li>
+                <li className={`menu-item ${isActive("/my-prescriptions") ? "active" : ""}`}>
+                  <button 
+                    className="menu-link"
+                    onClick={() => navigate("/my-prescriptions")}
+                  >
+                    <FiFileText className="icon" />
+                    <span>My Prescriptions</span>
                   </button>
                 </li>
               </>
