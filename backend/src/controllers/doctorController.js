@@ -28,21 +28,29 @@ exports.updateDoctorProfile = async (req, res) => {
     const userId = req.params.id;
     const { name, email, phone, specialization, department, experience, gender } = req.body;
 
+    // Build User update — only include fields that are non-empty
+    const userUpdate = {};
+    if (name) userUpdate.name = name;
+    if (email) userUpdate.email = email;
+    if (phone !== undefined) userUpdate.phone = phone || null;
+    if (gender && ["Male", "Female", "Other"].includes(gender)) {
+      userUpdate.gender = gender;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { name, email, phone },
-      { new: true, select: "_id name email phone role" }
+      userUpdate,
+      { new: true, select: "_id name email phone role gender" }
     );
     if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
-    
     let updatedDoctor = await Doctor.findOneAndUpdate(
       { user: userId },
       {
         specialization: specialization || "",
         department: department || "",
         experience: experience || 0,
-        gender: gender || "Other",
+        gender: gender && ["Male", "Female", "Other"].includes(gender) ? gender : "Other",
       },
       { new: true, upsert: true, setDefaultsOnInsert: true, select: "specialization department experience gender profileComplete user" }
     );
@@ -52,7 +60,7 @@ exports.updateDoctorProfile = async (req, res) => {
       data: { ...updatedUser.toObject(), ...(updatedDoctor ? updatedDoctor.toObject() : {}) },
     });
   } catch (err) {
-    console.error(err);
+    console.error("Update Doctor Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };

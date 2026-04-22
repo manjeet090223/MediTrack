@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getPatientDetails, getPatientAppointmentsById, getPatientPrescriptions, createPrescription, updatePrescriptionStatus } from "../api/axios";
+import {
+  getPatientDetails,
+  getPatientAppointmentsById,
+  getPatientPrescriptions,
+  createPrescription,
+  updatePrescriptionStatus,
+  getPatientReports,
+} from "../api/axios";
 import Sidebar from "../components/Sidebar";
-import { 
-  FiArrowLeft, 
-  FiMail, 
-  FiPhone, 
-  FiCalendar, 
-  FiUser, 
-  FiClock, 
-  FiSearch, 
+import {
+  FiArrowLeft,
+  FiMail,
+  FiPhone,
+  FiCalendar,
+  FiUser,
+  FiClock,
+  FiSearch,
   FiFilter,
   FiPlus,
   FiFileText,
@@ -17,7 +24,11 @@ import {
   FiX,
   FiTrash2,
   FiCheckCircle,
-  FiAlertCircle
+  FiAlertCircle,
+  FiDownload,
+  FiImage,
+  FiFile,
+  FiFolder,
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Patients.css";
@@ -29,7 +40,7 @@ export default function PatientDetails() {
   const [appointments, setAppointments] = useState([]);
   const [prescriptions, setPrescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // History table filters
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -45,6 +56,12 @@ export default function PatientDetails() {
     medicines: [{ name: "", dosage: "", duration: "", instructions: "" }],
   });
   const [formErrors, setFormErrors] = useState({});
+
+  // Reports modal
+  const [showReportsModal, setShowReportsModal] = useState(false);
+  const [reports, setReports] = useState([]);
+  const [reportsLoading, setReportsLoading] = useState(false);
+  const [previewReport, setPreviewReport] = useState(null);
 
   // Active tab
   const [activeTab, setActiveTab] = useState("prescriptions");
@@ -152,6 +169,21 @@ export default function PatientDetails() {
     }
   };
 
+  // ── Reports modal ────────────────────────────────────────────
+  const handleOpenReports = async () => {
+    setShowReportsModal(true);
+    setPreviewReport(null);
+    setReportsLoading(true);
+    try {
+      const res = await getPatientReports(id);
+      setReports(res.data?.reports || []);
+    } catch (err) {
+      console.error("Failed to fetch reports:", err);
+    } finally {
+      setReportsLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="patients-page-layout">
@@ -239,11 +271,11 @@ export default function PatientDetails() {
                 <FiPlus />
                 <span>Add Prescription</span>
               </button>
-              <button className="header-secondary-btn" title="Add Notes">
-                <FiFileText />
-                <span>Add Notes</span>
-              </button>
-              <button className="header-secondary-btn" title="View Reports">
+              <button
+                className="header-secondary-btn"
+                title="View Reports"
+                onClick={handleOpenReports}
+              >
                 <FiEye />
                 <span>View Reports</span>
               </button>
@@ -578,6 +610,136 @@ export default function PatientDetails() {
             </motion.div>
           )}
         </motion.div>
+
+        {/* ══════════════════════════════════════════
+            VIEW REPORTS MODAL
+        ══════════════════════════════════════════ */}
+        <AnimatePresence>
+          {showReportsModal && (
+            <motion.div
+              className="ep-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => { setShowReportsModal(false); setPreviewReport(null); }}
+            >
+              <motion.div
+                className="ep-modal rpt-modal"
+                initial={{ opacity: 0, scale: 0.93, y: 24 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.93, y: 24 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="ep-header">
+                  <div className="ep-header-left">
+                    <div className="ep-avatar rpt-avatar">
+                      <FiFolder size={20} />
+                    </div>
+                    <div>
+                      <h2 className="ep-title">Patient Reports</h2>
+                      <p className="ep-subtitle">{patient?.name} — uploaded documents</p>
+                    </div>
+                  </div>
+                  <button
+                    className="ep-close-btn"
+                    onClick={() => { setShowReportsModal(false); setPreviewReport(null); }}
+                  >
+                    <FiX size={20} />
+                  </button>
+                </div>
+
+                {/* Body */}
+                <div className="rpt-body">
+                  {reportsLoading ? (
+                    <div className="rpt-loading">
+                      <div className="spinner"></div>
+                      <p>Loading reports...</p>
+                    </div>
+                  ) : reports.length === 0 ? (
+                    <div className="rpt-empty">
+                      <FiFileText size={40} />
+                      <p>No reports uploaded yet for this patient.</p>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Preview pane */}
+                      {previewReport && (
+                        <div className="rpt-preview">
+                          <div className="rpt-preview-bar">
+                            <span className="rpt-preview-name">{previewReport.originalName}</span>
+                            <button
+                              className="ep-close-btn"
+                              onClick={() => setPreviewReport(null)}
+                              title="Close preview"
+                            >
+                              <FiX size={16} />
+                            </button>
+                          </div>
+                          {/\.(jpg|jpeg|png)$/i.test(previewReport.originalName) ? (
+                            <img
+                              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/reports/${previewReport.filename}`}
+                              alt={previewReport.originalName}
+                              className="rpt-preview-img"
+                            />
+                          ) : (
+                            <iframe
+                              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/reports/${previewReport.filename}`}
+                              title={previewReport.originalName}
+                              className="rpt-preview-iframe"
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      {/* File list */}
+                      <ul className="rpt-list">
+                        {reports.map((r) => {
+                          const isImage = /\.(jpg|jpeg|png)$/i.test(r.originalName);
+                          const isPdf = /\.pdf$/i.test(r.originalName);
+                          const fileUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/reports/${r.filename}`;
+                          return (
+                            <li key={r._id} className={`rpt-item ${previewReport?._id === r._id ? "rpt-item-active" : ""}`}>
+                              <div className="rpt-item-icon">
+                                {isImage ? <FiImage size={18} /> : isPdf ? <FiFileText size={18} /> : <FiFile size={18} />}
+                              </div>
+                              <div className="rpt-item-info">
+                                <span className="rpt-item-name">{r.originalName || r.filename}</span>
+                                <span className="rpt-item-date">
+                                  {new Date(r.uploadedAt).toLocaleDateString("en-US", {
+                                    year: "numeric", month: "short", day: "numeric",
+                                  })}
+                                </span>
+                              </div>
+                              <div className="rpt-item-actions">
+                                <button
+                                  className="rpt-btn rpt-btn-preview"
+                                  title="Preview"
+                                  onClick={() => setPreviewReport(previewReport?._id === r._id ? null : r)}
+                                >
+                                  <FiEye size={15} />
+                                </button>
+                                <a
+                                  href={fileUrl}
+                                  download={r.originalName}
+                                  className="rpt-btn rpt-btn-download"
+                                  title="Download"
+                                >
+                                  <FiDownload size={15} />
+                                </a>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ADD PRESCRIPTION MODAL */}
         <AnimatePresence>

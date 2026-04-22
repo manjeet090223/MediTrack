@@ -8,7 +8,10 @@ const User = new mongoose.Schema({
   age: { type: Number, default: null },
   gender: { type: String, enum: ["Male", "Female", "Other"], default: null },
   phone: { type: String, default: null },
+  address: { type: String, default: null },
   profileComplete: { type: Boolean, default: false },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+  linkedPatients: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", User);

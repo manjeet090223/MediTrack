@@ -16,6 +16,8 @@ import PatientDetails from "./pages/PatientDetails"; // view patient details onl
 import UploadReport from "./pages/UploadReport"; // Patient report upload
 import PatientProfile from "./pages/PatientProfile";
 import DoctorProfile from "./pages/DoctorProfile"; // Doctor profile
+import MedicalRecords from "./pages/MedicalRecords"; // Doctor medical records
+import ClinicSettings from "./pages/ClinicSettings"; // Doctor clinic settings
 import MyPrescriptions from "./pages/MyPrescriptions"; // Patient prescriptions
 
 // Toastify
@@ -128,6 +130,22 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={["Doctor"]}>
               <DoctorProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/medical-records"
+          element={
+            <ProtectedRoute allowedRoles={["Doctor"]}>
+              <MedicalRecords />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute allowedRoles={["Doctor"]}>
+              <ClinicSettings />
             </ProtectedRoute>
           }
         />

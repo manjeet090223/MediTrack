@@ -29,7 +29,7 @@ import "./Home.css";
 export default function Home() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  
+
   const [stats, setStats] = useState({
     totalAppointments: 0,
     upcomingAppointments: 0,
@@ -110,7 +110,7 @@ export default function Home() {
       description: "Track your health metrics",
       icon: <FiTrendingUp size={28} />,
       color: "info",
-      onClick: () => navigate("/profile")
+      onClick: () => navigate("/my-prescriptions")
     }
   ];
 

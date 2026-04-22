@@ -133,6 +133,7 @@ router.get("/today-schedule", async (req, res) => {
 
       return {
         id: appt._id,
+        patientId: appt.patient ? appt.patient._id : null,
         patientName: appt.patient ? appt.patient.name : "Unknown Patient",
         time: timeStr,
         status: appt.status === "Booked" ? "Scheduled" : appt.status,

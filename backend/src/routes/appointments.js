@@ -40,7 +40,7 @@ router.get(
 router.put(
   "/:id",
   requireAuth,
-  requireRole("Doctor", "Admin"),
+  requireRole("Patient", "Doctor", "Admin"),
   controller.updateAppointment
 );
 

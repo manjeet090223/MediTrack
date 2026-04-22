@@ -133,7 +133,7 @@ export default function DoctorDashboard() {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             {/* Total Patients */}
-            <div className="doc-kpi-card kpi-blue">
+            <div className="doc-kpi-card kpi-blue" style={{ cursor: 'pointer' }} onClick={() => navigate('/patients')}>
               <div className="doc-kpi-header">
                 <div className="doc-kpi-icon"><FiUsers size={20} /></div>
                 <button className="kpi-more-btn"><FiMoreVertical size={16} /></button>
@@ -151,7 +151,7 @@ export default function DoctorDashboard() {
             </div>
 
             {/* Appointments Today */}
-            <div className="doc-kpi-card kpi-green">
+            <div className="doc-kpi-card kpi-green" style={{ cursor: 'pointer' }} onClick={() => navigate('/appointments')}>
               <div className="doc-kpi-header">
                 <div className="doc-kpi-icon"><FiCalendar size={20} /></div>
                 <button className="kpi-more-btn"><FiMoreVertical size={16} /></button>
@@ -169,7 +169,7 @@ export default function DoctorDashboard() {
             </div>
 
             {/* Pending Requests */}
-            <div className={`doc-kpi-card ${summary.pendingRequests > 0 ? "kpi-amber" : "kpi-gray"}`}>
+            <div className={`doc-kpi-card ${summary.pendingRequests > 0 ? "kpi-amber" : "kpi-gray"}`} style={{ cursor: 'pointer' }} onClick={() => navigate('/appointments')}>
               <div className="doc-kpi-header">
                 <div className="doc-kpi-icon">
                   {summary.pendingRequests > 0 ? <FiAlertCircle size={20} /> : <FiCheckCircle size={20} />}
@@ -300,7 +300,7 @@ export default function DoctorDashboard() {
                           </div>
                           <p className="schedule-type">{appt.type}</p>
                           <div className="schedule-actions">
-                            <button className="btn-sched-action">View Chart</button>
+                            <button className="btn-sched-action" onClick={() => appt.patientId && navigate(`/patients/${appt.patientId}`)}>View Chart</button>
                             {appt.status !== "Completed" && (
                               <button className="btn-sched-primary">{appt.status === "Waiting" ? "Start" : "Mark Done"}</button>
                             )}
@@ -329,11 +329,11 @@ export default function DoctorDashboard() {
                     <div className="qa-icon"><FiUsers size={18} /></div>
                     <span>Patient Directory</span>
                   </button>
-                  <button className="qa-btn">
+                  <button className="qa-btn" onClick={() => navigate("/medical-records")}>
                     <div className="qa-icon"><FiFileText size={18} /></div>
                     <span>Medical Records</span>
                   </button>
-                  <button className="qa-btn">
+                  <button className="qa-btn" onClick={() => navigate("/settings")}>
                     <div className="qa-icon"><FiSettings size={18} /></div>
                     <span>Clinic Settings</span>
                   </button>

@@ -14,16 +14,16 @@ router.post(
   controller.uploadReport
 );
 
-// GET reports for a specific patient by ID
-router.get("/patient/:id", async (req, res) => {
+// GET reports for a specific patient by ID (Doctor / Admin)
+router.get("/patient/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid patient ID" });
     }
 
-    const reports = await Report.find({ patient: id });
-    res.json({ reports }); 
+    const reports = await Report.find({ patient: id }).sort({ uploadedAt: -1 });
+    res.json({ reports });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });

@@ -8,10 +8,18 @@ const {
   updatePatient,
   deletePatient,
   getMyPatients,
+  createPatient,
+  linkPatient,
 } = require("../controllers/patientController");
 
 // Doctor: Only MY patients
 router.get("/my-patients", requireAuth, requireRole("Doctor"), getMyPatients);
+
+// Doctor: Link an existing patient
+router.post("/link-patient", requireAuth, requireRole("Doctor"), linkPatient);
+
+// Admin / Doctor: Create a new patient
+router.post("/", requireAuth, requireRole("Admin", "Doctor"), createPatient);
 
 router.get("/", requireAuth, requireRole("Admin"), getAllPatients);
 

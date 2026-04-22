@@ -1,4 +1,5 @@
 const Appointment = require('../models/Appointment');
+const User = require('../models/userModel');
 
 // Create appointment 
 exports.createAppointment = async (req, res) => {
@@ -28,6 +29,11 @@ exports.createAppointment = async (req, res) => {
     });
 
     await appt.save();
+
+    // Auto-link patient to doctor's linkedPatients list
+    await User.findByIdAndUpdate(doctor, {
+      $addToSet: { linkedPatients: patient },
+    });
 
     const populated = await Appointment.findById(appt._id)
       .populate('patient', 'name email')
@@ -108,11 +114,16 @@ exports.updateAppointment = async (req, res) => {
     if (req.user.role === 'Doctor' && appt.doctor.toString() !== req.user.id)
       return res.status(403).json({ message: 'Forbidden' });
 
+    if (req.user.role === 'Patient' && appt.patient.toString() !== req.user.id)
+      return res.status(403).json({ message: 'Forbidden' });
+
     const { datetime, reason, notes, status } = req.body;
     if (datetime) appt.datetime = datetime;
     if (reason) appt.reason = reason;
     if (typeof notes !== 'undefined') appt.notes = notes;
-    if (status && ['Booked','Cancelled','Completed'].includes(status)) appt.status = status;
+    // Only Doctor/Admin can change status
+    if (status && ['Booked','Cancelled','Completed'].includes(status) && req.user.role !== 'Patient')
+      appt.status = status;
 
     await appt.save();
     return res.json(appt);

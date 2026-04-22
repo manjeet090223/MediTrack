@@ -525,3 +525,157 @@
     text-align: center;
   }
 }
+
+/* ===== DARK MODE STYLES ===== */
+body.dark-mode .myrx-layout {
+  background-color: var(--dm-bg-primary);
+}
+
+body.dark-mode .myrx-title {
+  color: var(--dm-text-primary);
+}
+
+body.dark-mode .myrx-subtitle {
+  color: var(--dm-text-muted);
+}
+
+body.dark-mode .myrx-stat-completed {
+  background-color: var(--dm-bg-tertiary);
+  color: var(--dm-text-secondary);
+  border-color: var(--dm-border-light);
+}
+
+body.dark-mode .myrx-active-highlight {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode .myrx-active-highlight-header h2 {
+  color: var(--green-tertiary);
+}
+
+body.dark-mode .myrx-active-med-pill {
+  background-color: var(--dm-bg-secondary);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+body.dark-mode .myrx-active-med-name {
+  color: var(--dm-text-primary);
+}
+
+body.dark-mode .myrx-active-med-dosage {
+  color: var(--green-mid);
+}
+
+body.dark-mode .myrx-filter-tabs {
+  background: var(--dm-bg-secondary);
+  border-color: var(--dm-border-light);
+}
+
+body.dark-mode .myrx-filter-tab {
+  color: var(--dm-text-muted);
+}
+
+body.dark-mode .myrx-filter-tab:hover {
+  color: var(--dm-text-primary);
+  background-color: var(--dm-bg-tertiary);
+}
+
+body.dark-mode .myrx-empty h3 {
+  color: var(--dm-text-primary);
+}
+
+body.dark-mode .myrx-empty p {
+  color: var(--dm-text-muted);
+}
+
+body.dark-mode .myrx-empty-icon {
+  background-color: var(--dm-bg-tertiary);
+}
+
+body.dark-mode .myrx-timeline::before {
+  background: linear-gradient(to bottom, rgba(16, 185, 129, 0.3), var(--dm-border-medium));
+}
+
+body.dark-mode .myrx-dot {
+  border-color: var(--dm-bg-primary);
+}
+
+body.dark-mode .myrx-dot-completed {
+  background-color: var(--dm-border-medium);
+}
+
+body.dark-mode .myrx-card-content {
+  background: var(--dm-bg-secondary);
+  border-color: var(--dm-border-light);
+}
+
+body.dark-mode .myrx-card-content:hover {
+  background: var(--dm-bg-tertiary);
+  border-color: var(--dm-border-medium);
+}
+
+body.dark-mode .myrx-card-completed .myrx-card-content {
+  border-left-color: var(--dm-border-light);
+}
+
+body.dark-mode .myrx-card-diagnosis {
+  color: var(--dm-text-primary);
+}
+
+body.dark-mode .myrx-badge-completed {
+  background-color: var(--dm-bg-tertiary);
+  color: var(--dm-text-muted);
+  border-color: var(--dm-border-light);
+}
+
+body.dark-mode .myrx-meta-item {
+  color: var(--dm-text-muted);
+}
+
+body.dark-mode .myrx-medicines-label {
+  color: var(--dm-text-tertiary);
+}
+
+body.dark-mode .myrx-medicine-card {
+  background-color: var(--dm-bg-tertiary);
+  border-color: var(--dm-border-light);
+}
+
+body.dark-mode .myrx-medicine-card-active {
+  background-color: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode .myrx-medicine-name {
+  color: var(--dm-text-primary);
+}
+
+body.dark-mode .myrx-tag-dosage {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #6EE7B7;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode .myrx-tag-duration {
+  background-color: var(--dm-bg-secondary);
+  color: var(--dm-text-secondary);
+  border-color: var(--dm-border-light);
+}
+
+body.dark-mode .myrx-medicine-instructions {
+  color: var(--dm-text-muted);
+}
+
+body.dark-mode .myrx-notes-block {
+  background-color: rgba(245, 158, 11, 0.05);
+  border-color: rgba(245, 158, 11, 0.15);
+}
+
+body.dark-mode .myrx-notes-label {
+  color: #FCD34D;
+}
+
+body.dark-mode .myrx-notes-text {
+  color: var(--dm-text-secondary);
+}

@@ -57,7 +57,16 @@ export default function PatientProfile() {
     e.preventDefault();
     try {
       const res = await api.put(`/api/patients/${user.id}`, formData);
-      setPatient(res.data);
+      const updatedPatient = res.data;
+      setPatient(updatedPatient);
+      setFormData({
+        name: updatedPatient.name || "",
+        email: updatedPatient.email || "",
+        phone: updatedPatient.phone || "",
+        age: updatedPatient.age || "",
+        gender: updatedPatient.gender || "",
+        address: updatedPatient.address || "",
+      });
       toast.success("Profile updated successfully");
       setEditing(false);
     } catch (err) {

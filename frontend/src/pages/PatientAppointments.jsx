@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAppointments, cancelAppointment, updateAppointment } from "../api/axios";
 import { toast } from "react-toastify";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FiSearch,
   FiFilter,
@@ -15,7 +15,10 @@ import {
   FiFileText,
   FiChevronLeft,
   FiChevronRight,
-  FiInbox
+  FiInbox,
+  FiX,
+  FiSave,
+  FiAlertCircle
 } from "react-icons/fi";
 import Sidebar from "../components/Sidebar";
 import "./patientAppointments.css";
@@ -67,18 +70,56 @@ export default function PatientAppointments() {
     }
   };
 
-  const handleUpdate = async (id) => {
-    try {
-      const newReason = prompt("Update Reason:");
-      if (!newReason) return;
+  // --- Edit Modal State ---
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editData, setEditData] = useState({ id: "", datetime: "", reason: "" });
+  const [editSubmitting, setEditSubmitting] = useState(false);
+  const [editErrors, setEditErrors] = useState({});
 
-      await updateAppointment(id, { reason: newReason });
-      toast.success("Updated Successfully");
+  const openEditModal = (appt) => {
+    setEditData({
+      id: appt._id,
+      datetime: new Date(appt.datetime).toISOString().slice(0, 16),
+      reason: appt.reason || "",
+    });
+    setEditErrors({});
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    const errors = {};
+    if (!editData.reason.trim()) errors.reason = "Reason is required";
+    if (!editData.datetime) errors.datetime = "Date & time is required";
+    if (Object.keys(errors).length) {
+      setEditErrors(errors);
+      return;
+    }
+
+    setEditSubmitting(true);
+    try {
+      await updateAppointment(editData.id, {
+        datetime: editData.datetime,
+        reason: editData.reason,
+      });
+      toast.success("Appointment updated");
+      setShowEditModal(false);
       loadAppointments();
     } catch (error) {
       toast.error("Update failed");
+    } finally {
+      setEditSubmitting(false);
     }
   };
+
+  // Close modal on ESC
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setShowEditModal(false);
+    };
+    if (showEditModal) document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [showEditModal]);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -248,8 +289,8 @@ export default function PatientAppointments() {
                               <div className="action-group">
                                 <button
                                   className="action-btn action-edit"
-                                  onClick={() => handleUpdate(appt._id)}
-                                  title="Edit reason"
+                                  onClick={() => openEditModal(appt)}
+                                  title="Edit appointment"
                                 >
                                   <FiEdit3 size={15} />
                                 </button>
@@ -316,6 +357,103 @@ export default function PatientAppointments() {
             )}
           </motion.div>
         </div>
+
+        {/* ── EDIT APPOINTMENT MODAL ── */}
+        <AnimatePresence>
+          {showEditModal && (
+            <motion.div
+              className="pa-modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowEditModal(false)}
+            >
+              <motion.div
+                className="pa-modal"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="pa-modal-header">
+                  <div className="pa-modal-title-group">
+                    <div className="pa-modal-icon">
+                      <FiEdit3 size={20} />
+                    </div>
+                    <div>
+                      <h2>Edit Appointment</h2>
+                      <p>Update your appointment details</p>
+                    </div>
+                  </div>
+                  <button className="pa-modal-close" onClick={() => setShowEditModal(false)}>
+                    <FiX size={20} />
+                  </button>
+                </div>
+
+                {/* Modal Form */}
+                <form className="pa-modal-form" onSubmit={handleEditSubmit}>
+                  {/* Date & Time */}
+                  <div className="pa-form-group">
+                    <label className="pa-form-label">
+                      <FiClock size={14} />
+                      Date & Time <span className="pa-required">*</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      className={`pa-form-input ${editErrors.datetime ? "pa-input-error" : ""}`}
+                      value={editData.datetime}
+                      onChange={(e) => {
+                        setEditData((p) => ({ ...p, datetime: e.target.value }));
+                        setEditErrors((p) => ({ ...p, datetime: undefined }));
+                      }}
+                      min={new Date().toISOString().slice(0, 16)}
+                    />
+                    {editErrors.datetime && (
+                      <span className="pa-error-msg"><FiAlertCircle size={12} /> {editErrors.datetime}</span>
+                    )}
+                  </div>
+
+                  {/* Reason */}
+                  <div className="pa-form-group">
+                    <label className="pa-form-label">
+                      <FiFileText size={14} />
+                      Reason <span className="pa-required">*</span>
+                    </label>
+                    <textarea
+                      className={`pa-form-textarea ${editErrors.reason ? "pa-input-error" : ""}`}
+                      rows={3}
+                      placeholder="e.g., Follow-up consultation..."
+                      value={editData.reason}
+                      onChange={(e) => {
+                        setEditData((p) => ({ ...p, reason: e.target.value }));
+                        setEditErrors((p) => ({ ...p, reason: undefined }));
+                      }}
+                    />
+                    {editErrors.reason && (
+                      <span className="pa-error-msg"><FiAlertCircle size={12} /> {editErrors.reason}</span>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="pa-modal-actions">
+                    <button type="button" className="pa-modal-cancel" onClick={() => setShowEditModal(false)}>
+                      Cancel
+                    </button>
+                    <button type="submit" className="pa-modal-submit" disabled={editSubmitting}>
+                      {editSubmitting ? (
+                        <><span className="pa-btn-spinner"></span> Saving...</>
+                      ) : (
+                        <><FiSave size={15} /> Save Changes</>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );

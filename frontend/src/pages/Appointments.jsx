@@ -348,15 +348,26 @@ export default function Appointments() {
           {/* TABS SECTION */}
           <div className="appt-tabs-container">
             <div className="appt-tabs">
-              {["Today", "Upcoming", "Completed"].map((tab) => (
-                <button
-                  key={tab}
-                  className={`appt-tab ${activeTab === tab ? "active" : ""}`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </button>
-              ))}
+              {(() => {
+                const now = new Date();
+                const todayStr = now.toDateString();
+                const tabCounts = {
+                  Today: appointments.filter((a) => new Date(a.datetime).toDateString() === todayStr && a.status !== "Cancelled").length,
+                  Upcoming: appointments.filter((a) => new Date(a.datetime) > now && a.status === "Booked").length,
+                  Completed: appointments.filter((a) => a.status === "Completed").length,
+                  All: appointments.length,
+                };
+                return ["Today", "Upcoming", "Completed", "All"].map((tab) => (
+                  <button
+                    key={tab}
+                    className={`appt-tab ${activeTab === tab ? "active" : ""}`}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab}
+                    <span className="appt-tab-badge">{tabCounts[tab]}</span>
+                  </button>
+                ));
+              })()}
             </div>
           </div>
 

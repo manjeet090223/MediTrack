@@ -51,8 +51,10 @@ export const getPatientAppointmentsById = (id) => api.get(`/api/appointments/pat
 // Patients
 export const getAllPatients = () => api.get("/api/patients");
 export const getPatientDetails = (id) => api.get(`/api/patients/${id}`);
+export const createPatient = (data) => api.post("/api/patients", data);
 export const updatePatient = (id, data) => api.put(`/api/patients/${id}`, data);
 export const deletePatient = (id) => api.delete(`/api/patients/${id}`);
+export const linkPatient = (patientId) => api.post("/api/patients/link-patient", { patientId });
 
 // ---------------- Dashboard APIs ----------------
 export const getDashboardSummary = () => api.get("/api/dashboard/summary");
@@ -66,6 +68,7 @@ export const uploadReport = (formData) =>
   });
 
 export const getReports = () => api.get("/api/reports/my-reports");
+export const getPatientReports = (patientId) => api.get(`/api/reports/patient/${patientId}`);
 
 
 /* -------------------------------- Doctor APIs -------------------------------- */
