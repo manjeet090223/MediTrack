@@ -1,0 +1,121 @@
+.status-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-6);
+  border-left: 4px solid;
+  animation: slideInDown var(--transition-slow) ease-out;
+}
+
+.status-banner.status-active {
+  background: var(--primary-50);
+  border-left-color: var(--green-mid);
+  color: var(--text-primary);
+}
+
+.status-banner.status-completed {
+  background: var(--primary-100);
+  border-left-color: var(--green-primary);
+  color: var(--text-primary);
+}
+
+.status-banner.status-empty {
+  background: var(--primary-200);
+  border-left-color: var(--green-secondary);
+  color: var(--text-primary);
+}
+
+.status-banner.status-idle {
+  background: var(--primary-100);
+  border-left-color: var(--neutral-400);
+  color: var(--text-secondary);
+}
+
+.banner-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--green-primary);
+}
+
+.banner-content {
+  flex: 1;
+}
+
+.banner-message {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  margin: 0;
+}
+
+.banner-action {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--green-primary);
+  border: 1px solid var(--green-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.banner-action:hover {
+  background: var(--green-primary);
+  color: white;
+}
+
+/* Dark Mode */
+body.dark-mode .status-banner.status-active {
+  background: rgba(114, 131, 89, 0.1);
+  color: var(--dm-text-secondary);
+}
+
+body.dark-mode .status-banner.status-completed {
+  background: rgba(114, 131, 89, 0.15);
+  color: var(--dm-text-secondary);
+}
+
+body.dark-mode .status-banner.status-empty {
+  background: rgba(132, 150, 105, 0.1);
+  color: var(--dm-text-secondary);
+}
+
+body.dark-mode .status-banner.status-idle {
+  background: rgba(107, 114, 128, 0.1);
+  color: var(--dm-text-muted);
+}
+
+body.dark-mode .banner-action {
+  color: var(--green-secondary);
+  border-color: var(--green-secondary);
+}
+
+body.dark-mode .banner-action:hover {
+  background: var(--green-secondary);
+  color: var(--dm-bg-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .status-banner {
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .banner-message {
+    font-size: var(--text-sm);
+  }
+
+  .banner-action {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+  }
+}

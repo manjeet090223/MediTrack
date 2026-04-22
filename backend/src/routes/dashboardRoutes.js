@@ -109,6 +109,44 @@ router.get("/new-patients", async (req, res) => {
   }
 });
 
+router.get("/today-schedule", async (req, res) => {
+  try {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const appointments = await Appointment.find({
+      datetime: { $gte: startOfDay, $lte: endOfDay },
+    })
+      .populate("patient", "name")
+      .sort({ datetime: 1 });
+
+    const formattedSchedule = appointments.map((appt) => {
+      // Format time as HH:MM AM/PM
+      const timeStr = new Date(appt.datetime).toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      return {
+        id: appt._id,
+        patientName: appt.patient ? appt.patient.name : "Unknown Patient",
+        time: timeStr,
+        status: appt.status === "Booked" ? "Scheduled" : appt.status,
+        type: appt.reason || "General Consultation",
+      };
+    });
+
+    res.json(formattedSchedule);
+  } catch (error) {
+    console.error("Today Schedule Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 router.get(
   "/patient-summary/:userId",

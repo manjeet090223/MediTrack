@@ -1,0 +1,200 @@
+/* ===== QUICK ACTION CARDS — Premium Style ===== */
+
+.quick-action-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-6);
+  margin: var(--space-4) 0;
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--space-6);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-card);
+}
+
+/* Top accent bar */
+.action-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.action-card:hover {
+  border-color: var(--neutral-300);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-4px);
+}
+
+.action-card:hover::before {
+  opacity: 1;
+}
+
+.action-card:active {
+  transform: translateY(-2px);
+}
+
+/* Color accent bars */
+.action-card.action-primary::before {
+  background: var(--green-primary);
+}
+
+.action-card.action-success::before {
+  background: var(--success-500);
+}
+
+.action-card.action-info::before {
+  background: var(--info-500);
+}
+
+.action-card.action-warning::before {
+  background: var(--warning-500);
+}
+
+.action-card.action-danger::before {
+  background: var(--danger-500);
+}
+
+/* Icon circle */
+.action-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+  font-size: 24px;
+  margin-bottom: var(--space-4);
+  transition: transform var(--transition-base);
+}
+
+.action-card:hover .action-icon {
+  transform: scale(1.08);
+}
+
+.action-primary .action-icon {
+  background: var(--primary-50);
+  color: var(--green-primary);
+}
+
+.action-success .action-icon {
+  background: var(--success-50);
+  color: var(--success-600);
+}
+
+.action-info .action-icon {
+  background: var(--info-50);
+  color: var(--info-600);
+}
+
+.action-warning .action-icon {
+  background: var(--warning-50);
+  color: var(--warning-600);
+}
+
+.action-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.action-description {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin: 0 0 var(--space-4) 0;
+  flex: 1;
+  line-height: var(--leading-relaxed);
+}
+
+.action-arrow {
+  font-size: 18px;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all var(--transition-base);
+}
+
+.action-card:hover .action-arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--text-secondary);
+}
+
+/* ===== DARK MODE ===== */
+body.dark-mode .action-card {
+  background: var(--dm-bg-secondary);
+  border-color: var(--dm-border-light);
+  box-shadow: none;
+}
+
+body.dark-mode .action-card:hover {
+  box-shadow: 0 16px 32px -4px rgba(0, 0, 0, 0.4);
+  border-color: var(--dm-border-medium);
+}
+
+body.dark-mode .action-title {
+  color: var(--dm-text-primary);
+}
+
+body.dark-mode .action-description {
+  color: var(--dm-text-tertiary);
+}
+
+body.dark-mode .action-primary .action-icon {
+  background: rgba(92, 107, 69, 0.12);
+}
+
+body.dark-mode .action-success .action-icon {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+body.dark-mode .action-info .action-icon {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .quick-action-cards {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+  }
+
+  .action-card {
+    padding: var(--space-5);
+  }
+
+  .action-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    margin-bottom: var(--space-3);
+  }
+
+  .action-title {
+    font-size: var(--text-base);
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-action-cards {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}

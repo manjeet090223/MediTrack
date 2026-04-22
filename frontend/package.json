@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "axios": "^1.13.2",
+    "chart.js": "^4.4.1",
     "framer-motion": "^12.23.25",
     "multer": "^2.0.2",
     "react": "^19.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.2.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.0",
