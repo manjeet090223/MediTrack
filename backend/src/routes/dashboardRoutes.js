@@ -6,9 +6,18 @@ const mongoose = require("mongoose");
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 
 
-router.get("/summary", async (req, res) => {
+router.get("/summary", requireAuth, requireRole("Doctor", "Admin"), async (req, res) => {
   try {
-    const totalPatients = await User.countDocuments({ role: "Patient" });
+    const isDoctor = req.user.role === "Doctor";
+    const doctorFilter = isDoctor ? { doctor: new mongoose.Types.ObjectId(req.user.id) } : {};
+
+    let totalPatients = 0;
+    if (isDoctor) {
+      const uniquePatients = await Appointment.distinct("patient", doctorFilter);
+      totalPatients = uniquePatients.length;
+    } else {
+      totalPatients = await User.countDocuments({ role: "Patient" });
+    }
 
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
@@ -17,29 +26,36 @@ router.get("/summary", async (req, res) => {
     endOfDay.setHours(23, 59, 59, 999);
 
     const appointmentsToday = await Appointment.countDocuments({
+      ...doctorFilter,
       datetime: { $gte: startOfDay, $lte: endOfDay },
     });
 
     const pendingRequests = await Appointment.countDocuments({
+      ...doctorFilter,
       status: "Booked",
     });
 
     res.json({ totalPatients, appointmentsToday, pendingRequests });
   } catch (error) {
-    console.error("Admin Summary Error:", error);
+    console.error("Dashboard Summary Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 
-router.get("/appointments-trend", async (req, res) => {
+router.get("/appointments-trend", requireAuth, requireRole("Doctor", "Admin"), async (req, res) => {
   try {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
     sevenDaysAgo.setHours(0, 0, 0, 0);
 
+    const matchStage = { datetime: { $gte: sevenDaysAgo } };
+    if (req.user.role === "Doctor") {
+      matchStage.doctor = new mongoose.Types.ObjectId(req.user.id);
+    }
+
     const trend = await Appointment.aggregate([
-      { $match: { datetime: { $gte: sevenDaysAgo } } },
+      { $match: matchStage },
       {
         $group: {
           _id: { $dateToString: { format: "%Y-%m-%d", date: "$datetime" } },
@@ -70,23 +86,45 @@ router.get("/appointments-trend", async (req, res) => {
 });
 
 
-router.get("/new-patients", async (req, res) => {
+router.get("/new-patients", requireAuth, requireRole("Doctor", "Admin"), async (req, res) => {
   try {
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
     sixMonthsAgo.setDate(1);
     sixMonthsAgo.setHours(0, 0, 0, 0);
 
-    const patients = await User.aggregate([
-      { $match: { role: "Patient", createdAt: { $gte: sixMonthsAgo } } },
-      {
-        $group: {
-          _id: { $month: "$createdAt" },
-          patients: { $sum: 1 },
+    let patients = [];
+    if (req.user.role === "Doctor") {
+      patients = await Appointment.aggregate([
+        { $match: { doctor: new mongoose.Types.ObjectId(req.user.id) } },
+        { $sort: { datetime: 1 } },
+        {
+          $group: {
+            _id: "$patient",
+            firstVisit: { $first: "$datetime" },
+          },
         },
-      },
-      { $sort: { _id: 1 } },
-    ]);
+        { $match: { firstVisit: { $gte: sixMonthsAgo } } },
+        {
+          $group: {
+            _id: { $month: "$firstVisit" },
+            patients: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+    } else {
+      patients = await User.aggregate([
+        { $match: { role: "Patient", createdAt: { $gte: sixMonthsAgo } } },
+        {
+          $group: {
+            _id: { $month: "$createdAt" },
+            patients: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+    }
 
     const result = [];
     for (let i = 0; i < 6; i++) {
@@ -109,7 +147,7 @@ router.get("/new-patients", async (req, res) => {
   }
 });
 
-router.get("/today-schedule", async (req, res) => {
+router.get("/today-schedule", requireAuth, requireRole("Doctor", "Admin"), async (req, res) => {
   try {
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
@@ -117,7 +155,11 @@ router.get("/today-schedule", async (req, res) => {
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
+    const isDoctor = req.user.role === "Doctor";
+    const doctorFilter = isDoctor ? { doctor: new mongoose.Types.ObjectId(req.user.id) } : {};
+
     const appointments = await Appointment.find({
+      ...doctorFilter,
       datetime: { $gte: startOfDay, $lte: endOfDay },
     })
       .populate("patient", "name")
