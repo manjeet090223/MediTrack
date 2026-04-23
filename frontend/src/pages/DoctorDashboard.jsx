@@ -43,6 +43,10 @@ export default function DoctorDashboard() {
   const [newPatients, setNewPatients] = useState([]);
   const [todaySchedule, setTodaySchedule] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Chart Filters State
+  const [trendRange, setTrendRange] = useState("7d"); // '7d' or '30d'
+  const [patientRange, setPatientRange] = useState("6m"); // '6m' or '1y'
 
   const fetchDashboardData = async () => {
     try {
@@ -50,9 +54,9 @@ export default function DoctorDashboard() {
 
       const [summaryRes, trendRes, patientsRes, scheduleRes] = await Promise.all([
         api.get("/api/dashboard/summary"),
-        api.get("/api/dashboard/appointments-trend"),
-        api.get("/api/dashboard/new-patients"),
-        api.get("/api/dashboard/today-schedule").catch(() => ({ data: [] })) // Handle if not implemented in backend yet
+        api.get(`/api/dashboard/appointments-trend?range=${trendRange}`),
+        api.get(`/api/dashboard/new-patients?range=${patientRange}`),
+        api.get("/api/dashboard/today-schedule").catch(() => ({ data: [] }))
       ]);
 
       setSummary(summaryRes.data);
@@ -70,7 +74,7 @@ export default function DoctorDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [trendRange, patientRange]);
 
   // Custom Tooltip for Charts
   const CustomTooltip = ({ active, payload, label }) => {
@@ -203,9 +207,13 @@ export default function DoctorDashboard() {
                     <h3>Patient Growth</h3>
                     <p>New patients acquired per month</p>
                   </div>
-                  <select className="chart-filter">
-                    <option>This Year</option>
-                    <option>Last 6 Months</option>
+                  <select 
+                    className="chart-filter" 
+                    value={patientRange} 
+                    onChange={(e) => setPatientRange(e.target.value)}
+                  >
+                    <option value="1y">This Year</option>
+                    <option value="6m">Last 6 Months</option>
                   </select>
                 </div>
                 <div className="chart-wrapper">
@@ -232,9 +240,13 @@ export default function DoctorDashboard() {
                     <h3>Appointment Trends</h3>
                     <p>Daily consultation volume</p>
                   </div>
-                  <select className="chart-filter">
-                    <option>Last 7 Days</option>
-                    <option>Last 30 Days</option>
+                  <select 
+                    className="chart-filter" 
+                    value={trendRange} 
+                    onChange={(e) => setTrendRange(e.target.value)}
+                  >
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d">Last 30 Days</option>
                   </select>
                 </div>
                 <div className="chart-wrapper">

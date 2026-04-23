@@ -52,17 +52,19 @@ router.get("/summary", requireAuth, requireRole("Doctor", "Admin"), async (req, 
 
 router.get("/appointments-trend", requireAuth, requireRole("Doctor", "Admin"), async (req, res) => {
   try {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-    sevenDaysAgo.setHours(0, 0, 0, 0);
+    const { range } = req.query; // '7d' or '30d'
+    const daysToFetch = range === "30d" ? 30 : 7;
+    
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - (daysToFetch - 1));
+    startDate.setHours(0, 0, 0, 0);
 
     const role = req.user.role?.toLowerCase();
-    const matchStage = { datetime: { $gte: sevenDaysAgo } };
+    const matchStage = { datetime: { $gte: startDate } };
     
     if (role === "doctor") {
       matchStage.doctor = new mongoose.Types.ObjectId(req.user.id);
     } else if (role !== "admin") {
-      // If not admin and not doctor, ensure we match nothing
       matchStage._id = null;
     }
 
@@ -78,14 +80,15 @@ router.get("/appointments-trend", requireAuth, requireRole("Doctor", "Admin"), a
     ]);
 
     const result = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < daysToFetch; i++) {
       const date = new Date();
-      date.setDate(date.getDate() - (6 - i));
+      date.setDate(date.getDate() - (daysToFetch - 1 - i));
       const dateStr = date.toISOString().split("T")[0];
       const found = trend.find((t) => t._id === dateStr);
 
       result.push({
         day: date.toLocaleString("default", { weekday: "short" }),
+        date: dateStr,
         appointments: found ? found.appointments : 0,
       });
     }
@@ -100,10 +103,13 @@ router.get("/appointments-trend", requireAuth, requireRole("Doctor", "Admin"), a
 
 router.get("/new-patients", requireAuth, requireRole("Doctor", "Admin"), async (req, res) => {
   try {
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
-    sixMonthsAgo.setDate(1);
-    sixMonthsAgo.setHours(0, 0, 0, 0);
+    const { range } = req.query; // '6m' or '1y'
+    const monthsToFetch = range === "1y" ? 12 : 6;
+
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - (monthsToFetch - 1));
+    startDate.setDate(1);
+    startDate.setHours(0, 0, 0, 0);
 
     const role = req.user.role?.toLowerCase();
     let patients = [];
@@ -118,35 +124,38 @@ router.get("/new-patients", requireAuth, requireRole("Doctor", "Admin"), async (
             firstVisit: { $first: "$datetime" },
           },
         },
-        { $match: { firstVisit: { $gte: sixMonthsAgo } } },
+        { $match: { firstVisit: { $gte: startDate } } },
         {
           $group: {
             _id: { $month: "$firstVisit" },
+            year: { $year: "$firstVisit" },
             patients: { $sum: 1 },
           },
         },
-        { $sort: { _id: 1 } },
+        { $sort: { year: 1, _id: 1 } },
       ]);
     } else if (role === "admin") {
       patients = await User.aggregate([
-        { $match: { role: "Patient", createdAt: { $gte: sixMonthsAgo } } },
+        { $match: { role: "Patient", createdAt: { $gte: startDate } } },
         {
           $group: {
             _id: { $month: "$createdAt" },
+            year: { $year: "$createdAt" },
             patients: { $sum: 1 },
           },
         },
-        { $sort: { _id: 1 } },
+        { $sort: { year: 1, _id: 1 } },
       ]);
     }
 
     const result = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < monthsToFetch; i++) {
       const date = new Date();
-      date.setMonth(date.getMonth() - (5 - i));
+      date.setMonth(date.getMonth() - (monthsToFetch - 1 - i));
       const monthNum = date.getMonth() + 1;
+      const yearNum = date.getFullYear();
       const monthName = date.toLocaleString("default", { month: "short" });
-      const found = patients.find((p) => p._id === monthNum);
+      const found = patients.find((p) => p._id === monthNum && p.year === yearNum);
 
       result.push({
         month: monthName,

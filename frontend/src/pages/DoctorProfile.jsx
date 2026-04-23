@@ -129,7 +129,7 @@ export default function DoctorProfile() {
                 <p className="profile-email">{doctor.email}</p>
                 <span className="profile-role-badge">
                   <FiShield size={12} />
-                  Physician
+                  {doctor.specialization || "Physician"}
                 </span>
               </div>
 
