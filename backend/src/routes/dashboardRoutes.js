@@ -137,24 +137,26 @@ router.get("/new-patients", requireAuth, requireRole("Doctor", "Admin"), async (
         { $match: { firstVisit: { $gte: startDate } } },
         {
           $group: {
-            _id: { $month: "$firstVisit" },
-            year: { $year: "$firstVisit" },
-            patients: { $sum: 1 },
+            _id: { 
+              month: { $month: "$firstVisit" }, 
+              year: { $year: "$firstVisit" } 
+            },
+            count: { $sum: 1 },
           },
         },
-        { $sort: { year: 1, _id: 1 } },
       ]);
     } else if (role === "admin") {
       patients = await User.aggregate([
         { $match: { role: "Patient", createdAt: { $gte: startDate } } },
         {
           $group: {
-            _id: { $month: "$createdAt" },
-            year: { $year: "$createdAt" },
-            patients: { $sum: 1 },
+            _id: { 
+              month: { $month: "$createdAt" }, 
+              year: { $year: "$createdAt" } 
+            },
+            count: { $sum: 1 },
           },
         },
-        { $sort: { year: 1, _id: 1 } },
       ]);
     }
 
@@ -165,11 +167,14 @@ router.get("/new-patients", requireAuth, requireRole("Doctor", "Admin"), async (
       const monthNum = date.getMonth() + 1;
       const yearNum = date.getFullYear();
       const monthName = date.toLocaleString("default", { month: "short" });
-      const found = patients.find((p) => p._id === monthNum && p.year === yearNum);
+      
+      const found = patients.find(
+        (p) => p._id.month === monthNum && p._id.year === yearNum
+      );
 
       result.push({
         month: monthName,
-        patients: found ? found.patients : 0,
+        patients: found ? found.count : 0,
       });
     }
 
