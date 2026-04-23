@@ -285,7 +285,7 @@ export default function Appointments() {
   // Summary logic
   const today = new Date().toDateString();
   const summary = {
-    todayTotal: appointments.filter(a => new Date(a.datetime).toDateString() === today).length,
+    todayTotal: appointments.filter(a => new Date(a.datetime).toDateString() === today && a.status !== "Cancelled").length,
     pending: appointments.filter(a => a.status === "Booked").length,
     completed: appointments.filter(a => a.status === "Completed").length
   };
