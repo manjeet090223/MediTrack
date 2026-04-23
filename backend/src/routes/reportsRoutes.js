@@ -41,4 +41,7 @@ router.get("/my-reports", requireAuth, async (req, res) => {
   }
 });
 
+// Delete report
+router.delete("/:id", requireAuth, controller.deleteReport);
+
 module.exports = router;

@@ -53,4 +53,30 @@ exports.uploadReport = async (req, res) => {
   }
 };
 
-exports.uploadMiddleware = upload.single("report"); 
+exports.uploadMiddleware = upload.single("report");
+
+// Delete report
+exports.deleteReport = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+    if (!report) return res.status(404).json({ message: "Report not found" });
+
+    // Check ownership
+    if (report.patient.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // Delete file from disk
+    const filePath = path.join(process.cwd(), "src/uploads/reports", report.filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    await Report.findByIdAndDelete(req.params.id);
+
+    return res.json({ message: "Report deleted successfully" });
+  } catch (err) {
+    console.error("Delete Report Error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
