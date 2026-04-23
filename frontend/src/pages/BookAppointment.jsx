@@ -177,9 +177,9 @@ export default function BookAppointment() {
                               </div>
                               <div className="doctor-option-info">
                                 <h4>{doc.name}</h4>
-                                <span className="doctor-spec">General Physician</span>
+                                <span className="doctor-spec">{doc.specialization || "General Physician"}</span>
                                 <div className="doctor-meta">
-                                  <span><FiAward size={12} /> 5+ yrs exp</span>
+                                  <span><FiAward size={12} /> {doc.experience || 0}+ yrs exp</span>
                                   <span><FiStar size={12} /> 4.8</span>
                                 </div>
                               </div>
@@ -223,7 +223,7 @@ export default function BookAppointment() {
                               {selectedDoctor?.name?.charAt(0)?.toUpperCase()}
                             </div>
                             <h4 className="preview-name">{selectedDoctor?.name}</h4>
-                            <span className="preview-spec">General Physician</span>
+                            <span className="preview-spec">{selectedDoctor?.specialization || "General Physician"}</span>
 
                             <div className="preview-details">
                               <div className="preview-detail-row">

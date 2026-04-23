@@ -128,8 +128,12 @@ exports.updatePrescriptionStatus = async (req, res) => {
       return res.status(404).json({ message: "Prescription not found" });
     }
 
-    if (prescription.doctorId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "You can only modify your own prescriptions." });
+    // Allow both the doctor and the patient (owner) to update status
+    const isDoctor = prescription.doctorId.toString() === req.user.id;
+    const isPatient = prescription.patientId.toString() === req.user.id;
+
+    if (!isDoctor && !isPatient) {
+      return res.status(403).json({ message: "You are not authorized to modify this prescription." });
     }
 
     const { status } = req.body;

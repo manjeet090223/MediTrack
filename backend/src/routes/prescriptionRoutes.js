@@ -26,11 +26,11 @@ router.get(
 // Doctor: Update prescription
 router.put("/:id", requireAuth, requireRole("Doctor"), updatePrescription);
 
-// Doctor: Toggle prescription status
+// Doctor / Patient: Toggle prescription status
 router.patch(
   "/:id/status",
   requireAuth,
-  requireRole("Doctor"),
+  requireRole("Doctor", "Patient"),
   updatePrescriptionStatus
 );
 

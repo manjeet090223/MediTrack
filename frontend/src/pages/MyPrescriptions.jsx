@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { getMyPrescriptions } from "../api/axios";
+import { getMyPrescriptions, updatePrescriptionStatus } from "../api/axios";
+import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiFileText,
@@ -31,6 +32,18 @@ export default function MyPrescriptions() {
     };
     fetchPrescriptions();
   }, []);
+
+  const handleStatusUpdate = async (id, newStatus) => {
+    try {
+      await updatePrescriptionStatus(id, newStatus);
+      // Update local state
+      setPrescriptions((prev) =>
+        prev.map((rx) => (rx._id === id ? { ...rx, status: newStatus } : rx))
+      );
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    }
+  };
 
   const activePrescriptions = prescriptions.filter((p) => p.status === "active");
   const completedPrescriptions = prescriptions.filter((p) => p.status === "completed");
@@ -225,6 +238,19 @@ export default function MyPrescriptions() {
                         <div className="myrx-notes-block">
                           <p className="myrx-notes-label">Doctor's Notes</p>
                           <p className="myrx-notes-text">{rx.notes}</p>
+                        </div>
+                      )}
+
+                      {/* Action Button */}
+                      {rx.status === "active" && (
+                        <div className="myrx-card-actions">
+                          <button
+                            className="btn-mark-done"
+                            onClick={() => handleStatusUpdate(rx._id, "completed")}
+                          >
+                            <FiCheckCircle size={16} />
+                            Mark as Completed
+                          </button>
                         </div>
                       )}
                     </div>

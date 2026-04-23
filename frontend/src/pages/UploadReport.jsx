@@ -306,7 +306,7 @@ export default function UploadReport() {
                         <td className="td-actions">
                           <div className="report-actions">
                             <a
-                              href={`${import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"}/uploads/reports/${r.filename}`}
+                              href={`${import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"}/uploads/reports/${encodeURIComponent(r.filename)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="action-btn action-view"
@@ -315,7 +315,7 @@ export default function UploadReport() {
                               <FiEye size={15} />
                             </a>
                             <a
-                              href={`${import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"}/uploads/reports/${r.filename}`}
+                              href={`${import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"}/uploads/reports/${encodeURIComponent(r.filename)}`}
                               download={r.originalName || r.filename}
                               className="action-btn action-download"
                               title="Download"

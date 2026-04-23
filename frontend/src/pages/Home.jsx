@@ -13,7 +13,10 @@ import {
   FiUsers,
   FiBarChart2,
   FiHeart,
-  FiInfo
+  FiInfo,
+  FiChevronLeft,
+  FiChevronRight,
+  FiClock
 } from "react-icons/fi";
 
 import Sidebar from "../components/Sidebar";
@@ -28,6 +31,7 @@ import "./Home.css";
 
 export default function Home() {
   const navigate = useNavigate();
+  const carouselRef = React.useRef(null);
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [stats, setStats] = useState({
@@ -37,12 +41,6 @@ export default function Home() {
   });
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [healthMetrics, setHealthMetrics] = useState({
-    healthScore: 75,
-    medicineAdherence: 65,
-    previousHealthScore: 70,
-    previousAdherence: 60
-  });
 
   const smartMessages = useSmartMessages(stats, appointments);
 
@@ -67,8 +65,12 @@ export default function Home() {
     fetchData();
   }, [user?.id]);
 
-  const healthTrend = getTrendIndicator(healthMetrics.healthScore, healthMetrics.previousHealthScore);
-  const adherenceTrend = getTrendIndicator(healthMetrics.medicineAdherence, healthMetrics.previousAdherence);
+  const scrollCarousel = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = direction === "left" ? -400 : 400;
+      carouselRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -185,91 +187,69 @@ export default function Home() {
             />
           </motion.div>
 
-          {/* Health Metrics & Appointments Section */}
-          <div className="dashboard-grid">
-            {/* Left Column - Health Metrics */}
-            <motion.div
-              className="health-metrics-card card-elevated"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <div className="card-header">
-                <h3>Health Metrics</h3>
-              </div>
-
-              <div className="metrics-row">
-                <div className="metric">
-                  <div className="metric-label">Health Score</div>
-                  <div className="metric-value">{healthMetrics.healthScore}%</div>
-                  <div className="metric-bar">
-                    <div
-                      className="metric-bar-fill"
-                      style={{
-                        width: `${healthMetrics.healthScore}%`,
-                        background: "linear-gradient(90deg, #10B981, #059669)"
-                      }}
-                    ></div>
-                  </div>
-                  {healthTrend && (
-                    <span className={`trend ${healthTrend.trend}`}>
-                      {healthTrend.trend === "up" ? "↑" : "↓"} {healthTrend.percentage}%
-                    </span>
-                  )}
-                </div>
-
-                <div className="metric">
-                  <div className="metric-label">Medicine Adherence</div>
-                  <div className="metric-value">{healthMetrics.medicineAdherence}%</div>
-                  <div className="metric-bar">
-                    <div
-                      className="metric-bar-fill"
-                      style={{
-                        width: `${healthMetrics.medicineAdherence}%`,
-                        background: "linear-gradient(90deg, #0EA5E9, #0284C7)"
-                      }}
-                    ></div>
-                  </div>
-                  {adherenceTrend && (
-                    <span className={`trend ${adherenceTrend.trend}`}>
-                      {adherenceTrend.trend === "up" ? "↑" : "↓"} {adherenceTrend.percentage}%
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="metrics-info">
-                <p className="info-box success">
-                  <FiCheckCircle style={{ display: 'inline', verticalAlign: 'middle', marginRight: '6px' }} />{smartMessages.health.medicine.message}
-                </p>
-                <p className="info-box primary">
-                  <FiInfo style={{ display: 'inline', verticalAlign: 'middle', marginRight: '6px' }} />{smartMessages.health.health.message}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Right Column - Upcoming Appointments */}
-            <motion.div
-              className="appointments-card card-elevated"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <div className="card-header">
-                <h3>Upcoming Appointments</h3>
+          {/* Full Width Appointments Section */}
+          <motion.div
+            className="appointments-card-full"
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="carousel-header">
+              <h3>Upcoming Appointments</h3>
+              <div className="carousel-controls">
                 {appointments.length > 0 && (
-                  <span className="badge">{appointments.length}</span>
+                  <span className="carousel-count">{appointments.length}</span>
                 )}
+                <button className="nav-btn" onClick={() => scrollCarousel("left")}>
+                  <FiChevronLeft size={20} />
+                </button>
+                <button className="nav-btn" onClick={() => scrollCarousel("right")}>
+                  <FiChevronRight size={20} />
+                </button>
               </div>
+            </div>
 
-              <AppointmentsList
-                appointments={appointments}
-                loading={loading}
-                limit={5}
-                onViewAll={() => navigate("/my-appointments")}
-              />
-            </motion.div>
-          </div>
+            <div className="appointments-carousel" ref={carouselRef}>
+              {loading ? (
+                [1, 2, 3].map((n) => (
+                  <div key={n} className="appointment-card-horizontal skeleton-card">
+                    <div className="skeleton-date"></div>
+                    <div className="skeleton-info"></div>
+                  </div>
+                ))
+              ) : appointments.length === 0 ? (
+                <div className="appointments-empty-full">
+                  <FiCalendar size={48} />
+                  <p>No upcoming appointments found.</p>
+                </div>
+              ) : (
+                appointments.map((appt, idx) => (
+                  <motion.div
+                    key={appt._id || idx}
+                    className="appointment-card-horizontal"
+                    whileHover={{ y: -4 }}
+                  >
+                    <div className="date-badge">
+                      <span className="date-day">{new Date(appt.datetime).getDate()}</span>
+                      <span className="date-month">
+                        {new Date(appt.datetime).toLocaleDateString("en-US", { month: "short" })}
+                      </span>
+                    </div>
+                    <div className="appt-info-main">
+                      <h4 className="appt-doctor-name">{appt.doctor?.name || "Dr. Rajiv Kumar"}</h4>
+                      <div className="appt-time-info">
+                        <FiClock size={14} />
+                        <span>{new Date(appt.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
+                    </div>
+                    <span className={`status-badge-mini status-${appt.status.toLowerCase()}`}>
+                      {appt.status}
+                    </span>
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </motion.div>
 
           {/* Quick Actions */}
           <motion.div

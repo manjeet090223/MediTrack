@@ -296,7 +296,7 @@ export default function MedicalRecords() {
                                   r.originalName
                                 );
                                 const isPdf = /\.pdf$/i.test(r.originalName);
-                                const fileUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/reports/${r.filename}`;
+                                const fileUrl = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"}/uploads/reports/${encodeURIComponent(r.filename)}`;
                                 return (
                                   <div key={r._id} className="mr-report-item">
                                     <div className="mr-report-icon">
