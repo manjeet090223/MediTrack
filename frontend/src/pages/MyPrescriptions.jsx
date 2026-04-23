@@ -174,7 +174,7 @@ export default function MyPrescriptions() {
                         <div className="myrx-card-meta">
                           <span className="myrx-meta-item">
                             <FiUser size={12} />
-                            Dr. {rx.doctorId?.name || "Unknown"}
+                            {rx.doctorId?.name || "Unknown"}
                           </span>
                           <span className="myrx-meta-item">
                             <FiClock size={12} />

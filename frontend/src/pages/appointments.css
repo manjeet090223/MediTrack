@@ -1135,3 +1135,9 @@ body.dark-mode .pag-num.active {
   background-color: var(--green-mid);
   color: white;
 }
+@media (max-width: 900px) {
+  .appt-main-content {
+    margin-left: 0 !important;
+    padding: var(--space-4);
+  }
+}

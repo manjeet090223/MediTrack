@@ -51,7 +51,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: var(--z-fixed);
+  z-index: var(--z-modal); /* Ensure sidebar is above the blurred overlay (1040) */
   overflow-y: auto;
   box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.15);
   transition: transform var(--transition-base);
@@ -349,8 +349,19 @@ body.dark-mode .theme-toggle:hover {
     transform: translateX(-100%);
   }
 
-  .main-content {
+  .main-content,
+  .page-main,
+  .patients-main-content,
+  .appt-main-content,
+  .pa-main-content,
+  .dashboard-main,
+  .cs-main,
+  .mr-main,
+  .up-main,
+  .pp-main,
+  .dp-main {
     margin-left: 0 !important;
+    max-width: 100% !important;
   }
 }
 

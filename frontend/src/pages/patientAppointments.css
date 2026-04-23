@@ -613,7 +613,7 @@ body.dark-mode .pagination-num.active {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .page-main {
-    margin-left: 0;
+    margin-left: 0 !important;
   }
 
   .page-container {

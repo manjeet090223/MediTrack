@@ -80,7 +80,7 @@ export default function AppointmentsList({
 
           <div className="appointment-details">
             <h4 className="appointment-doctor">
-              {apt.doctor?.name ? `Dr. ${apt.doctor.name}` : "Dr. TBA"}
+              {apt.doctor?.name ? `${apt.doctor.name}` : "Dr. TBA"}
             </h4>
             <div className="appointment-info">
               <span className="info-item">
