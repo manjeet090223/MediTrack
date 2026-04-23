@@ -39,7 +39,6 @@ export default function UploadReport() {
     fetchReports();
   }, []);
 
-  // File selection
   const handleFileSelect = (selectedFile) => {
     const allowed = ["application/pdf", "image/jpeg", "image/jpg", "image/png"];
     if (!allowed.includes(selectedFile.type)) {
@@ -57,7 +56,6 @@ export default function UploadReport() {
     if (e.target.files[0]) handleFileSelect(e.target.files[0]);
   };
 
-  // Drag & Drop
   const handleDrag = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -77,7 +75,6 @@ export default function UploadReport() {
     }
   }, []);
 
-  // Upload
   const handleUpload = async () => {
     if (!file) {
       toast.error("Please select a file to upload");
@@ -102,7 +99,6 @@ export default function UploadReport() {
     }
   };
 
-  // Delete
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this report?")) return;
     try {
@@ -114,7 +110,6 @@ export default function UploadReport() {
     }
   };
 
-  // Helpers
   const formatFileSize = (bytes) => {
     if (!bytes) return "—";
     if (bytes < 1024) return bytes + " B";
@@ -141,7 +136,7 @@ export default function UploadReport() {
 
       <main className="page-main">
         <div className="page-container">
-          {/* Page Header */}
+
           <motion.div
             className="page-header"
             initial={{ opacity: 0, y: -12 }}
@@ -154,14 +149,14 @@ export default function UploadReport() {
             </div>
           </motion.div>
 
-          {/* Upload Card */}
+
           <motion.div
             className="upload-card"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            {/* Drop Zone */}
+
             <div
               className={`drop-zone ${dragActive ? "drag-active" : ""} ${file ? "has-file" : ""}`}
               onDragEnter={handleDrag}
@@ -218,7 +213,7 @@ export default function UploadReport() {
               )}
             </div>
 
-            {/* Upload Button */}
+
             {file && (
               <button
                 className="btn-upload-action"
@@ -240,7 +235,7 @@ export default function UploadReport() {
             )}
           </motion.div>
 
-          {/* Reports Section */}
+
           <motion.div
             className="reports-section"
             initial={{ opacity: 0, y: 12 }}

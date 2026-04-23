@@ -5,7 +5,7 @@ const controller = require("../controllers/reportsController");
 const mongoose = require("mongoose");
 const Report = require("../models/Report"); 
 
-// Upload report
+
 router.post(
   "/upload",
   requireAuth,
@@ -14,7 +14,7 @@ router.post(
   controller.uploadReport
 );
 
-// GET reports for a specific patient by ID (Doctor / Admin)
+
 router.get("/patient/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
@@ -41,7 +41,7 @@ router.get("/my-reports", requireAuth, async (req, res) => {
   }
 });
 
-// Delete report
+
 router.delete("/:id", requireAuth, controller.deleteReport);
 
 module.exports = router;

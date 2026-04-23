@@ -1,4 +1,4 @@
-/* ===== SIDEBAR — PREMIUM DARK GREEN ===== */
+
 
 .hamburger-btn {
   display: none;
@@ -51,13 +51,13 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: var(--z-modal); /* Ensure sidebar is above the blurred overlay (1040) */
+  z-index: var(--z-modal); 
   overflow-y: auto;
   box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.15);
   transition: transform var(--transition-base);
 }
 
-/* Logo & Header */
+
 .sidebar-header {
   margin-bottom: var(--space-8);
   padding-bottom: var(--space-6);
@@ -94,7 +94,7 @@
   letter-spacing: -0.02em;
 }
 
-/* User Info Card */
+
 .user-info-card {
   display: flex;
   align-items: center;
@@ -155,7 +155,7 @@
   letter-spacing: 0.05em;
 }
 
-/* Navigation Menu */
+
 .sidebar-nav {
   flex: 1;
   overflow-y: auto;
@@ -196,7 +196,7 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ===== ACTIVE ITEM — pill highlight with glow ===== */
+
 .menu-item.active .menu-link {
   background: rgba(255, 255, 255, 0.14);
   color: #FFFFFF;
@@ -224,14 +224,14 @@
   flex-shrink: 0;
 }
 
-/* Sidebar Divider */
+
 .sidebar-divider {
   height: 1px;
   background: rgba(255, 255, 255, 0.06);
   margin: var(--space-4) 0;
 }
 
-/* Sidebar Footer */
+
 .sidebar-footer {
   display: flex;
   flex-direction: column;
@@ -267,7 +267,7 @@
   color: #FCA5A5;
 }
 
-/* ===== DARK MODE ===== */
+
 body.dark-mode .sidebar {
   background: linear-gradient(180deg, var(--dm-bg-sidebar) 0%, #0D0F14 100%);
   box-shadow: 4px 0 24px -4px rgba(0, 0, 0, 0.4);
@@ -325,7 +325,7 @@ body.dark-mode .theme-toggle:hover {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 900px) {
   .hamburger-btn {
     display: flex;

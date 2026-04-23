@@ -77,7 +77,7 @@ export default function MedicalRecords() {
     }
   };
 
-  // When tab changes, clear expanded state
+
   useEffect(() => {
     setExpandedPatient(null);
     setPatientRecords({});
@@ -109,7 +109,7 @@ export default function MedicalRecords() {
       <Sidebar />
       <main className="mr-main">
         <div className="mr-container">
-          {/* Header */}
+
           <motion.div
             className="mr-header"
             initial={{ opacity: 0, y: -12 }}
@@ -126,7 +126,7 @@ export default function MedicalRecords() {
             </div>
           </motion.div>
 
-          {/* Tabs + Search */}
+
           <motion.div
             className="mr-toolbar"
             initial={{ opacity: 0, y: 8 }}
@@ -160,7 +160,7 @@ export default function MedicalRecords() {
             </div>
           </motion.div>
 
-          {/* Patient List */}
+
           <div className="mr-patient-list">
             {loading ? (
               <div className="mr-loading">
@@ -183,7 +183,7 @@ export default function MedicalRecords() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.03 }}
                   >
-                    {/* Patient Row Header */}
+
                     <button
                       className={`mr-patient-header ${expandedPatient === patient._id ? "mr-patient-expanded" : ""}`}
                       onClick={() => togglePatient(patient._id)}
@@ -220,7 +220,7 @@ export default function MedicalRecords() {
                       </div>
                     </button>
 
-                    {/* Expanded Records */}
+
                     <AnimatePresence>
                       {expandedPatient === patient._id && (
                         <motion.div
@@ -347,7 +347,7 @@ export default function MedicalRecords() {
                             </div>
                           )}
 
-                          {/* Quick link to full patient detail */}
+
                           <button
                             className="mr-view-full"
                             onClick={() => navigate(`/patients/${patient._id}`)}

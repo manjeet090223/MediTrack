@@ -122,7 +122,7 @@ export default function Home() {
 
       <main className="dashboard-main">
         <div className="dashboard-container">
-          {/* Welcome Section */}
+
           <motion.div
             className="welcome-section"
             variants={itemVariants}
@@ -139,7 +139,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Status Banner */}
+
           <motion.div
             variants={itemVariants}
             initial="hidden"
@@ -153,7 +153,7 @@ export default function Home() {
             />
           </motion.div>
 
-          {/* KPI Cards Grid */}
+
           <motion.div
             className="kpi-grid"
             variants={containerVariants}
@@ -187,7 +187,7 @@ export default function Home() {
             />
           </motion.div>
 
-          {/* Full Width Appointments Section */}
+
           <motion.div
             className="appointments-card-full"
             variants={itemVariants}
@@ -251,7 +251,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Quick Actions */}
+
           <motion.div
             className="quick-actions-section"
             variants={itemVariants}
@@ -265,7 +265,7 @@ export default function Home() {
             <QuickActionCards actions={quickActions} />
           </motion.div>
 
-          {/* Feature Cards */}
+
           <motion.div
             className="features-section"
             variants={containerVariants}

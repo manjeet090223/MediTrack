@@ -1,13 +1,11 @@
 const Appointment = require('../models/Appointment');
 const User = require('../models/userModel');
 
-// Create appointment 
+
 exports.createAppointment = async (req, res) => {
   try {
     const { doctorId, patientId, datetime, reason } = req.body;
 
-    // Doctor creating appointment: patient comes from body, doctor is self
-    // Patient creating appointment: doctor comes from body, patient is self
     let patient, doctor;
     if (req.user.role === 'Doctor') {
       if (!patientId) return res.status(400).json({ message: 'patientId is required' });
@@ -30,7 +28,7 @@ exports.createAppointment = async (req, res) => {
 
     await appt.save();
 
-    // Auto-link patient to doctor's linkedPatients list
+
     await User.findByIdAndUpdate(doctor, {
       $addToSet: { linkedPatients: patient },
     });
@@ -46,7 +44,7 @@ exports.createAppointment = async (req, res) => {
   }
 };
 
-// Get appointments depending on role
+
 exports.getAppointments = async (req, res) => {
   try {
     let filter = {};
@@ -65,7 +63,7 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
-// Get appointments for a specific patient 
+
 exports.getPatientAppointments = async (req, res) => {
   try {
     const patientId = req.params.id;
@@ -85,7 +83,7 @@ exports.getPatientAppointments = async (req, res) => {
   }
 };
 
-// Cancel appointment 
+ 
 exports.cancelAppointment = async (req, res) => {
   try {
     const appt = await Appointment.findById(req.params.id);
@@ -105,7 +103,7 @@ exports.cancelAppointment = async (req, res) => {
   }
 };
 
-// Update appointment 
+
 exports.updateAppointment = async (req, res) => {
   try {
     const appt = await Appointment.findById(req.params.id);
@@ -121,7 +119,7 @@ exports.updateAppointment = async (req, res) => {
     if (datetime) appt.datetime = datetime;
     if (reason) appt.reason = reason;
     if (typeof notes !== 'undefined') appt.notes = notes;
-    // Only Doctor/Admin can change status
+
     if (status && ['Booked','Cancelled','Completed'].includes(status) && req.user.role !== 'Patient')
       appt.status = status;
 
@@ -133,13 +131,13 @@ exports.updateAppointment = async (req, res) => {
   }
 };
 
-// Delete appointment
+
 exports.deleteAppointment = async (req, res) => {
   try {
     const appt = await Appointment.findById(req.params.id);
     if (!appt) return res.status(404).json({ message: 'Appointment not found' });
 
-    // Only the owning doctor or admin can delete
+
     if (req.user.role === 'Doctor' && appt.doctor.toString() !== req.user.id)
       return res.status(403).json({ message: 'Forbidden' });
 

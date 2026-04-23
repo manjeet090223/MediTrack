@@ -19,7 +19,6 @@ const users = [
   { name: "Dr. Rajiv Kumar", email: "rajiv@example.com", password: bcrypt.hashSync("password123", 10), role: "Doctor" },
   { name: "Manjeet Singh", email: "manjeet@example.com", password: bcrypt.hashSync("password123", 10), role: "Patient" },
   { name: "Rohit Mehra", email: "rohit@example.com", password: bcrypt.hashSync("password123", 10), role: "Patient" },
-  { name: "Admin User", email: "admin@example.com", password: bcrypt.hashSync("admin123", 10), role: "Admin" },
 ];
 
 const appointments = [

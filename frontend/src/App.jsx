@@ -5,22 +5,22 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Pages
-import Home from "./pages/Home"; // Patient Dashboard
-import DoctorDashboard from "./pages/DoctorDashboard"; // Doctor Dashboard
-import Appointments from "./pages/Appointments"; // Doctor Appointments
-import PatientAppointments from "./pages/PatientAppointments"; // Patient Appointments
+
+import Home from "./pages/Home"; 
+import DoctorDashboard from "./pages/DoctorDashboard"; 
+import Appointments from "./pages/Appointments"; 
+import PatientAppointments from "./pages/PatientAppointments"; 
 import BookAppointment from "./pages/BookAppointment";
 import Patients from "./pages/Patients";
-import PatientDetails from "./pages/PatientDetails"; // view patient details only
-import UploadReport from "./pages/UploadReport"; // Patient report upload
+import PatientDetails from "./pages/PatientDetails"; 
+import UploadReport from "./pages/UploadReport"; 
 import PatientProfile from "./pages/PatientProfile";
-import DoctorProfile from "./pages/DoctorProfile"; // Doctor profile
-import MedicalRecords from "./pages/MedicalRecords"; // Doctor medical records
-import ClinicSettings from "./pages/ClinicSettings"; // Doctor clinic settings
-import MyPrescriptions from "./pages/MyPrescriptions"; // Patient prescriptions
+import DoctorProfile from "./pages/DoctorProfile"; 
+import MedicalRecords from "./pages/MedicalRecords"; 
+import ClinicSettings from "./pages/ClinicSettings"; 
+import MyPrescriptions from "./pages/MyPrescriptions"; 
 
-// Toastify
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -120,7 +120,7 @@ export default function App() {
         <Route
           path="/patients/:id"
           element={
-            <ProtectedRoute allowedRoles={["Doctor", "Admin"]}>
+            <ProtectedRoute allowedRoles={["Doctor"]}>
               <PatientDetails />
             </ProtectedRoute>
           }

@@ -41,13 +41,13 @@ export default function PatientDetails() {
   const [prescriptions, setPrescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // History table filters
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Prescription modal
+
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
   const [prescriptionLoading, setPrescriptionLoading] = useState(false);
   const [prescriptionForm, setPrescriptionForm] = useState({
@@ -57,13 +57,13 @@ export default function PatientDetails() {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  // Reports modal
+
   const [showReportsModal, setShowReportsModal] = useState(false);
   const [reports, setReports] = useState([]);
   const [reportsLoading, setReportsLoading] = useState(false);
   const [previewReport, setPreviewReport] = useState(null);
 
-  // Active tab
+
   const [activeTab, setActiveTab] = useState("prescriptions");
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function PatientDetails() {
     loadData();
   }, [id]);
 
-  // --- Prescription Handlers ---
+
   const addMedicineRow = () => {
     setPrescriptionForm((prev) => ({
       ...prev,
@@ -169,7 +169,7 @@ export default function PatientDetails() {
     }
   };
 
-  // ── Reports modal ────────────────────────────────────────────
+
   const handleOpenReports = async () => {
     setShowReportsModal(true);
     setPreviewReport(null);
@@ -251,7 +251,7 @@ export default function PatientDetails() {
           transition={{ duration: 0.3 }}
         >
           
-          {/* HEADER SECTION */}
+
           <header className="patients-header">
             <div className="header-nav-group">
               <button className="back-btn" onClick={() => navigate("/patients")}>
@@ -282,7 +282,7 @@ export default function PatientDetails() {
             </div>
           </header>
 
-          {/* PROFILE OVERVIEW CARD */}
+
           <section className="profile-overview-card">
             <div className="profile-card-header">
               <div className="profile-avatar-large">
@@ -328,7 +328,7 @@ export default function PatientDetails() {
             </div>
           </section>
 
-          {/* TAB NAVIGATION */}
+
           <div className="rx-tabs">
             <button
               className={`rx-tab ${activeTab === "prescriptions" ? "rx-tab-active" : ""}`}
@@ -346,14 +346,14 @@ export default function PatientDetails() {
             </button>
           </div>
 
-          {/* PRESCRIPTIONS TAB */}
+
           {activeTab === "prescriptions" && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25 }}
             >
-              {/* Active Prescriptions */}
+
               {activePrescriptions.length > 0 && (
                 <>
                   <div className="rx-section-label">
@@ -413,7 +413,7 @@ export default function PatientDetails() {
                 </>
               )}
 
-              {/* Completed Prescriptions */}
+
               {completedPrescriptions.length > 0 && (
                 <>
                   <div className="rx-section-label rx-section-completed">
@@ -487,7 +487,7 @@ export default function PatientDetails() {
             </motion.div>
           )}
 
-          {/* APPOINTMENT HISTORY TAB */}
+
           {activeTab === "history" && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
@@ -577,7 +577,7 @@ export default function PatientDetails() {
                 )}
               </div>
 
-              {/* Pagination */}
+
               {totalPages > 1 && (
                 <div className="patients-pagination">
                   <button
@@ -611,9 +611,7 @@ export default function PatientDetails() {
           )}
         </motion.div>
 
-        {/* ══════════════════════════════════════════
-            VIEW REPORTS MODAL
-        ══════════════════════════════════════════ */}
+      
         <AnimatePresence>
           {showReportsModal && (
             <motion.div
@@ -631,7 +629,7 @@ export default function PatientDetails() {
                 transition={{ duration: 0.22, ease: "easeOut" }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Header */}
+
                 <div className="ep-header">
                   <div className="ep-header-left">
                     <div className="ep-avatar rpt-avatar">
@@ -650,7 +648,7 @@ export default function PatientDetails() {
                   </button>
                 </div>
 
-                {/* Body */}
+
                 <div className="rpt-body">
                   {reportsLoading ? (
                     <div className="rpt-loading">
@@ -664,7 +662,7 @@ export default function PatientDetails() {
                     </div>
                   ) : (
                     <>
-                      {/* Preview pane */}
+
                       {previewReport && (
                         <div className="rpt-preview">
                           <div className="rpt-preview-bar">
@@ -693,7 +691,7 @@ export default function PatientDetails() {
                         </div>
                       )}
 
-                      {/* File list */}
+
                       <ul className="rpt-list">
                         {reports.map((r) => {
                           const isImage = /\.(jpg|jpeg|png)$/i.test(r.originalName);
@@ -741,7 +739,7 @@ export default function PatientDetails() {
           )}
         </AnimatePresence>
 
-        {/* ADD PRESCRIPTION MODAL */}
+
         <AnimatePresence>
           {showPrescriptionModal && (
             <motion.div
@@ -773,7 +771,7 @@ export default function PatientDetails() {
                 </div>
 
                 <form className="rx-modal-form" onSubmit={handleSubmitPrescription}>
-                  {/* Diagnosis */}
+
                   <div className="rx-form-group">
                     <label className="rx-form-label">
                       Diagnosis <span className="rx-required">*</span>
@@ -792,7 +790,7 @@ export default function PatientDetails() {
                     )}
                   </div>
 
-                  {/* Notes */}
+
                   <div className="rx-form-group">
                     <label className="rx-form-label">Notes</label>
                     <textarea
@@ -806,7 +804,7 @@ export default function PatientDetails() {
                     />
                   </div>
 
-                  {/* Medicines */}
+
                   <div className="rx-form-group">
                     <div className="rx-medicines-header">
                       <label className="rx-form-label">
@@ -872,7 +870,7 @@ export default function PatientDetails() {
                     </div>
                   </div>
 
-                  {/* Actions */}
+
                   <div className="rx-modal-actions">
                     <button
                       type="button"

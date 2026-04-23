@@ -1,8 +1,3 @@
-/**
- * Custom hook for generating rule-based smart messages
- * Non-AI, deterministic messages based on data
- */
-
 export const useSmartMessages = (stats, appointments) => {
   const generateGreeting = (hour = new Date().getHours()) => {
     if (hour < 12) return "Good Morning";

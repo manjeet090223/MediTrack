@@ -1,4 +1,4 @@
-/* ===== KPI CARD — Premium Layered Design ===== */
+
 
 .kpi-card {
   background: var(--bg-card);
@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 
-/* Top accent bar — hidden by default, shows on hover */
+
 .kpi-card::before {
   content: "";
   position: absolute;
@@ -39,7 +39,7 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* Color variants — accent bar color */
+
 .kpi-card.kpi-primary::before {
   background: var(--green-primary);
 }
@@ -60,7 +60,7 @@
   background: var(--info-500);
 }
 
-/* ===== HEADER ===== */
+
 .kpi-header {
   display: flex;
   align-items: flex-start;
@@ -68,7 +68,7 @@
   margin-bottom: var(--space-5);
 }
 
-/* Icon background — soft tinted circles */
+
 .kpi-icon {
   width: 50px;
   height: 50px;
@@ -140,7 +140,7 @@
   margin: 0;
 }
 
-/* ===== ACTION LINK ===== */
+
 .kpi-action {
   background: transparent;
   color: var(--green-primary);
@@ -161,7 +161,7 @@
   transform: translateX(4px);
 }
 
-/* ===== SKELETON LOADER ===== */
+
 .kpi-skeleton {
   display: flex;
   gap: var(--space-4);
@@ -195,7 +195,7 @@
   border-radius: var(--radius-md);
 }
 
-/* ===== DARK MODE ===== */
+
 body.dark-mode .kpi-card {
   background: var(--dm-bg-secondary);
   border-color: var(--dm-border-light);
@@ -245,7 +245,7 @@ body.dark-mode .skeleton-value {
   background: var(--dm-border-light);
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 768px) {
   .kpi-card {
     padding: var(--space-5);

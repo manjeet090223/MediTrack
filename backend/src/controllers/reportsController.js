@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const Report = require("../models/Report"); 
 
-// Storage configuration
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(process.cwd(), "src/uploads/reports");
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter 
+
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /pdf|jpg|jpeg|png/;
   const ext = path.extname(file.originalname).toLowerCase();
@@ -26,9 +26,9 @@ const fileFilter = (req, file, cb) => {
   else cb(new Error("Only PDF or Image files are allowed"));
 };
 
-const upload = multer({ storage, fileFilter, limits: { fileSize: 10 * 1024 * 1024 } }); // 5MB
+const upload = multer({ storage, fileFilter, limits: { fileSize: 10 * 1024 * 1024 } }); 
 
-// Upload report
+
 exports.uploadReport = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
@@ -55,18 +55,18 @@ exports.uploadReport = async (req, res) => {
 
 exports.uploadMiddleware = upload.single("report");
 
-// Delete report
+
 exports.deleteReport = async (req, res) => {
   try {
     const report = await Report.findById(req.params.id);
     if (!report) return res.status(404).json({ message: "Report not found" });
 
-    // Check ownership
+
     if (report.patient.toString() !== req.user.id) {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
-    // Delete file from disk
+
     const filePath = path.join(process.cwd(), "src/uploads/reports", report.filename);
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);

@@ -65,7 +65,7 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
+
       <button 
         className="hamburger-btn" 
         onClick={() => setIsOpen(!isOpen)}
@@ -74,7 +74,7 @@ export default function Sidebar() {
         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
       </button>
 
-      {/* Mobile Overlay */}
+
       {isOpen && (
         <div 
           className="sidebar-overlay" 
@@ -82,14 +82,14 @@ export default function Sidebar() {
         />
       )}
 
-      {/* Sidebar */}
+
       <motion.div
         className={`sidebar ${isOpen ? "open" : "closed"}`}
         variants={sidebarVariants}
         initial="hidden"
         animate={isOpen ? "visible" : "hidden"}
       >
-        {/* Logo & Brand */}
+
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <div className="logo-icon">M</div>
@@ -97,7 +97,7 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* User Info */}
+
         <div className="user-info-card">
           <div className="user-avatar">{user?.name?.charAt(0) || "U"}</div>
           <div className="user-details">
@@ -106,7 +106,7 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* Navigation Menu */}
+
         <nav className="sidebar-nav">
           <ul className="menu">
             <li className={`menu-item ${isActive("/home") || isActive("/doctor-dashboard") ? "active" : ""}`}>
@@ -199,12 +199,12 @@ export default function Sidebar() {
           </ul>
         </nav>
 
-        {/* Divider */}
+
         <div className="sidebar-divider"></div>
 
-        {/* Bottom Section */}
+
         <div className="sidebar-footer">
-          {/* Dark Mode Toggle */}
+
           <button 
             className="theme-toggle"
             onClick={() => setIsDarkMode(!isDarkMode)}
@@ -218,7 +218,7 @@ export default function Sidebar() {
             <span>{isDarkMode ? "Light" : "Dark"}</span>
           </button>
 
-          {/* Logout Button */}
+
           <button 
             className="logout-btn"
             onClick={logout}

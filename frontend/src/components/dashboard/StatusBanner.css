@@ -72,7 +72,7 @@
   color: white;
 }
 
-/* Dark Mode */
+
 body.dark-mode .status-banner.status-active {
   background: rgba(114, 131, 89, 0.1);
   color: var(--dm-text-secondary);
@@ -103,7 +103,7 @@ body.dark-mode .banner-action:hover {
   color: var(--dm-bg-secondary);
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .status-banner {
     gap: var(--space-3);

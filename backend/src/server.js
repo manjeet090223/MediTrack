@@ -15,20 +15,20 @@ const prescriptionRoutes = require("./routes/prescriptionRoutes");
 dotenv.config();
 const app = express();
 
-// Middleware
+
 app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
-// DB Connection
+
 connectDB();
 
 const path = require("path");
 const uploadsPath = path.join(process.cwd(), "src/uploads");
 app.use("/uploads", express.static(uploadsPath));
-// Fallback for direct report access
+
 app.use("/uploads/reports", express.static(path.join(uploadsPath, "reports")));
 
-// Routes
+
 app.use("/api/appointments", appointmentsRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
@@ -43,15 +43,15 @@ app.get("/", (req, res) => {
   res.send("Pathrise backend is running 🚀");
 });
 
-// 404 Handler
+
 app.use((req, res) => res.status(404).json({ message: "Route not found" }));
 
-// Error Handler
+
 app.use((err, req, res, next) => {
   console.error("Server Error:", err);
   res.status(500).json({ message: "Internal Server Error" });
 });
 
-// Server
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

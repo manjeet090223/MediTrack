@@ -9,13 +9,12 @@ const {
   updatePrescriptionStatus,
 } = require("../controllers/prescriptionController");
 
-// Patient: Get my prescriptions (must be above /:id routes)
+
 router.get("/me", requireAuth, requireRole("Patient"), getMyPrescriptions);
 
-// Doctor: Create prescription
 router.post("/", requireAuth, requireRole("Doctor"), createPrescription);
 
-// Doctor: Get prescriptions for a patient
+
 router.get(
   "/patient/:patientId",
   requireAuth,
@@ -23,10 +22,10 @@ router.get(
   getPatientPrescriptions
 );
 
-// Doctor: Update prescription
+
 router.put("/:id", requireAuth, requireRole("Doctor"), updatePrescription);
 
-// Doctor / Patient: Toggle prescription status
+
 router.patch(
   "/:id/status",
   requireAuth,

@@ -70,7 +70,7 @@ export default function PatientAppointments() {
     }
   };
 
-  // --- Edit Modal State ---
+
   const [showEditModal, setShowEditModal] = useState(false);
   const [editData, setEditData] = useState({ id: "", datetime: "", reason: "" });
   const [editSubmitting, setEditSubmitting] = useState(false);
@@ -112,7 +112,7 @@ export default function PatientAppointments() {
     }
   };
 
-  // Close modal on ESC
+
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") setShowEditModal(false);
@@ -149,7 +149,7 @@ export default function PatientAppointments() {
 
       <main className="page-main">
         <div className="page-container">
-          {/* Page Header */}
+
           <motion.div
             className="page-header"
             initial={{ opacity: 0, y: -12 }}
@@ -169,7 +169,7 @@ export default function PatientAppointments() {
             </button>
           </motion.div>
 
-          {/* Filters Card */}
+
           <motion.div
             className="filters-card"
             initial={{ opacity: 0, y: 8 }}
@@ -206,7 +206,7 @@ export default function PatientAppointments() {
             </div>
           </motion.div>
 
-          {/* Table Card */}
+
           <motion.div
             className="table-card"
             initial={{ opacity: 0, y: 12 }}
@@ -214,7 +214,7 @@ export default function PatientAppointments() {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {paginatedAppointments.length === 0 ? (
-              /* Empty State */
+
               <div className="empty-state">
                 <div className="empty-icon-wrapper">
                   <FiInbox size={48} />
@@ -316,7 +316,7 @@ export default function PatientAppointments() {
                   </table>
                 </div>
 
-                {/* Pagination */}
+
                 {totalPages > 1 && (
                   <div className="pagination-bar">
                     <span className="pagination-info">
@@ -358,7 +358,7 @@ export default function PatientAppointments() {
           </motion.div>
         </div>
 
-        {/* ── EDIT APPOINTMENT MODAL ── */}
+
         <AnimatePresence>
           {showEditModal && (
             <motion.div
@@ -376,7 +376,7 @@ export default function PatientAppointments() {
                 transition={{ duration: 0.25 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Modal Header */}
+
                 <div className="pa-modal-header">
                   <div className="pa-modal-title-group">
                     <div className="pa-modal-icon">
@@ -392,9 +392,9 @@ export default function PatientAppointments() {
                   </button>
                 </div>
 
-                {/* Modal Form */}
+
                 <form className="pa-modal-form" onSubmit={handleEditSubmit}>
-                  {/* Date & Time */}
+
                   <div className="pa-form-group">
                     <label className="pa-form-label">
                       <FiClock size={14} />
@@ -415,7 +415,7 @@ export default function PatientAppointments() {
                     )}
                   </div>
 
-                  {/* Reason */}
+
                   <div className="pa-form-group">
                     <label className="pa-form-label">
                       <FiFileText size={14} />
@@ -436,7 +436,7 @@ export default function PatientAppointments() {
                     )}
                   </div>
 
-                  {/* Actions */}
+
                   <div className="pa-modal-actions">
                     <button type="button" className="pa-modal-cancel" onClick={() => setShowEditModal(false)}>
                       Cancel

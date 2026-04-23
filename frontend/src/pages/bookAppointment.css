@@ -1,8 +1,4 @@
-/* ===== BOOK APPOINTMENT — STEP-BASED BOOKING FLOW ===== */
 
-/* Reuse page-wrapper, page-main, page-container, page-header from patientAppointments.css */
-
-/* ===== STEP INDICATOR ===== */
 .step-indicator {
   display: flex;
   align-items: center;
@@ -86,7 +82,7 @@
   background: var(--success-500);
 }
 
-/* ===== BOOKING CONTENT AREA ===== */
+
 .booking-content {
   position: relative;
 }
@@ -95,7 +91,7 @@
   width: 100%;
 }
 
-/* ===== STEP CARD ===== */
+
 .step-card {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -124,7 +120,7 @@
   margin: 0;
 }
 
-/* ===== DOCTOR SELECTION GRID ===== */
+
 .doctor-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -229,7 +225,7 @@
   color: var(--text-muted);
 }
 
-/* ===== 2-COL LAYOUT (Step 2) ===== */
+
 .booking-two-col {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -237,7 +233,7 @@
   align-items: start;
 }
 
-/* Doctor Preview Card */
+
 .doctor-preview-card {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -320,7 +316,7 @@
   flex-shrink: 0;
 }
 
-/* ===== FORM ELEMENTS ===== */
+
 .form-section {
   margin-bottom: var(--space-6);
 }
@@ -383,7 +379,7 @@
   color: var(--text-muted);
 }
 
-/* ===== CONFIRM CARD ===== */
+
 .confirm-card {
   max-width: 640px;
   margin: 0 auto;
@@ -434,7 +430,7 @@
   color: var(--text-primary);
 }
 
-/* ===== STEP NAVIGATION ===== */
+
 .step-nav {
   display: flex;
   align-items: center;
@@ -503,7 +499,7 @@
   transform: translateY(0);
 }
 
-/* Spinner */
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -513,7 +509,7 @@
   animation: spin 1s linear infinite;
 }
 
-/* ===== SUCCESS STATE ===== */
+
 .success-card {
   display: flex;
   flex-direction: column;
@@ -564,7 +560,7 @@
   margin-top: var(--space-4);
 }
 
-/* ===== DARK MODE ===== */
+
 body.dark-mode .step-indicator {
   background: var(--dm-bg-secondary);
   border-color: var(--dm-border-light);
@@ -701,7 +697,7 @@ body.dark-mode .success-icon-wrapper {
   background: rgba(16, 185, 129, 0.1);
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 900px) {
   .booking-two-col {
     grid-template-columns: 1fr;

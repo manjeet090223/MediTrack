@@ -99,7 +99,7 @@ export default function DoctorProfile() {
 
       <main className="page-main">
         <div className="page-container">
-          {/* Page Header */}
+
           <motion.div
             className="page-header" 
             initial={{ opacity: 0, y: -12 }}
@@ -113,14 +113,14 @@ export default function DoctorProfile() {
           </motion.div>
 
           <div className="profile-layout">
-            {/* LEFT COLUMN — Profile Card */}
+
             <motion.div
               className="profile-sidebar-card"
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              {/* Avatar */}
+
               <div className="profile-avatar-section">
                 <div className="profile-avatar">
                   {doctor.name?.charAt(0)?.toUpperCase() || "D"}
@@ -133,7 +133,7 @@ export default function DoctorProfile() {
                 </span>
               </div>
 
-              {/* Profile Completion */}
+
               <div className="profile-completion">
                 <div className="completion-header">
                   <span className="completion-label">Account Progress</span>
@@ -150,7 +150,7 @@ export default function DoctorProfile() {
                 )}
               </div>
 
-              {/* Edit Button */}
+
               {!editing && (
                 <button className="btn-edit-profile" onClick={() => setEditing(true)}>
                   <FiEdit3 size={16} />
@@ -159,7 +159,7 @@ export default function DoctorProfile() {
               )}
             </motion.div>
 
-            {/* RIGHT COLUMN — Info Sections */}
+
             <div className="profile-details">
               {!editing ? (
                 <AnimatePresence mode="wait">
@@ -170,7 +170,7 @@ export default function DoctorProfile() {
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
                   >
-                    {/* Professional Qualifications */}
+
                     <div className="info-card" style={{ marginBottom: 'var(--space-6)' }}>
                       <div className="info-card-header">
                         <h3>Professional Qualifications</h3>
@@ -193,7 +193,7 @@ export default function DoctorProfile() {
                       </div>
                     </div>
 
-                    {/* Personal Information */}
+
                     <div className="info-card">
                       <div className="info-card-header">
                         <h3>Contact Information</h3>
@@ -232,7 +232,7 @@ export default function DoctorProfile() {
                   </motion.div>
                 </AnimatePresence>
               ) : (
-                /* EDIT MODE */
+
                 <motion.div
                   key="edit-mode"
                   className="info-card"

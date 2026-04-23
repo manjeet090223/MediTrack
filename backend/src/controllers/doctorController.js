@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
 
-// Get doctor profile 
+
 exports.getDoctorProfile = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -22,13 +22,13 @@ exports.getDoctorProfile = async (req, res) => {
   }
 };
 
-// Update doctor profile 
+
 exports.updateDoctorProfile = async (req, res) => {
   try {
     const userId = req.params.id;
     const { name, email, phone, specialization, department, experience, gender } = req.body;
 
-    // Build User update — only include fields that are non-empty
+
     const userUpdate = {};
     if (name) userUpdate.name = name;
     if (email) userUpdate.email = email;

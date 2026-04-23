@@ -2,12 +2,12 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const Appointment = require("../models/Appointment");
 
-// Helper: Compute visit stats (totalVisits + lastVisit) for a list of patient IDs
+
 async function attachVisitStats(patients) {
   if (!patients.length) return patients;
   const ids = patients.map((p) => p._id || p);
 
-  // Aggregate appointment counts + most recent date per patient
+
   const stats = await Appointment.aggregate([
     { $match: { patient: { $in: ids } } },
     {
@@ -31,7 +31,7 @@ async function attachVisitStats(patients) {
   });
 }
 
-// Get ALL Patients (Admin)
+
 exports.getAllPatients = async (req, res) => {
   try {
     const patients = await User.find({ role: "Patient" }).select(
@@ -45,12 +45,12 @@ exports.getAllPatients = async (req, res) => {
   }
 };
 
-// Doctor-specific patients — uses linkedPatients array on the doctor doc
+
 exports.getMyPatients = async (req, res) => {
   try {
     const doctorId = req.user.id;
 
-    // Get the doctor doc with its linkedPatients populated
+
     const doctor = await User.findById(doctorId).populate(
       "linkedPatients",
       "_id name email age gender phone"
@@ -63,7 +63,7 @@ exports.getMyPatients = async (req, res) => {
       });
     }
 
-    // Also include patients from appointments (backward compat)
+
     const appointments = await Appointment.find({ doctor: doctorId })
       .populate("patient", "_id name email age gender phone");
 
@@ -80,7 +80,7 @@ exports.getMyPatients = async (req, res) => {
   }
 };
 
-// Single patient
+
 exports.getPatientById = async (req, res) => {
   try {
     const patient = await User.findById(req.params.id).select(
@@ -96,7 +96,7 @@ exports.getPatientById = async (req, res) => {
   }
 };
 
-// Update patient
+
 exports.updatePatient = async (req, res) => {
   try {
     const { name, email, phone, age, gender, address } = req.body;
@@ -116,31 +116,23 @@ exports.updatePatient = async (req, res) => {
   }
 };
 
-// Delete patient 
+
 exports.deletePatient = async (req, res) => {
   try {
     const patientId = req.params.id;
 
-    if (req.user.role === "Admin") {
-      // Admin deletes the entire user record
-      await User.findByIdAndDelete(patientId);
-      return res.json({ message: "Patient deleted permanently" });
-    } else if (req.user.role === "Doctor") {
-      // Doctor just unlinks the patient from their list
-      await User.findByIdAndUpdate(req.user.id, {
-        $pull: { linkedPatients: patientId },
-      });
-      return res.json({ message: "Patient removed from your directory" });
-    } else {
-      return res.status(403).json({ message: "Unauthorized action" });
-    }
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $pull: { linkedPatients: patientId },
+    });
+    return res.json({ message: "Patient removed from your directory" });
   } catch (err) {
     console.error("Delete Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };
 
-// Create patient (Admin / Doctor) — also links to doctor's linkedPatients
+
 exports.createPatient = async (req, res) => {
   try {
     const { name, email, password, age, gender, phone } = req.body;
@@ -151,7 +143,7 @@ exports.createPatient = async (req, res) => {
 
     const exists = await User.findOne({ email });
     if (exists) {
-      // If the patient already exists and requester is a Doctor, auto-link them
+
       if (exists.role === "Patient" && req.user.role === "Doctor") {
         await User.findByIdAndUpdate(req.user.id, {
           $addToSet: { linkedPatients: exists._id },
@@ -183,7 +175,7 @@ exports.createPatient = async (req, res) => {
       createdBy: req.user.id,
     });
 
-    // Add to doctor's linkedPatients
+
     await User.findByIdAndUpdate(req.user.id, {
       $addToSet: { linkedPatients: patient._id },
     });
@@ -203,7 +195,7 @@ exports.createPatient = async (req, res) => {
   }
 };
 
-// Link an existing patient to the doctor
+
 exports.linkPatient = async (req, res) => {
   try {
     const { patientId } = req.body;

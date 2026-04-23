@@ -1,4 +1,4 @@
-/* ===== MY PRESCRIPTIONS — PATIENT VIEW ===== */
+
 
 .myrx-layout {
   display: flex;
@@ -20,7 +20,7 @@
   margin: 0 auto;
 }
 
-/* --- Loading --- */
+
 .myrx-loading {
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@
   gap: var(--space-4);
 }
 
-/* --- Header --- */
+
 .myrx-header {
   display: flex;
   justify-content: space-between;
@@ -54,7 +54,7 @@
   margin: 0;
 }
 
-/* --- Stats chips --- */
+
 .myrx-stats {
   display: flex;
   gap: var(--space-3);
@@ -83,7 +83,7 @@
   border: 1px solid var(--neutral-200);
 }
 
-/* --- Active Medications Highlight --- */
+
 .myrx-active-highlight {
   background: linear-gradient(135deg, #f0f7ec 0%, #e8f3e0 100%);
   border: 1px solid var(--green-bg-light);
@@ -151,7 +151,7 @@
   font-weight: var(--font-medium);
 }
 
-/* --- Filter Tabs --- */
+
 .myrx-filter-tabs {
   display: flex;
   gap: var(--space-2);
@@ -188,7 +188,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* --- Empty State --- */
+
 .myrx-empty {
   display: flex;
   flex-direction: column;
@@ -223,7 +223,7 @@
   margin: 0;
 }
 
-/* --- Timeline --- */
+
 .myrx-timeline {
   display: flex;
   flex-direction: column;
@@ -241,7 +241,7 @@
   z-index: 0;
 }
 
-/* --- Prescription Card --- */
+
 .myrx-card {
   display: flex;
   gap: var(--space-5);
@@ -302,7 +302,7 @@
   opacity: 0.9;
 }
 
-/* --- Card Title Row --- */
+
 .myrx-card-top {
   display: flex;
   flex-direction: column;
@@ -362,7 +362,7 @@
   font-weight: var(--font-medium);
 }
 
-/* --- Medicines Section --- */
+
 .myrx-medicines {
   display: flex;
   flex-direction: column;
@@ -477,7 +477,7 @@
   line-height: var(--leading-relaxed);
 }
 
-/* --- Spinner (reuse from patients) --- */
+
 .spinner {
   width: 40px;
   height: 40px;
@@ -526,7 +526,7 @@
   }
 }
 
-/* ===== DARK MODE STYLES ===== */
+
 body.dark-mode .myrx-layout {
   background-color: var(--dm-bg-primary);
 }

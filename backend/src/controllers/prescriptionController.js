@@ -1,6 +1,6 @@
 const Prescription = require("../models/Prescription");
 
-// Doctor: Create a new prescription
+
 exports.createPrescription = async (req, res) => {
   try {
     const { patientId, diagnosis, notes, medicines } = req.body;
@@ -13,7 +13,7 @@ exports.createPrescription = async (req, res) => {
       return res.status(400).json({ message: "At least one medicine is required." });
     }
 
-    // Validate each medicine has required fields
+
     for (const med of medicines) {
       if (!med.name || !med.dosage || !med.duration) {
         return res.status(400).json({
@@ -44,7 +44,7 @@ exports.createPrescription = async (req, res) => {
   }
 };
 
-// Doctor: Get all prescriptions for a specific patient
+
 exports.getPatientPrescriptions = async (req, res) => {
   try {
     const { patientId } = req.params;
@@ -61,7 +61,7 @@ exports.getPatientPrescriptions = async (req, res) => {
   }
 };
 
-// Patient: Get my prescriptions
+
 exports.getMyPrescriptions = async (req, res) => {
   try {
     const prescriptions = await Prescription.find({ patientId: req.user.id })
@@ -75,7 +75,7 @@ exports.getMyPrescriptions = async (req, res) => {
   }
 };
 
-// Doctor: Update a prescription
+
 exports.updatePrescription = async (req, res) => {
   try {
     const prescription = await Prescription.findById(req.params.id);
@@ -83,7 +83,7 @@ exports.updatePrescription = async (req, res) => {
       return res.status(404).json({ message: "Prescription not found" });
     }
 
-    // Only the doctor who created it can update
+
     if (prescription.doctorId.toString() !== req.user.id) {
       return res.status(403).json({ message: "You can only edit your own prescriptions." });
     }
@@ -120,7 +120,7 @@ exports.updatePrescription = async (req, res) => {
   }
 };
 
-// Doctor: Toggle prescription status (active/completed)
+
 exports.updatePrescriptionStatus = async (req, res) => {
   try {
     const prescription = await Prescription.findById(req.params.id);
@@ -128,7 +128,7 @@ exports.updatePrescriptionStatus = async (req, res) => {
       return res.status(404).json({ message: "Prescription not found" });
     }
 
-    // Allow both the doctor and the patient (owner) to update status
+
     const isDoctor = prescription.doctorId.toString() === req.user.id;
     const isPatient = prescription.patientId.toString() === req.user.id;
 

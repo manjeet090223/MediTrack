@@ -36,9 +36,9 @@ api.interceptors.response.use(
 
 
 
-/* -------------------------------- APIs -------------------------------- */
 
-// Appointments
+
+
 export const createAppointment = (data) => api.post("/api/appointments", data);
 export const createDoctorAppointment = (data) => api.post("/api/appointments", data);
 export const getAppointments = () => api.get("/api/appointments");
@@ -48,7 +48,7 @@ export const deleteAppointment = (id) => api.delete(`/api/appointments/${id}`);
 export const getPatientAppointmentsById = (id) => api.get(`/api/appointments/patient/${id}`);
 
 
-// Patients
+
 export const getAllPatients = () => api.get("/api/patients");
 export const getPatientDetails = (id) => api.get(`/api/patients/${id}`);
 export const createPatient = (data) => api.post("/api/patients", data);
@@ -56,12 +56,12 @@ export const updatePatient = (id, data) => api.put(`/api/patients/${id}`, data);
 export const deletePatient = (id) => api.delete(`/api/patients/${id}`);
 export const linkPatient = (patientId) => api.post("/api/patients/link-patient", { patientId });
 
-// ---------------- Dashboard APIs ----------------
+
 export const getDashboardSummary = () => api.get("/api/dashboard/summary");
 export const getAppointmentsTrend = () => api.get("/api/dashboard/appointments-trend");
 export const getNewPatients = () => api.get("/api/dashboard/new-patients");
 
-// Reports
+
 export const uploadReport = (formData) =>
   api.post("/api/reports/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
@@ -71,7 +71,7 @@ export const getReports = () => api.get("/api/reports/my-reports");
 export const getPatientReports = (patientId) => api.get(`/api/reports/patient/${patientId}`);
 
 
-/* -------------------------------- Doctor APIs -------------------------------- */
+
 
 
 export const getAllDoctors = () => api.get("/api/doctors");
@@ -80,7 +80,7 @@ export const updateDoctor = (id, data) => api.put(`/api/doctors/${id}`, data);
 export const deleteDoctor = (id) => api.delete(`/api/doctors/${id}`);
 export const getDoctorPatients = () => api.get("/api/patients/my-patients");
 
-/* -------------------------------- Prescription APIs -------------------------------- */
+
 
 export const createPrescription = (data) => api.post("/api/prescriptions", data);
 export const getPatientPrescriptions = (patientId) => api.get(`/api/prescriptions/patient/${patientId}`);

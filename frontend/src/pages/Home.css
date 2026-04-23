@@ -1,5 +1,3 @@
-/* ===== PREMIUM PATIENT DASHBOARD ===== */
-
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
@@ -20,7 +18,7 @@
   padding: var(--space-10) var(--space-8);
 }
 
-/* ===== WELCOME SECTION ===== */
+
 .welcome-section {
   margin-bottom: var(--space-10);
   animation: slideInDown var(--transition-slow) ease-out;
@@ -42,7 +40,7 @@
   font-weight: var(--font-regular);
 }
 
-/* ===== KPI GRID ===== */
+
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -51,13 +49,13 @@
   animation: slideInUp var(--transition-slow) ease-out;
 }
 
-/* ===== DASHBOARD FULL WIDTH SECTION ===== */
+
 .dashboard-grid-full {
   width: 100%;
   margin-bottom: var(--space-10);
 }
 
-/* ===== ELEVATED CARD — white, neutral borders, real shadows ===== */
+
 .card-elevated {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -104,7 +102,7 @@
   font-weight: var(--font-bold);
 }
 
-/* ===== HEALTH METRICS ===== */
+
 .metrics-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -167,7 +165,7 @@
   color: var(--neutral-400);
 }
 
-/* ===== METRICS INFO ALERTS ===== */
+
 .metrics-info {
   display: flex;
   flex-direction: column;
@@ -202,7 +200,7 @@
   border-color: var(--info-100);
 }
 
-/* ===== APPOINTMENTS CAROUSEL ===== */
+
 .appointments-card-full {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -274,11 +272,11 @@
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   padding: var(--space-2) 0 var(--space-4) 0;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; 
 }
 
 .appointments-carousel::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none; 
 }
 
 .appointment-card-horizontal {
@@ -305,7 +303,7 @@
 .date-badge {
   width: 64px;
   height: 64px;
-  background: #5c6b45; /* Olive color from image */
+  background: #5c6b45; 
   color: white;
   border-radius: var(--radius-xl);
   display: flex;
@@ -378,7 +376,7 @@
   color: #dc2626;
 }
 
-/* ===== QUICK ACTIONS SECTION ===== */
+
 .quick-actions-section {
   margin-bottom: var(--space-12);
   animation: slideInUp var(--transition-slow) ease-out;
@@ -402,7 +400,7 @@
   font-size: var(--text-base);
 }
 
-/* ===== FEATURES SECTION ===== */
+
 .features-section {
   animation: slideInUp var(--transition-slow) ease-out;
   margin-bottom: var(--space-12);
@@ -474,7 +472,7 @@
   line-height: var(--leading-relaxed);
 }
 
-/* ===== DARK MODE ===== */
+
 body.dark-mode .dashboard-main {
   background: var(--dm-bg-primary);
 }
@@ -568,7 +566,7 @@ body.dark-mode .feature-icon.info {
   background: rgba(59, 130, 246, 0.1);
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 1200px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

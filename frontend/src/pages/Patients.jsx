@@ -50,7 +50,6 @@ export default function Patients() {
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filters
   const [search, setSearch] = useState("");
   const [genderFilter, setGenderFilter] = useState("");
   const [ageGroupFilter, setAgeGroupFilter] = useState("");
@@ -58,13 +57,11 @@ export default function Patients() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  // ── Add modal state ──────────────────────────────────────────
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [addForm, setAddForm] = useState(EMPTY_ADD_FORM);
   const [addSaving, setAddSaving] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // ── Edit modal state ─────────────────────────────────────────
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState(null);
   const [editForm, setEditForm] = useState(EMPTY_EDIT_FORM);
@@ -73,13 +70,11 @@ export default function Patients() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // ── Fetch ────────────────────────────────────────────────────
   const fetchPatients = async () => {
     try {
       setLoading(true);
       let res;
       if (user?.role === "Doctor") res = await getDoctorPatients();
-      else if (user?.role === "Admin") res = await getAllPatients();
       else {
         toast.error("Access denied!");
         return navigate("/dashboard");
@@ -97,7 +92,6 @@ export default function Patients() {
     fetchPatients();
   }, []);
 
-  // ── Filter logic ─────────────────────────────────────────────
   useEffect(() => {
     let updated = [...patients];
     if (search) {
@@ -123,7 +117,6 @@ export default function Patients() {
     setCurrentPage(1);
   }, [search, genderFilter, ageGroupFilter, patients]);
 
-  // ── Delete ───────────────────────────────────────────────────
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this patient record?")) return;
     try {
@@ -135,7 +128,6 @@ export default function Patients() {
     }
   };
 
-  // ── Add modal handlers ───────────────────────────────────────
   const openAddModal = () => {
     setAddForm(EMPTY_ADD_FORM);
     setShowPassword(false);
@@ -158,7 +150,6 @@ export default function Patients() {
       const res = await createPatient(addForm);
       const newPatient = res.data?.data;
       if (newPatient) {
-        // Add to list if not already present (handles both create & link)
         setPatients((prev) => {
           const exists = prev.some((p) => p._id === newPatient._id);
           return exists ? prev : [newPatient, ...prev];
@@ -172,7 +163,6 @@ export default function Patients() {
     }
   };
 
-  // ── Edit modal handlers ──────────────────────────────────────
   const openEditModal = (patient) => {
     setEditingPatient(patient);
     setEditForm({
@@ -205,13 +195,12 @@ export default function Patients() {
       );
       closeEditModal();
     } catch {
-      /* toast handled by interceptor */
+
     } finally {
       setEditSaving(false);
     }
   };
 
-  // ── Pagination ───────────────────────────────────────────────
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirst, indexOfLast);
@@ -222,7 +211,6 @@ export default function Patients() {
     return name.split(" ").map((n) => n[0]).join("").toUpperCase().substring(0, 2);
   };
 
-  // ── Shared modal field components (inline helpers) ───────────
   const InputField = ({ id, label, icon: Icon, type = "text", name, value, onChange, placeholder, required, min, max, extraRight }) => (
     <div className="ep-field ep-field-full">
       <label htmlFor={id}>{label}</label>
@@ -250,7 +238,7 @@ export default function Patients() {
       <main className="patients-main-content">
         <div className="patients-container-wide">
 
-          {/* HEADER */}
+
           <header className="patients-header">
             <div className="patients-header-left">
               <h1 className="patients-title">Patients</h1>
@@ -262,7 +250,7 @@ export default function Patients() {
             </button>
           </header>
 
-          {/* FILTERS */}
+
           <div className="patients-filter-card">
             <div className="search-box-wrapper">
               <FiSearch className="search-icon" />
@@ -403,7 +391,7 @@ export default function Patients() {
             )}
           </div>
 
-          {/* PAGINATION */}
+
           {totalPages > 1 && (
             <div className="patients-pagination">
               <button
@@ -436,9 +424,6 @@ export default function Patients() {
         </div>
       </main>
 
-      {/* ══════════════════════════════════════════════════════════
-          ADD PATIENT MODAL
-      ══════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {addModalOpen && (
           <motion.div
@@ -456,7 +441,7 @@ export default function Patients() {
               transition={{ duration: 0.22, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header */}
+
               <div className="ep-header">
                 <div className="ep-header-left">
                   <div className="ep-avatar ep-avatar-add">
@@ -472,11 +457,11 @@ export default function Patients() {
                 </button>
               </div>
 
-              {/* Form */}
+
               <form className="ep-form" onSubmit={handleAddSave}>
                 <div className="ep-form-grid">
 
-                  {/* Full Name */}
+
                   <div className="ep-field ep-field-full">
                     <label htmlFor="ap-name">Full Name <span className="ep-required">*</span></label>
                     <div className="ep-input-wrapper">
@@ -493,7 +478,7 @@ export default function Patients() {
                     </div>
                   </div>
 
-                  {/* Email */}
+
                   <div className="ep-field ep-field-full">
                     <label htmlFor="ap-email">Email Address <span className="ep-required">*</span></label>
                     <div className="ep-input-wrapper">
@@ -510,7 +495,7 @@ export default function Patients() {
                     </div>
                   </div>
 
-                  {/* Password */}
+
                   <div className="ep-field ep-field-full">
                     <label htmlFor="ap-password">
                       Temporary Password <span className="ep-required">*</span>
@@ -539,7 +524,7 @@ export default function Patients() {
                     </div>
                   </div>
 
-                  {/* Phone */}
+
                   <div className="ep-field">
                     <label htmlFor="ap-phone">Phone Number</label>
                     <div className="ep-input-wrapper">
@@ -555,7 +540,7 @@ export default function Patients() {
                     </div>
                   </div>
 
-                  {/* Age */}
+
                   <div className="ep-field">
                     <label htmlFor="ap-age">Age</label>
                     <div className="ep-input-wrapper">
@@ -573,7 +558,7 @@ export default function Patients() {
                     </div>
                   </div>
 
-                  {/* Gender */}
+
                   <div className="ep-field ep-field-full">
                     <label htmlFor="ap-gender">Gender</label>
                     <div className="ep-select-wrapper">
@@ -592,7 +577,7 @@ export default function Patients() {
                   </div>
                 </div>
 
-                {/* Footer */}
+
                 <div className="ep-footer">
                   <button type="button" className="ep-cancel-btn" onClick={closeAddModal}>
                     Cancel
@@ -612,9 +597,6 @@ export default function Patients() {
         )}
       </AnimatePresence>
 
-      {/* ══════════════════════════════════════════════════════════
-          EDIT PATIENT MODAL
-      ══════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {editModalOpen && editingPatient && (
           <motion.div
@@ -632,7 +614,7 @@ export default function Patients() {
               transition={{ duration: 0.22, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header */}
+
               <div className="ep-header">
                 <div className="ep-header-left">
                   <div className="ep-avatar">{getInitials(editingPatient.name)}</div>
@@ -646,7 +628,7 @@ export default function Patients() {
                 </button>
               </div>
 
-              {/* Form */}
+
               <form className="ep-form" onSubmit={handleEditSave}>
                 <div className="ep-form-grid">
 

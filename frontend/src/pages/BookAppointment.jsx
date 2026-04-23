@@ -56,7 +56,7 @@ export default function BookAppointment() {
         reason,
       });
       toast.success("Appointment Booked Successfully!");
-      setStep(4); // success step
+      setStep(4); 
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to book");
     } finally {
@@ -101,7 +101,7 @@ export default function BookAppointment() {
 
       <main className="page-main">
         <div className="page-container">
-          {/* Page Header */}
+
           <motion.div
             className="page-header"
             initial={{ opacity: 0, y: -12 }}
@@ -116,7 +116,7 @@ export default function BookAppointment() {
 
           {step <= 3 && (
             <>
-              {/* Step Indicator */}
+
               <motion.div
                 className="step-indicator"
                 initial={{ opacity: 0, y: 8 }}
@@ -144,10 +144,10 @@ export default function BookAppointment() {
                 ))}
               </motion.div>
 
-              {/* Main Content */}
+
               <div className="booking-content">
                 <AnimatePresence mode="wait" custom={direction}>
-                  {/* STEP 1: Select Doctor */}
+
                   {step === 1 && (
                     <motion.div
                       key="step1"
@@ -200,7 +200,7 @@ export default function BookAppointment() {
                     </motion.div>
                   )}
 
-                  {/* STEP 2: Date & Time */}
+
                   {step === 2 && (
                     <motion.div
                       key="step2"
@@ -213,7 +213,7 @@ export default function BookAppointment() {
                       transition={{ duration: 0.25 }}
                     >
                       <div className="booking-two-col">
-                        {/* Doctor Preview */}
+
                         <div className="doctor-preview-card">
                           <div className="preview-header">
                             <h3>Selected Doctor</h3>
@@ -242,7 +242,7 @@ export default function BookAppointment() {
                           </div>
                         </div>
 
-                        {/* Date & Time Form */}
+
                         <div className="step-card">
                           <div className="step-card-header">
                             <h2>Pick Date & Time</h2>
@@ -282,7 +282,7 @@ export default function BookAppointment() {
                     </motion.div>
                   )}
 
-                  {/* STEP 3: Confirm */}
+
                   {step === 3 && (
                     <motion.div
                       key="step3"
@@ -353,7 +353,7 @@ export default function BookAppointment() {
                   )}
                 </AnimatePresence>
 
-                {/* Navigation Buttons */}
+
                 <div className="step-nav">
                   {step > 1 && (
                     <button className="btn-step-back" onClick={goBack}>
@@ -396,7 +396,7 @@ export default function BookAppointment() {
             </>
           )}
 
-          {/* STEP 4: Success */}
+
           {step === 4 && (
             <motion.div
               className="success-card"

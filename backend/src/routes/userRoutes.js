@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 
 // Get all doctors
-router.get("/", requireAuth, requireRole("Admin", "Patient", "Doctor"), async (req, res) => {
+router.get("/", requireAuth, requireRole("Patient", "Doctor"), async (req, res) => {
   try {
     const role = req.query.role;
     

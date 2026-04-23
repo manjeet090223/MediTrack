@@ -60,7 +60,7 @@ export default function DoctorDashboard() {
       setAppointmentsTrend(trendRes.data);
       setNewPatients(patientsRes.data);
       
-      // Use backend data directly
+
       setTodaySchedule(scheduleRes.data || []);
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);
@@ -73,7 +73,7 @@ export default function DoctorDashboard() {
     try {
       await api.put(`/api/appointments/${id}`, { status: newStatus });
       toast.success(`Appointment marked as ${newStatus}`);
-      fetchDashboardData(); // Refresh data
+      fetchDashboardData(); 
     } catch (error) {
       console.error("Failed to update status:", error);
       toast.error("Failed to update appointment status");
@@ -84,7 +84,7 @@ export default function DoctorDashboard() {
     fetchDashboardData();
   }, []);
 
-  // Custom Tooltip for Charts
+
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
@@ -106,7 +106,7 @@ export default function DoctorDashboard() {
 
       <main className="page-main">
         <div className="page-container">
-          {/* Quick Overview Header */}
+
           <motion.div
             className="doc-header"
             initial={{ opacity: 0, y: -12 }}
@@ -129,14 +129,14 @@ export default function DoctorDashboard() {
             </div>
           </motion.div>
 
-          {/* KPI Cards */}
+
           <motion.div
             className="kpi-grid"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            {/* Total Patients */}
+
             <div className="doc-kpi-card kpi-blue" style={{ cursor: 'pointer' }} onClick={() => navigate('/patients')}>
               <div className="doc-kpi-header">
                 <div className="doc-kpi-icon"><FiUsers size={20} /></div>
@@ -154,7 +154,7 @@ export default function DoctorDashboard() {
               </div>
             </div>
 
-            {/* Appointments Today */}
+
             <div className="doc-kpi-card kpi-green" style={{ cursor: 'pointer' }} onClick={() => navigate('/appointments')}>
               <div className="doc-kpi-header">
                 <div className="doc-kpi-icon"><FiCalendar size={20} /></div>
@@ -181,7 +181,7 @@ export default function DoctorDashboard() {
               </div>
             </div>
 
-            {/* Pending Requests */}
+
             <div className={`doc-kpi-card ${summary.pendingRequests > 0 ? "kpi-amber" : "kpi-gray"}`} style={{ cursor: 'pointer' }} onClick={() => navigate('/appointments')}>
               <div className="doc-kpi-header">
                 <div className="doc-kpi-icon">
@@ -202,7 +202,7 @@ export default function DoctorDashboard() {
           </motion.div>
 
           <div className="doc-layout-grid">
-            {/* LEFT COLUMN - Charts & Insights */}
+
             <div className="doc-col-left">
               <motion.div
                 className="doc-chart-card"
@@ -268,9 +268,9 @@ export default function DoctorDashboard() {
               </motion.div>
             </div>
 
-            {/* RIGHT COLUMN - Schedule & Tasks */}
+
             <div className="doc-col-right">
-              {/* Today's Schedule panel */}
+
               <motion.div
                 className="schedule-panel"
                 initial={{ opacity: 0, x: 12 }}
@@ -328,7 +328,7 @@ export default function DoctorDashboard() {
                 </div>
               </motion.div>
 
-              {/* Quick Actions Panel */}
+
               <motion.div
                 className="quick-actions-panel"
                 initial={{ opacity: 0, x: 12 }}

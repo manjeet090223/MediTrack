@@ -26,7 +26,7 @@ export default function ClinicSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Profile
+
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -36,7 +36,7 @@ export default function ClinicSettings() {
     gender: "",
   });
 
-  // Availability
+
   const [availability, setAvailability] = useState({
     monday: { enabled: true, start: "09:00", end: "17:00" },
     tuesday: { enabled: true, start: "09:00", end: "17:00" },
@@ -47,7 +47,7 @@ export default function ClinicSettings() {
     sunday: { enabled: false, start: "", end: "" },
   });
 
-  // Preferences
+
   const [preferences, setPreferences] = useState({
     appointmentDuration: "30",
     autoConfirm: false,
@@ -94,7 +94,7 @@ export default function ClinicSettings() {
   };
 
   const handleAvailabilitySave = () => {
-    // Store locally for now (could be extended to backend)
+
     localStorage.setItem("doctor_availability", JSON.stringify(availability));
     toast.success("Availability saved");
   };
@@ -117,7 +117,7 @@ export default function ClinicSettings() {
       <Sidebar />
       <main className="cs-main">
         <div className="cs-container">
-          {/* Header */}
+
           <motion.div
             className="cs-header"
             initial={{ opacity: 0, y: -12 }}
@@ -133,7 +133,7 @@ export default function ClinicSettings() {
           </motion.div>
 
           <div className="cs-layout">
-            {/* Sidebar Navigation */}
+
             <motion.nav
               className="cs-nav"
               initial={{ opacity: 0, x: -12 }}
@@ -152,7 +152,7 @@ export default function ClinicSettings() {
               ))}
             </motion.nav>
 
-            {/* Content Area */}
+
             <motion.div
               className="cs-content"
               key={activeSection}
@@ -160,7 +160,7 @@ export default function ClinicSettings() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {/* ── PROFILE ── */}
+
               {activeSection === "profile" && (
                 <div className="cs-card">
                   <div className="cs-card-header">
@@ -216,7 +216,7 @@ export default function ClinicSettings() {
                 </div>
               )}
 
-              {/* ── AVAILABILITY ── */}
+
               {activeSection === "availability" && (
                 <div className="cs-card">
                   <div className="cs-card-header">
@@ -280,7 +280,7 @@ export default function ClinicSettings() {
                 </div>
               )}
 
-              {/* ── PREFERENCES ── */}
+
               {activeSection === "preferences" && (
                 <div className="cs-card">
                   <div className="cs-card-header">

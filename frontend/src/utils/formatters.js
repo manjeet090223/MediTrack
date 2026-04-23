@@ -1,7 +1,3 @@
-/**
- * Utility functions for formatting and data manipulation
- */
-
 export const formatDate = (date, format = "short") => {
   if (!date) return "";
   const d = new Date(date);

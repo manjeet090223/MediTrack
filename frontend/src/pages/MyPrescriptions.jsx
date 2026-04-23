@@ -36,7 +36,7 @@ export default function MyPrescriptions() {
   const handleStatusUpdate = async (id, newStatus) => {
     try {
       await updatePrescriptionStatus(id, newStatus);
-      // Update local state
+
       setPrescriptions((prev) =>
         prev.map((rx) => (rx._id === id ? { ...rx, status: newStatus } : rx))
       );
@@ -79,7 +79,7 @@ export default function MyPrescriptions() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {/* Page Header */}
+
           <header className="myrx-header">
             <div>
               <h1 className="myrx-title">My Prescriptions</h1>
@@ -97,7 +97,7 @@ export default function MyPrescriptions() {
             </div>
           </header>
 
-          {/* Active Medications Highlight */}
+
           {activePrescriptions.length > 0 && (
             <motion.section
               className="myrx-active-highlight"
@@ -123,7 +123,7 @@ export default function MyPrescriptions() {
             </motion.section>
           )}
 
-          {/* Filter Tabs */}
+
           <div className="myrx-filter-tabs">
             {[
               { key: "all", label: `All (${prescriptions.length})` },
@@ -140,7 +140,7 @@ export default function MyPrescriptions() {
             ))}
           </div>
 
-          {/* Prescriptions Timeline */}
+
           {filtered.length === 0 ? (
             <div className="myrx-empty">
               <div className="myrx-empty-icon">
@@ -165,13 +165,13 @@ export default function MyPrescriptions() {
                     exit={{ opacity: 0, scale: 0.97 }}
                     transition={{ duration: 0.25, delay: index * 0.04 }}
                   >
-                    {/* Timeline dot */}
+
                     <div className="myrx-timeline-dot">
                       <div className={`myrx-dot ${rx.status === "active" ? "myrx-dot-active" : "myrx-dot-completed"}`} />
                     </div>
 
                     <div className="myrx-card-content">
-                      {/* Card Header */}
+
                       <div className="myrx-card-top">
                         <div className="myrx-card-title-row">
                           <h3 className="myrx-card-diagnosis">{rx.diagnosis}</h3>
@@ -200,7 +200,7 @@ export default function MyPrescriptions() {
                         </div>
                       </div>
 
-                      {/* Medicines */}
+
                       <div className="myrx-medicines">
                         <p className="myrx-medicines-label">Medicines</p>
                         <div className="myrx-medicines-grid">
@@ -233,7 +233,7 @@ export default function MyPrescriptions() {
                         </div>
                       </div>
 
-                      {/* Notes */}
+
                       {rx.notes && (
                         <div className="myrx-notes-block">
                           <p className="myrx-notes-label">Doctor's Notes</p>
@@ -241,7 +241,7 @@ export default function MyPrescriptions() {
                         </div>
                       )}
 
-                      {/* Action Button */}
+
                       {rx.status === "active" && (
                         <div className="myrx-card-actions">
                           <button

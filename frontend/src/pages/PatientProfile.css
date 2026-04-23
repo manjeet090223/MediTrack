@@ -1,9 +1,4 @@
-/* ===== PATIENT PROFILE — PREMIUM SAAS LAYOUT ===== */
 
-/* Reuse page-wrapper, page-main, page-container, page-header from patientAppointments.css */
-/* Those classes are already defined there. We add profile-specific styles here. */
-
-/* ===== 2-COLUMN LAYOUT ===== */
 .profile-layout {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -11,7 +6,7 @@
   align-items: start;
 }
 
-/* ===== LEFT COLUMN — PROFILE SIDEBAR CARD ===== */
+
 .profile-sidebar-card {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -28,7 +23,7 @@
   border-color: var(--neutral-300);
 }
 
-/* Avatar Section */
+
 .profile-avatar-section {
   display: flex;
   flex-direction: column;
@@ -84,7 +79,7 @@
   letter-spacing: 0.05em;
 }
 
-/* Profile Completion */
+
 .profile-completion {
   margin-bottom: var(--space-6);
   padding-bottom: var(--space-6);
@@ -133,7 +128,7 @@
   line-height: var(--leading-normal);
 }
 
-/* Edit Profile Button */
+
 .btn-edit-profile {
   display: flex;
   align-items: center;
@@ -162,7 +157,7 @@
   transform: translateY(0);
 }
 
-/* ===== RIGHT COLUMN — INFO CARDS ===== */
+
 .profile-details {
   display: flex;
   flex-direction: column;
@@ -198,7 +193,7 @@
   letter-spacing: -0.01em;
 }
 
-/* Info Grid */
+
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -242,7 +237,7 @@
   line-height: var(--leading-snug);
 }
 
-/* ===== EDIT FORM ===== */
+
 .edit-form {
   display: flex;
   flex-direction: column;
@@ -303,7 +298,7 @@
   color: var(--text-muted);
 }
 
-/* Form Actions */
+
 .form-actions {
   display: flex;
   align-items: center;
@@ -359,7 +354,7 @@
   transform: translateY(0);
 }
 
-/* ===== SKELETON LOADER ===== */
+
 .profile-skeleton {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -381,7 +376,7 @@
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* ===== DARK MODE ===== */
+
 body.dark-mode .profile-sidebar-card {
   background: var(--dm-bg-secondary);
   border-color: var(--dm-border-light);
@@ -497,7 +492,7 @@ body.dark-mode .skeleton-card {
   background: var(--dm-border-light);
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 1024px) {
   .profile-layout {
     grid-template-columns: 280px 1fr;

@@ -1,8 +1,4 @@
-/* ===== UPLOAD REPORT — PREMIUM DOCUMENT MANAGER ===== */
 
-/* Reuse page-wrapper, page-main, page-container, page-header from patientAppointments.css */
-
-/* ===== UPLOAD CARD ===== */
 .upload-card {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -12,7 +8,6 @@
   margin-bottom: var(--space-8);
 }
 
-/* ===== DROP ZONE ===== */
 .drop-zone {
   border: 2px dashed var(--neutral-300);
   border-radius: var(--radius-xl);
@@ -50,7 +45,6 @@
   display: none;
 }
 
-/* Drop Zone Content */
 .drop-zone-content {
   display: flex;
   flex-direction: column;
@@ -118,7 +112,6 @@
   margin-left: var(--space-1);
 }
 
-/* File Preview */
 .file-preview {
   display: flex;
   align-items: center;
@@ -181,7 +174,6 @@
   border-color: var(--danger-100);
 }
 
-/* Upload Button */
 .btn-upload-action {
   display: flex;
   align-items: center;
@@ -218,7 +210,6 @@
   transform: translateY(0);
 }
 
-/* ===== REPORTS SECTION ===== */
 .reports-section {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -252,7 +243,6 @@
   border-radius: var(--radius-full);
 }
 
-/* Empty State */
 .reports-empty {
   display: flex;
   flex-direction: column;
@@ -311,7 +301,6 @@
   transform: translateY(-1px);
 }
 
-/* ===== REPORTS TABLE ===== */
 .reports-table-wrap {
   overflow-x: auto;
 }
@@ -367,7 +356,6 @@
   vertical-align: middle;
 }
 
-/* File cell */
 .report-file-cell {
   display: flex;
   align-items: center;
@@ -403,7 +391,6 @@
   max-width: 260px;
 }
 
-/* Type Badge */
 .type-badge {
   display: inline-flex;
   padding: 3px 10px;
@@ -423,13 +410,11 @@
   color: var(--info-600);
 }
 
-/* Date */
 .td-date {
   color: var(--text-tertiary);
   white-space: nowrap;
 }
 
-/* Actions */
 .td-actions {
   text-align: center;
 }
@@ -478,7 +463,6 @@
   border-color: var(--danger-100);
 }
 
-/* ===== DARK MODE ===== */
 body.dark-mode .upload-card {
   background: var(--dm-bg-secondary);
   border-color: var(--dm-border-light);
@@ -612,7 +596,6 @@ body.dark-mode .report-actions .action-btn {
   color: var(--dm-text-muted);
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .page-main {
     margin-left: 0;

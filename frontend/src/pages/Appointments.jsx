@@ -45,7 +45,7 @@ export default function Appointments() {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
-  // --- Add Appointment Modal State ---
+
   const [showModal, setShowModal] = useState(false);
   const [patients, setPatients] = useState([]);
   const [patientsLoading, setPatientsLoading] = useState(false);
@@ -61,7 +61,7 @@ export default function Appointments() {
     reason: "",
   });
 
-  // --- Three-dot dropdown & Edit modal state ---
+
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -85,7 +85,7 @@ export default function Appointments() {
     loadAppointments();
   }, []);
 
-  // Fetch patients when modal opens
+
   useEffect(() => {
     if (showModal && patients.length === 0) {
       const fetchPatients = async () => {
@@ -103,7 +103,7 @@ export default function Appointments() {
     }
   }, [showModal]);
 
-  // Close patient dropdown & three-dot menu on outside click
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -117,7 +117,7 @@ export default function Appointments() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ESC key to close modals
+
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") { setShowModal(false); setShowEditModal(false); setOpenMenuId(null); }
@@ -129,7 +129,7 @@ export default function Appointments() {
   useEffect(() => {
     let updated = [...appointments];
 
-    // Search filter
+
     if (search) {
       updated = updated.filter(
         (a) =>
@@ -139,12 +139,12 @@ export default function Appointments() {
       );
     }
 
-    // Status dropdown filter
+
     if (statusFilter) {
       updated = updated.filter((a) => a.status === statusFilter);
     }
 
-    // Tab filter
+
     const now = new Date();
     const todayStr = now.toDateString();
 
@@ -223,7 +223,7 @@ export default function Appointments() {
     }
   };
 
-  // --- Modal Handlers ---
+
   const openModal = () => {
     setShowModal(true);
     setFormData({ patientId: "", patientName: "", datetime: "", reason: "" });
@@ -276,13 +276,13 @@ export default function Appointments() {
     p.email?.toLowerCase().includes(patientSearch.toLowerCase())
   );
 
-  // Pagination logic
+
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  // Summary logic
+
   const today = new Date().toDateString();
   const summary = {
     todayTotal: appointments.filter(a => new Date(a.datetime).toDateString() === today && a.status !== "Cancelled").length,
@@ -298,7 +298,7 @@ export default function Appointments() {
   const isUrgent = (datetime) => {
     const apptTime = new Date(datetime);
     const now = new Date();
-    const diff = (apptTime - now) / (1000 * 60); // minutes
+    const diff = (apptTime - now) / (1000 * 60); 
     return diff > 0 && diff <= 60;
   };
 
@@ -308,7 +308,7 @@ export default function Appointments() {
       <main className="appt-main-content">
         <div className="appt-container-wide">
           
-          {/* HEADER SECTION */}
+
           <header className="appt-header">
             <div className="appt-header-left">
               <h1 className="appt-title">Appointments</h1>
@@ -320,7 +320,7 @@ export default function Appointments() {
             </button>
           </header>
 
-          {/* QUICK SUMMARY BAR */}
+
           <div className="appt-summary-grid">
             <div className="summary-card">
               <div className="summary-icon icon-blue"><FiCalendar /></div>
@@ -345,7 +345,7 @@ export default function Appointments() {
             </div>
           </div>
 
-          {/* TABS SECTION */}
+
           <div className="appt-tabs-container">
             <div className="appt-tabs">
               {(() => {
@@ -371,7 +371,7 @@ export default function Appointments() {
             </div>
           </div>
 
-          {/* FILTERS CARD */}
+
           <div className="appt-filter-card">
             <div className="search-box">
               <FiSearch className="search-icon" />
@@ -396,7 +396,7 @@ export default function Appointments() {
             </div>
           </div>
 
-          {/* TABLE SECTION */}
+
           <div className="appt-table-container">
             {loading ? (
               <div className="appt-loading">
@@ -481,7 +481,7 @@ export default function Appointments() {
                               <FiEye />
                             </button>
                             
-                            {(user.role === "Doctor" || user.role === "Admin") && appt.status === "Booked" && (
+                            {user.role === "Doctor" && appt.status === "Booked" && (
                               <button 
                                 className="icon-btn btn-complete" 
                                 title="Mark Complete"
@@ -529,7 +529,7 @@ export default function Appointments() {
             )}
           </div>
 
-          {/* PAGINATION */}
+
           {totalPages > 1 && (
             <div className="appt-pagination">
               <button
@@ -561,7 +561,7 @@ export default function Appointments() {
           )}
         </div>
 
-        {/* ADD APPOINTMENT MODAL */}
+
         <AnimatePresence>
           {showModal && (
             <motion.div
@@ -579,7 +579,7 @@ export default function Appointments() {
                 transition={{ duration: 0.25 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Modal Header */}
+
                 <div className="appt-modal-header">
                   <div className="appt-modal-title-group">
                     <div className="appt-modal-icon">
@@ -595,10 +595,10 @@ export default function Appointments() {
                   </button>
                 </div>
 
-                {/* Modal Form */}
+
                 <form className="appt-modal-form" onSubmit={handleSubmitAppointment}>
                   
-                  {/* Patient Selection */}
+
                   <div className="appt-form-group" ref={dropdownRef}>
                     <label className="appt-form-label">
                       <FiUser size={14} />
@@ -624,7 +624,7 @@ export default function Appointments() {
                       )}
                     </div>
                     
-                    {/* Patient Dropdown */}
+
                     {showPatientDropdown && (
                       <div className="appt-patient-dropdown">
                         {patientsLoading ? (
@@ -659,7 +659,7 @@ export default function Appointments() {
                     )}
                   </div>
 
-                  {/* Date & Time */}
+
                   <div className="appt-form-group">
                     <label className="appt-form-label">
                       <FiClock size={14} />
@@ -680,7 +680,7 @@ export default function Appointments() {
                     )}
                   </div>
 
-                  {/* Reason */}
+
                   <div className="appt-form-group">
                     <label className="appt-form-label">
                       <FiFileText size={14} />
@@ -701,13 +701,13 @@ export default function Appointments() {
                     )}
                   </div>
 
-                  {/* Status Info */}
+
                   <div className="appt-form-status-info">
                     <FiCheckCircle size={14} />
                     <span>Status will be set to <strong>Booked</strong> by default</span>
                   </div>
 
-                  {/* Actions */}
+
                   <div className="appt-modal-actions">
                     <button
                       type="button"
@@ -740,7 +740,7 @@ export default function Appointments() {
           )}
         </AnimatePresence>
 
-        {/* EDIT APPOINTMENT MODAL */}
+
         <AnimatePresence>
           {showEditModal && (
             <motion.div

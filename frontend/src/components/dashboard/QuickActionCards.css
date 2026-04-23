@@ -1,4 +1,4 @@
-/* ===== QUICK ACTION CARDS — Premium Style ===== */
+
 
 .quick-action-cards {
   display: grid;
@@ -23,7 +23,7 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Top accent bar */
+
 .action-card::before {
   content: "";
   position: absolute;
@@ -49,7 +49,7 @@
   transform: translateY(-2px);
 }
 
-/* Color accent bars */
+
 .action-card.action-primary::before {
   background: var(--green-primary);
 }
@@ -70,7 +70,7 @@
   background: var(--danger-500);
 }
 
-/* Icon circle */
+
 .action-icon {
   width: 52px;
   height: 52px;
@@ -136,7 +136,7 @@
   color: var(--text-secondary);
 }
 
-/* ===== DARK MODE ===== */
+
 body.dark-mode .action-card {
   background: var(--dm-bg-secondary);
   border-color: var(--dm-border-light);
@@ -168,7 +168,7 @@ body.dark-mode .action-info .action-icon {
   background: rgba(59, 130, 246, 0.1);
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 768px) {
   .quick-action-cards {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

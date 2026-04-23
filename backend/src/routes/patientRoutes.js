@@ -1,4 +1,4 @@
-// routes/patientRoutes.js
+
 const express = require("express");
 const router = express.Router();
 const { requireAuth, requireRole } = require("../middleware/authMiddleware");
@@ -12,24 +12,25 @@ const {
   linkPatient,
 } = require("../controllers/patientController");
 
-// Doctor: Only MY patients
+
 router.get("/my-patients", requireAuth, requireRole("Doctor"), getMyPatients);
 
-// Doctor: Link an existing patient
+
 router.post("/link-patient", requireAuth, requireRole("Doctor"), linkPatient);
 
-// Admin / Doctor: Create a new patient
-router.post("/", requireAuth, requireRole("Admin", "Doctor"), createPatient);
 
-router.get("/", requireAuth, requireRole("Admin"), getAllPatients);
+router.post("/", requireAuth, requireRole("Doctor"), createPatient);
 
-// ID wise detail 
+
+router.get("/", requireAuth, requireRole("Doctor"), getAllPatients);
+
+
 router.get("/:id", requireAuth, getPatientById);
 
-// Update patient profile
+
 router.put("/:id", requireAuth, updatePatient);
 
-// Delete Patient (Admin deletes permanently, Doctor unlinks)
-router.delete("/:id", requireAuth, requireRole("Admin", "Doctor"), deletePatient);
+
+router.delete("/:id", requireAuth, requireRole("Doctor"), deletePatient);
 
 module.exports = router;

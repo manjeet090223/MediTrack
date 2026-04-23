@@ -75,7 +75,7 @@ export default function PatientProfile() {
     }
   };
 
-  // Calculate profile completion
+
   const getProfileCompletion = () => {
     if (!patient) return 0;
     const fields = ["name", "email", "phone", "age", "gender", "address"];
@@ -110,7 +110,7 @@ export default function PatientProfile() {
 
       <main className="page-main">
         <div className="page-container">
-          {/* Page Header */}
+
           <motion.div
             className="page-header"
             initial={{ opacity: 0, y: -12 }}
@@ -124,14 +124,14 @@ export default function PatientProfile() {
           </motion.div>
 
           <div className="profile-layout">
-            {/* LEFT COLUMN — Profile Card */}
+
             <motion.div
               className="profile-sidebar-card"
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              {/* Avatar */}
+
               <div className="profile-avatar-section">
                 <div className="profile-avatar">
                   {patient.name?.charAt(0)?.toUpperCase() || "P"}
@@ -144,7 +144,7 @@ export default function PatientProfile() {
                 </span>
               </div>
 
-              {/* Profile Completion */}
+
               <div className="profile-completion">
                 <div className="completion-header">
                   <span className="completion-label">Profile Completion</span>
@@ -161,7 +161,7 @@ export default function PatientProfile() {
                 )}
               </div>
 
-              {/* Edit Button */}
+
               {!editing && (
                 <button className="btn-edit-profile" onClick={() => setEditing(true)}>
                   <FiEdit3 size={16} />
@@ -170,11 +170,11 @@ export default function PatientProfile() {
               )}
             </motion.div>
 
-            {/* RIGHT COLUMN — Info Sections */}
+
             <div className="profile-details">
               {!editing ? (
                 <>
-                  {/* Personal Information */}
+
                   <motion.div
                     className="info-card"
                     initial={{ opacity: 0, y: 12 }}
@@ -216,7 +216,7 @@ export default function PatientProfile() {
                     </div>
                   </motion.div>
 
-                  {/* Basic Details */}
+
                   <motion.div
                     className="info-card"
                     initial={{ opacity: 0, y: 12 }}
@@ -245,7 +245,7 @@ export default function PatientProfile() {
                   </motion.div>
                 </>
               ) : (
-                /* EDIT MODE */
+
                 <motion.div
                   className="info-card"
                   initial={{ opacity: 0, y: 12 }}

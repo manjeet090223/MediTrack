@@ -1,4 +1,4 @@
-/* ===== APPOINTMENTS LIST — Dashboard Card Style ===== */
+
 
 .appointments-list {
   display: flex;
@@ -143,7 +143,7 @@
   max-width: 300px;
 }
 
-/* View All Button */
+
 .view-all-btn {
   display: flex;
   align-items: center;
@@ -167,7 +167,7 @@
   color: var(--green-primary);
 }
 
-/* Skeleton */
+
 .appointment-skeleton {
   display: flex;
   gap: var(--space-4);
@@ -185,7 +185,7 @@
   border-radius: var(--radius-lg);
 }
 
-/* ===== DARK MODE ===== */
+
 body.dark-mode .appointment-item {
   background: var(--dm-bg-tertiary);
   border-color: var(--dm-border-light);
@@ -248,7 +248,7 @@ body.dark-mode .view-all-btn:hover {
   color: var(--green-tertiary);
 }
 
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 768px) {
   .appointment-item {
     gap: var(--space-3);
