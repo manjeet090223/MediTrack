@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import {
   FiUsers,
   FiCalendar,
@@ -43,10 +44,6 @@ export default function DoctorDashboard() {
   const [newPatients, setNewPatients] = useState([]);
   const [todaySchedule, setTodaySchedule] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // Chart Filters State
-  const [trendRange, setTrendRange] = useState("7d"); // '7d' or '30d'
-  const [patientRange, setPatientRange] = useState("6m"); // '6m' or '1y'
 
   const fetchDashboardData = async () => {
     try {
@@ -54,8 +51,8 @@ export default function DoctorDashboard() {
 
       const [summaryRes, trendRes, patientsRes, scheduleRes] = await Promise.all([
         api.get("/api/dashboard/summary"),
-        api.get(`/api/dashboard/appointments-trend?range=${trendRange}`),
-        api.get(`/api/dashboard/new-patients?range=${patientRange}`),
+        api.get("/api/dashboard/appointments-trend"),
+        api.get("/api/dashboard/new-patients"),
         api.get("/api/dashboard/today-schedule").catch(() => ({ data: [] }))
       ]);
 
@@ -72,9 +69,20 @@ export default function DoctorDashboard() {
     }
   };
 
+  const handleStatusUpdate = async (id, newStatus) => {
+    try {
+      await api.put(`/api/appointments/${id}`, { status: newStatus });
+      toast.success(`Appointment marked as ${newStatus}`);
+      fetchDashboardData(); // Refresh data
+    } catch (error) {
+      console.error("Failed to update status:", error);
+      toast.error("Failed to update appointment status");
+    }
+  };
+
   useEffect(() => {
     fetchDashboardData();
-  }, [trendRange, patientRange]);
+  }, []);
 
   // Custom Tooltip for Charts
   const CustomTooltip = ({ active, payload, label }) => {
@@ -207,14 +215,9 @@ export default function DoctorDashboard() {
                     <h3>Patient Growth</h3>
                     <p>New patients acquired per month</p>
                   </div>
-                  <select 
-                    className="chart-filter" 
-                    value={patientRange} 
-                    onChange={(e) => setPatientRange(e.target.value)}
-                  >
-                    <option value="1y">This Year</option>
-                    <option value="6m">Last 6 Months</option>
-                  </select>
+                  <div className="chart-header-actions">
+                    <span className="badge-light">Last 6 Months</span>
+                  </div>
                 </div>
                 <div className="chart-wrapper">
                   <ResponsiveContainer width="100%" height={240}>
@@ -240,14 +243,9 @@ export default function DoctorDashboard() {
                     <h3>Appointment Trends</h3>
                     <p>Daily consultation volume</p>
                   </div>
-                  <select 
-                    className="chart-filter" 
-                    value={trendRange} 
-                    onChange={(e) => setTrendRange(e.target.value)}
-                  >
-                    <option value="7d">Last 7 Days</option>
-                    <option value="30d">Last 30 Days</option>
-                  </select>
+                  <div className="chart-header-actions">
+                    <span className="badge-light">Last 7 Days</span>
+                  </div>
                 </div>
                 <div className="chart-wrapper">
                   <ResponsiveContainer width="100%" height={240}>
@@ -314,8 +312,13 @@ export default function DoctorDashboard() {
                           <p className="schedule-type">{appt.type}</p>
                           <div className="schedule-actions">
                             <button className="btn-sched-action" onClick={() => appt.patientId && navigate(`/patients/${appt.patientId}`)}>View Chart</button>
-                            {appt.status !== "Completed" && (
-                              <button className="btn-sched-primary">{appt.status === "Waiting" ? "Start" : "Mark Done"}</button>
+                            {appt.status !== "Completed" && appt.status !== "Cancelled" && (
+                              <button 
+                                className="btn-sched-primary"
+                                onClick={() => handleStatusUpdate(appt.id, "Completed")}
+                              >
+                                {appt.status === "Waiting" ? "Start" : "Mark Done"}
+                              </button>
                             )}
                           </div>
                         </div>
