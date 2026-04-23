@@ -37,6 +37,7 @@ export default function DoctorDashboard() {
     totalPatients: 0,
     appointmentsToday: 0,
     pendingRequests: 0,
+    appointmentsCompleted: 0,
   });
   const [appointmentsTrend, setAppointmentsTrend] = useState([]);
   const [newPatients, setNewPatients] = useState([]);
@@ -58,17 +59,8 @@ export default function DoctorDashboard() {
       setAppointmentsTrend(trendRes.data);
       setNewPatients(patientsRes.data);
       
-      // If backend doesn't return schedule yet, use mock data for the UI
-      if (scheduleRes.data && scheduleRes.data.length > 0) {
-        setTodaySchedule(scheduleRes.data);
-      } else {
-        setTodaySchedule([
-          { id: 1, patientName: "Alice Smith", time: "09:00 AM", status: "Waiting", type: "Follow-up" },
-          { id: 2, patientName: "Bob Johnson", time: "10:30 AM", status: "In Progress", type: "Consultation" },
-          { id: 3, patientName: "Charlie Davis", time: "02:00 PM", status: "Scheduled", type: "New Patient" },
-          { id: 4, patientName: "Diana Evans", time: "04:15 PM", status: "Scheduled", type: "Checkup" },
-        ]);
-      }
+      // Use backend data directly
+      setTodaySchedule(scheduleRes.data || []);
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);
     } finally {
@@ -162,9 +154,18 @@ export default function DoctorDashboard() {
                   <span className="doc-kpi-value">{loading ? "-" : summary.appointmentsToday}</span>
                 </div>
                 <div className="kpi-progress-bar">
-                  <div className="kpi-progress-fill" style={{ width: "35%" }}></div>
+                  <div 
+                    className="kpi-progress-fill" 
+                    style={{ 
+                      width: summary.appointmentsToday > 0 
+                        ? `${(summary.appointmentsCompleted / summary.appointmentsToday) * 100}%` 
+                        : "0%" 
+                    }}
+                  ></div>
                 </div>
-                <p className="doc-kpi-context">3 of 8 completed</p>
+                <p className="doc-kpi-context">
+                  {loading ? "-" : `${summary.appointmentsCompleted} of ${summary.appointmentsToday} completed`}
+                </p>
               </div>
             </div>
 

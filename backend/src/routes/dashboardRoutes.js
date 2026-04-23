@@ -8,14 +8,20 @@ const { requireAuth, requireRole } = require("../middleware/authMiddleware");
 
 router.get("/summary", requireAuth, requireRole("Doctor", "Admin"), async (req, res) => {
   try {
-    const isDoctor = req.user.role === "Doctor";
-    const doctorFilter = isDoctor ? { doctor: new mongoose.Types.ObjectId(req.user.id) } : {};
+    const role = req.user.role?.toLowerCase();
+    const isDoctor = role === "doctor";
+    const isAdmin = role === "admin";
+
+    // If doctor, filter by ID. If admin, see all. Otherwise, see nothing.
+    const doctorFilter = isDoctor 
+      ? { doctor: new mongoose.Types.ObjectId(req.user.id) } 
+      : (isAdmin ? {} : { _id: null }); 
 
     let totalPatients = 0;
     if (isDoctor) {
       const uniquePatients = await Appointment.distinct("patient", doctorFilter);
       totalPatients = uniquePatients.length;
-    } else {
+    } else if (isAdmin) {
       totalPatients = await User.countDocuments({ role: "Patient" });
     }
 
@@ -30,12 +36,13 @@ router.get("/summary", requireAuth, requireRole("Doctor", "Admin"), async (req, 
       datetime: { $gte: startOfDay, $lte: endOfDay },
     });
 
-    const pendingRequests = await Appointment.countDocuments({
+    const appointmentsCompleted = await Appointment.countDocuments({
       ...doctorFilter,
-      status: "Booked",
+      datetime: { $gte: startOfDay, $lte: endOfDay },
+      status: "Completed",
     });
 
-    res.json({ totalPatients, appointmentsToday, pendingRequests });
+    res.json({ totalPatients, appointmentsToday, pendingRequests, appointmentsCompleted });
   } catch (error) {
     console.error("Dashboard Summary Error:", error);
     res.status(500).json({ message: "Server error" });
@@ -49,9 +56,14 @@ router.get("/appointments-trend", requireAuth, requireRole("Doctor", "Admin"), a
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
     sevenDaysAgo.setHours(0, 0, 0, 0);
 
+    const role = req.user.role?.toLowerCase();
     const matchStage = { datetime: { $gte: sevenDaysAgo } };
-    if (req.user.role === "Doctor") {
+    
+    if (role === "doctor") {
       matchStage.doctor = new mongoose.Types.ObjectId(req.user.id);
+    } else if (role !== "admin") {
+      // If not admin and not doctor, ensure we match nothing
+      matchStage._id = null;
     }
 
     const trend = await Appointment.aggregate([
@@ -93,8 +105,10 @@ router.get("/new-patients", requireAuth, requireRole("Doctor", "Admin"), async (
     sixMonthsAgo.setDate(1);
     sixMonthsAgo.setHours(0, 0, 0, 0);
 
+    const role = req.user.role?.toLowerCase();
     let patients = [];
-    if (req.user.role === "Doctor") {
+    
+    if (role === "doctor") {
       patients = await Appointment.aggregate([
         { $match: { doctor: new mongoose.Types.ObjectId(req.user.id) } },
         { $sort: { datetime: 1 } },
@@ -113,7 +127,7 @@ router.get("/new-patients", requireAuth, requireRole("Doctor", "Admin"), async (
         },
         { $sort: { _id: 1 } },
       ]);
-    } else {
+    } else if (role === "admin") {
       patients = await User.aggregate([
         { $match: { role: "Patient", createdAt: { $gte: sixMonthsAgo } } },
         {
@@ -155,8 +169,13 @@ router.get("/today-schedule", requireAuth, requireRole("Doctor", "Admin"), async
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
-    const isDoctor = req.user.role === "Doctor";
-    const doctorFilter = isDoctor ? { doctor: new mongoose.Types.ObjectId(req.user.id) } : {};
+    const role = req.user.role?.toLowerCase();
+    const isDoctor = role === "doctor";
+    const isAdmin = role === "admin";
+
+    const doctorFilter = isDoctor 
+      ? { doctor: new mongoose.Types.ObjectId(req.user.id) } 
+      : (isAdmin ? {} : { _id: null });
 
     const appointments = await Appointment.find({
       ...doctorFilter,
