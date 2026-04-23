@@ -29,7 +29,7 @@ router.get("/:id", requireAuth, getPatientById);
 // Update patient profile
 router.put("/:id", requireAuth, updatePatient);
 
-// Delete Patient (Admin)
-router.delete("/:id", requireAuth, requireRole("Admin"), deletePatient);
+// Delete Patient (Admin deletes permanently, Doctor unlinks)
+router.delete("/:id", requireAuth, requireRole("Admin", "Doctor"), deletePatient);
 
 module.exports = router;

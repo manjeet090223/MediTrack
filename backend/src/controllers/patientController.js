@@ -119,8 +119,21 @@ exports.updatePatient = async (req, res) => {
 // Delete patient 
 exports.deletePatient = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
-    res.json({ message: "Patient deleted successfully" });
+    const patientId = req.params.id;
+
+    if (req.user.role === "Admin") {
+      // Admin deletes the entire user record
+      await User.findByIdAndDelete(patientId);
+      return res.json({ message: "Patient deleted permanently" });
+    } else if (req.user.role === "Doctor") {
+      // Doctor just unlinks the patient from their list
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: { linkedPatients: patientId },
+      });
+      return res.json({ message: "Patient removed from your directory" });
+    } else {
+      return res.status(403).json({ message: "Unauthorized action" });
+    }
   } catch (err) {
     console.error("Delete Error:", err);
     res.status(500).json({ message: "Server Error" });
