@@ -36,13 +36,23 @@ router.get("/summary", requireAuth, requireRole("Doctor", "Admin"), async (req, 
       datetime: { $gte: startOfDay, $lte: endOfDay },
     });
 
+    const pendingRequests = await Appointment.countDocuments({
+      ...doctorFilter,
+      status: "Booked",
+    });
+
     const appointmentsCompleted = await Appointment.countDocuments({
       ...doctorFilter,
       datetime: { $gte: startOfDay, $lte: endOfDay },
       status: "Completed",
     });
 
-    res.json({ totalPatients, appointmentsToday, pendingRequests, appointmentsCompleted });
+    res.json({ 
+      totalPatients, 
+      appointmentsToday, 
+      pendingRequests, 
+      appointmentsCompleted 
+    });
   } catch (error) {
     console.error("Dashboard Summary Error:", error);
     res.status(500).json({ message: "Server error" });
