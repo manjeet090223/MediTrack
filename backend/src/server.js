@@ -23,9 +23,10 @@ app.use(cors());
 connectDB();
 
 const path = require("path");
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+const uploadsPath = path.join(process.cwd(), "src/uploads");
+app.use("/uploads", express.static(uploadsPath));
 // Fallback for direct report access
-app.use("/uploads/reports", express.static(path.join(__dirname, "uploads/reports")));
+app.use("/uploads/reports", express.static(path.join(uploadsPath, "reports")));
 
 // Routes
 app.use("/api/appointments", appointmentsRouter);

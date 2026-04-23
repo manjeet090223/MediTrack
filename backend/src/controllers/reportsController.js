@@ -6,7 +6,7 @@ const Report = require("../models/Report");
 // Storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../uploads/reports");
+    const uploadPath = path.join(process.cwd(), "src/uploads/reports");
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
